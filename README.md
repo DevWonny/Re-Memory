@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Re:Memory
 
-## Getting Started
+### Description
 
-First, run the development server:
+- 유저가 여행 사진을 여행지 별로 정리하고 스토리처럼 볼수 있는 앨범 프로젝트
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Motivation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 최근 여행을 다녀오면서 카메라로 사진을 많이 찍었고, 이런 사진들을 보관할 수 있는 사이트를 한번 제작해보자는 동기를 가지고 시작하게 됨.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 회원가입 및 로그인
+- 사진 업로드 및 앨범 관리
+- 사진 확대
+- 애니메이션 효과
 
-## Learn More
+### Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Frontend : Next.js, Typescript, Tailwind CSS, SCSS, Zustand, Swiper.js, Three.js
+- Backend : Firebase Auth, Firestore,
+- Hosting : Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Color Palette
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Background : #0F0F0F
+- Sub : #181818
+- Border : #2A2A2A
+- Text : #EAEAEA
+- Point : #E5A134
 
-## Deploy on Vercel
+### 기간
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 시작 : 25년 12월 02일
+- 종료 : -
