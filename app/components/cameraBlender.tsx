@@ -10,11 +10,16 @@ export default function CameraBlender() {
   useEffect(() => {
     const scene = new THREE.Scene(); // Scene 생성
     scene.background = new THREE.Color(0xeeeeee);
+    console.log(mountRef.current?.clientWidth);
+    if (!mountRef.current) {
+      console.log("Camera Blender Not Mount!");
+      return;
+    }
 
     // Camera 생성
     const camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      mountRef.current?.clientWidth / mountRef.current?.clientHeight,
       0.1,
       1000
     );
@@ -24,7 +29,10 @@ export default function CameraBlender() {
     // WebGL Renderer 생성 (antialias -> 부드러운 렌더링 제공)
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     // renderer 출력 캔버스 크기 설정
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(
+      mountRef.current?.clientWidth,
+      mountRef.current?.clientHeight
+    );
     if (mountRef.current) {
       // 실제 DOM 노드에 존재 할때 renderer를 해당 DOM에 붙임.
       mountRef.current.appendChild(renderer.domElement);
@@ -82,7 +90,7 @@ export default function CameraBlender() {
         }
       }
     };
-  }, []);
+  }, [mountRef]);
 
-  return <div ref={mountRef} />;
+  return <div ref={mountRef} className="w-full h-full" />;
 }
