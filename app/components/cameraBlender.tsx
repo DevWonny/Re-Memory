@@ -9,7 +9,7 @@ export default function CameraBlender() {
 
   useEffect(() => {
     const scene = new THREE.Scene(); // Scene 생성
-    scene.background = new THREE.Color(0xeeeeee);
+    scene.background = new THREE.Color(0x0f0f0f);
     console.log(mountRef.current?.clientWidth);
     if (!mountRef.current) {
       console.log("Camera Blender Not Mount!");
