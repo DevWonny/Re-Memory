@@ -8,11 +8,11 @@ import folder from "@/public/folder.png";
 
 export default function Folder() {
   return (
-    <div className="folder-item w-full h-full p-[20px]">
+    <div className="folder-item w-full h-full  p-[20px] flex items-center justify-center">
       <Image
         src={folder}
         alt="Folder Image"
-        className="w-full h-full object-contain "
+        className="w-fit h-full object-contain cursor-pointer"
       ></Image>
     </div>
   );

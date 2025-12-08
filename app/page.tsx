@@ -15,7 +15,7 @@ export default function Main() {
       </div>
       {/* 폴더로 표출될 영역. 이미지가 저장 될때 카테고리(여행지) 별로 저장을 할 예정. 폴더는 해당 카테고리를 의미함. */}
       {/* 무한 스크롤 사용 예정 */}
-      <div className="folder-container md:w-[50%] h-screen grid grid-cols-3 sm:grid-cols-3 max-sm:grid-cols-3 sm:w-full">
+      <div className="folder-container md:w-[50%] h-screen grid  auto-rows-[140px] grid-cols-3 sm:grid-cols-3 max-sm:grid-cols-3 sm:w-full ">
         {Array.from({ length: 10 }).map((_, index) => (
           <Folder key={`test-${index}`} />
         ))}
