@@ -9,7 +9,7 @@ export default function CameraBlender() {
 
   useEffect(() => {
     const scene = new THREE.Scene(); // Scene 생성
-    scene.background = new THREE.Color(0xeee);
+    scene.background = new THREE.Color(0xeeeeee);
 
     // Camera 생성
     const camera = new THREE.PerspectiveCamera(
@@ -19,7 +19,7 @@ export default function CameraBlender() {
       1000
     );
     // Camera Position 설정
-    camera.position.set(0, 1.5, 5);
+    camera.position.set(0, 0, 5);
 
     // WebGL Renderer 생성 (antialias -> 부드러운 렌더링 제공)
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -34,12 +34,12 @@ export default function CameraBlender() {
 
     // Light
     // 주변광을 생성해서 씬 전체에 균일한 광 제공.
-    const ambientLight = new THREE.AmbientLight(0xfff, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);
 
     // * DirectionalLight -> 위치보다 방향이 중요. 현재는 위치로 방향을 간섭함.
     // 평행광 추가
-    const directionalLight = new THREE.DirectionalLight(0xfff, 1);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     // 평행광 위치 설정. 이로 인해 그림자가 생성됨.
     directionalLight.position.set(5, 10, 7);
     scene.add(directionalLight);
@@ -48,7 +48,7 @@ export default function CameraBlender() {
     // GLTF Loader 인스턴스 생성
     const loader = new GLTFLoader();
 
-    loader.load("/kodac.glb", (gltf) => {
+    loader.load("/render_image.glb", (gltf) => {
       // 모델링된 파일을 비동기 로드. 로드 성공 시 모델의 루트 씬을 가져와 model로 저장하고, 스케일 설정 후 씬에 추가함.
       const model = gltf.scene;
       model.scale.set(1, 1, 1);
