@@ -6,20 +6,31 @@
 // *    -> 좌 : 이미지 미리보기(Swiper로 확인 하게) + 파일 추가 및 제거 + 초기화
 // *    -> 우 : 카테고리 입력 + 설명 + 취소 및 저장 버튼
 // * Mobile -> PC에서 좌우로 되어있던 것들을 상하로 Layout 변경
-
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState, useRef } from "react";
-import Image from "next/image";
 // style
 import "@/styles/upload.scss";
 
 export default function Upload() {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [images, setImages] = useState<string[]>([]);
 
   // function
-  const onAddImages = () => {
-    console.log("On Add Images!");
+  const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newImages = Array.from(files).map((file) =>
+      URL.createObjectURL(file)
+    );
+
+    setImages((prev) => [...prev, ...newImages]);
+
+    if (!previewImage && newImages.length > 0) {
+      setPreviewImage(newImages[0]);
+    }
   };
 
   const onOpenInput = () => {
@@ -45,13 +56,21 @@ export default function Upload() {
             {/* // * Image Preview */}
             <div className="preview-content">
               {previewImage ? (
-                <Image src={previewImage} alt="Preview Image" />
+                <img src={previewImage} alt="Preview Image" />
               ) : (
                 <span>미리보기 없음.</span>
               )}
             </div>
             {/* // * Image List  */}
-            <div className="image-list-content">Image List</div>
+            <div className="image-list-content">
+              {images.length > 0 ? (
+                images.map((img, index) => (
+                  <p key={`image-list-item-${index}`}>{img}</p>
+                ))
+              ) : (
+                <span>이미지를 추가하세요.</span>
+              )}
+            </div>
 
             {/* // * Input */}
             <input
