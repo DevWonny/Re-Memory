@@ -42,6 +42,15 @@ export default function Upload() {
     imageInputRef.current.click();
   };
 
+  const onReset = () => {
+    if (images.length === 0) {
+      return;
+    }
+
+    setImages([]);
+    setPreviewImage(null);
+  };
+
   return (
     <div className="upload-page flex items-center justify-center w-screen h-screen">
       <div className="upload-container flex flex-col items-center justify-between w-[70%] h-[50%]">
@@ -56,7 +65,11 @@ export default function Upload() {
             {/* // * Image Preview */}
             <div className="preview-content">
               {previewImage ? (
-                <img src={previewImage} alt="Preview Image" />
+                <img
+                  src={previewImage}
+                  alt="Preview Image"
+                  className="w-[100px] h-[100px] object-contain"
+                />
               ) : (
                 <span>미리보기 없음.</span>
               )}
@@ -90,7 +103,10 @@ export default function Upload() {
               >
                 Image Add
               </button>
-              <button className="reset-button cursor-pointer">Reset</button>
+
+              <button className="reset-button cursor-pointer" onClick={onReset}>
+                Reset
+              </button>
             </div>
           </div>
 
