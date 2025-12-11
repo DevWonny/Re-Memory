@@ -3,15 +3,34 @@
 // * 업로드 관련 내용 배경은 필름 프레임을 구현해서 작업.
 // * Break Point -> sm(40rem, 640px)을 기준으로 작업
 // * PC -> 좌우 형태로 레이아웃 구성(필름 프레임이 가로로 길게 2칸으로)
-// *    -> 좌측에는 미리보기(drag & drop형식) + 파일(파일 개별 제거 및 전체 제거) / 우측에는 분류(카페고리 - 여행지), 설명 , 버튼
-// * Mobile -> 위에서 부터 순서대로 이미지 미리보기(darg & drop형식) - 클릭해서 파일 추가(파일 개별 제거 및 전체 제거 버튼 필요)
-// *        -> 분류(카테고리 - 여행지) - 설명 - 버튼(취소, 저장)
+// *    -> 좌 : 이미지 미리보기(Swiper로 확인 하게) + 파일 추가 및 제거 + 초기화
+// *    -> 우 : 카테고리 입력 + 설명 + 취소 및 저장 버튼
+// * Mobile -> PC에서 좌우로 되어있던 것들을 상하로 Layout 변경
 
 "use client";
+import { useState, useRef } from "react";
+import Image from "next/image";
 // style
 import "@/styles/upload.scss";
 
 export default function Upload() {
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // function
+  const onAddImages = () => {
+    console.log("On Add Images!");
+  };
+
+  const onOpenInput = () => {
+    if (!imageInputRef.current) {
+      console.log("Upload Page On Open Input Error!");
+      return;
+    }
+
+    imageInputRef.current.click();
+  };
+
   return (
     <div className="upload-page flex items-center justify-center w-screen h-screen">
       <div className="upload-container flex flex-col items-center justify-between w-[70%] h-[50%]">
@@ -22,8 +41,43 @@ export default function Upload() {
         </div>
 
         <div className="contents-container flex justify-around items-center w-full h-full">
-          <div className="content w-[48%] h-[85%]"></div>
-          <div className="content w-[48%] h-[85%]"></div>
+          <div className="content w-[48%] h-[85%] flex flex-col">
+            {/* // * Image Preview */}
+            <div className="preview-content">
+              {previewImage ? (
+                <Image src={previewImage} alt="Preview Image" />
+              ) : (
+                <span>미리보기 없음.</span>
+              )}
+            </div>
+            {/* // * Image List  */}
+            <div className="image-list-content">Image List</div>
+
+            {/* // * Input */}
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              accept="image/*"
+              ref={imageInputRef}
+              onChange={onAddImages}
+            />
+
+            {/* // * Buttons */}
+            <div className="button-content flex">
+              <button
+                className="add-button cursor-pointer"
+                onClick={onOpenInput}
+              >
+                Image Add
+              </button>
+              <button className="reset-button cursor-pointer">Reset</button>
+            </div>
+          </div>
+
+          <div className="content w-[48%] h-[85%]">
+            Description 관련(카테고리, 설명, 취소 및 저장 버튼)
+          </div>
         </div>
 
         <div className="perforation">

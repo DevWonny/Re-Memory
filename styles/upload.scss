@@ -22,7 +22,8 @@ div.upload-page {
 
     div.contents-container {
       div.content {
-        background-color: white;
+        background-color: $text-color;
+        color: $sub-color;
       }
     }
   }
