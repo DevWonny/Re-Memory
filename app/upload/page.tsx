@@ -14,16 +14,16 @@ import "@/styles/upload.scss";
 export default function Upload() {
   return (
     <div className="upload-page flex items-center justify-center w-screen h-screen">
-      <div className="upload-container flex flex-col items-center justify-between w-[50%] h-[50%]">
+      <div className="upload-container flex flex-col items-center justify-between w-[70%] h-[50%]">
         <div className="perforation">
           {Array.from({ length: 24 }).map((_, index) => (
             <p key={`top-perforation-${index}`} />
           ))}
         </div>
 
-        <div className="contents-container flex">
-          <div className="left-contents"></div>
-          <div className="right-contents"></div>
+        <div className="contents-container flex justify-around items-center w-full h-full">
+          <div className="content w-[48%] h-[85%]"></div>
+          <div className="content w-[48%] h-[85%]"></div>
         </div>
 
         <div className="perforation">
