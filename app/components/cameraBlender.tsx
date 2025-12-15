@@ -1,11 +1,19 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 export default function CameraBlender() {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Cleanup 혹은 외부 접근 시 사용하기 위해 Renderer를 따로 저장.
+  const router = useRouter();
+
+  const onClickBlender = () => {
+    if (!mountRef.current) return;
+
+    router.replace("/upload");
+  };
 
   useEffect(() => {
     const scene = new THREE.Scene(); // Scene 생성
@@ -92,5 +100,7 @@ export default function CameraBlender() {
     };
   }, [mountRef]);
 
-  return <div ref={mountRef} className="w-full h-full" />;
+  return (
+    <div ref={mountRef} className="w-full h-full" onClick={onClickBlender} />
+  );
 }
