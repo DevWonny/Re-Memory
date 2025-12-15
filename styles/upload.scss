@@ -24,6 +24,31 @@ div.upload-page {
       div.content {
         background-color: $text-color;
         color: $sub-color;
+        &:first-child {
+          // background-color: bisque;
+        }
+
+        div.preview-content {
+        }
+
+        div.image-list-content {
+        }
+
+        div.button-content {
+          gap: 30px;
+          button {
+            background-color: $bg-color;
+            color: $text-color;
+            width: 200px;
+            height: 50px;
+            border-radius: 8px;
+            cursor: pointer;
+            &:hover {
+              background-color: $point-color;
+              color: $sub-color;
+            }
+          }
+        }
       }
     }
   }

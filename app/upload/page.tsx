@@ -63,7 +63,7 @@ export default function Upload() {
         </div>
 
         <div className="contents-container flex justify-around items-center w-full h-full">
-          <div className="content w-[48%] h-[85%] flex flex-col">
+          <div className="content w-[48%] h-[85%] flex flex-col items-center justify-center">
             {/* // * Image Preview */}
             <div className="preview-content">
               {previewImage ? (
@@ -98,16 +98,16 @@ export default function Upload() {
             />
 
             {/* // * Buttons */}
-            <div className="button-content flex">
+            <div className="button-content flex w-fit">
               <button
                 className="add-button cursor-pointer"
                 onClick={onOpenInput}
               >
-                Image Add
+                사진 추가
               </button>
 
               <button className="reset-button cursor-pointer" onClick={onReset}>
-                Reset
+                초기화
               </button>
             </div>
           </div>
@@ -116,6 +116,10 @@ export default function Upload() {
             {/* // * Category , Description , Button(Cancel, Save) */}
             <CommonInput type="category" />
             <CommonInput type="description" />
+            <div className="button-content flex w-fit">
+              <button className="cancel-button">취소</button>
+              <button className="save-button">저장</button>
+            </div>
           </div>
         </div>
 
