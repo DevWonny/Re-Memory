@@ -24,11 +24,12 @@ div.upload-page {
       div.content {
         background-color: $text-color;
         color: $sub-color;
-        &:first-child {
-          // background-color: bisque;
-        }
 
         div.preview-content {
+          // background-color: red;
+          .swiper-slide-shadow {
+            background-color: unset;
+          }
         }
 
         div.image-list-content {

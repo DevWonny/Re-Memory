@@ -10,10 +10,15 @@
 "use client";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCards, Zoom } from "swiper/modules";
 // components
 import CommonInput from "@/app/components/commonInput";
 // style
 import "@/styles/upload.scss";
+import "swiper/css";
+import "swiper/css/zoom";
+import "swiper/css/effect-cards";
 
 export default function Upload() {
   const router = useRouter();
@@ -74,12 +79,27 @@ export default function Upload() {
           <div className="content w-[48%] h-[85%] flex flex-col items-center justify-center">
             {/* // * Image Preview */}
             <div className="preview-content">
-              {previewImage ? (
-                <img
-                  src={previewImage}
-                  alt="Preview Image"
-                  className="w-[100px] h-[100px] object-contain"
-                />
+              {images.length > 0 ? (
+                // <img
+                //   src={previewImage}
+                //   alt="Preview Image"
+                //   className="w-[100px] h-[100px] object-contain"
+                // />
+                <Swiper
+                  effect={"cards"}
+                  grabCursor={true}
+                  zoom={true}
+                  modules={[EffectCards, Zoom]}
+                  className="preview-swiper flex items-center justify-center w-full h-full"
+                >
+                  {images.map((image, index) => (
+                    <SwiperSlide key={`preview-swiper-image-${index}`}>
+                      <div className="swiper-zoom-container">
+                        <img src={image} alt="Preview Image" />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               ) : (
                 <span>미리보기 없음.</span>
               )}
