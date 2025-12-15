@@ -12,7 +12,7 @@ export default function CameraBlender() {
   const onClickBlender = () => {
     if (!mountRef.current) return;
 
-    router.replace("/upload");
+    router.push("/upload");
   };
 
   useEffect(() => {

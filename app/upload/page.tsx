@@ -9,12 +9,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 // components
 import CommonInput from "@/app/components/commonInput";
 // style
 import "@/styles/upload.scss";
 
 export default function Upload() {
+  const router = useRouter();
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>([]);
@@ -51,6 +53,12 @@ export default function Upload() {
 
     setImages([]);
     setPreviewImage(null);
+  };
+
+  const onCancelClick = () => {
+    setPreviewImage(null);
+    setImages([]);
+    router.replace("/");
   };
 
   return (
@@ -117,7 +125,9 @@ export default function Upload() {
             <CommonInput type="category" />
             <CommonInput type="description" />
             <div className="button-content flex w-fit">
-              <button className="cancel-button">취소</button>
+              <button className="cancel-button" onClick={onCancelClick}>
+                취소
+              </button>
               <button className="save-button">저장</button>
             </div>
           </div>
