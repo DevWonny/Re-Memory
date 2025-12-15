@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect } from "react";
@@ -6,6 +7,7 @@ interface InputType {
 }
 export default function CommonInput({ type }: InputType) {
   const [inputValue, setInputValue] = useState("");
+  const [inputPlaceHolder, setInputPlaceHolder] = useState("");
   const [isComposing, setIsComposing] = useState(false);
   const [maxLength, setMaxLength] = useState(0);
 
@@ -26,12 +28,19 @@ export default function CommonInput({ type }: InputType) {
     setInputValue(value);
   };
 
+  useEffect(() => {
+    if (type === "category") setInputPlaceHolder("여행지를 입력해주세요");
+    else if (type === "description")
+      setInputPlaceHolder("여행지에서의 추억을 입력해주세요.");
+  }, []);
+
   return (
     // * 카테고리 (여행지)-> 텍스트 입력(30자 내로) / 폴더 설명(100자 내로)
     <div className="common-input-container">
       <input
+        className="w-fit"
         type="text"
-        placeholder={type}
+        placeholder={inputPlaceHolder}
         value={inputValue}
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={(e) => {

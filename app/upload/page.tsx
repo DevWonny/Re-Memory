@@ -113,9 +113,9 @@ export default function Upload() {
           </div>
 
           <div className="content w-[48%] h-[85%]">
+            {/* // * Category , Description , Button(Cancel, Save) */}
             <CommonInput type="category" />
             <CommonInput type="description" />
-            Description 관련(카테고리, 설명, 취소 및 저장 버튼)
           </div>
         </div>
 
