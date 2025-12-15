@@ -8,7 +8,7 @@
 // * Mobile -> PC에서 좌우로 되어있던 것들을 상하로 Layout 변경
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards, Zoom } from "swiper/modules";
@@ -20,26 +20,31 @@ import "swiper/css";
 import "swiper/css/zoom";
 import "swiper/css/effect-cards";
 
+interface UploadFile {
+  file: File;
+  previewUrl: string;
+}
+
 export default function Upload() {
   const router = useRouter();
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<UploadFile[]>([]);
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
 
-    const newImages = Array.from(files).map((file) =>
-      URL.createObjectURL(file)
-    );
+    if (!files) {
+      return;
+    }
+
+    const newImages = Array.from(files).map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
 
     setImages((prev) => [...prev, ...newImages]);
-
-    if (!previewImage && newImages.length > 0) {
-      setPreviewImage(newImages[0]);
-    }
+    e.target.value = "";
   };
 
   const onOpenInput = () => {
@@ -55,20 +60,20 @@ export default function Upload() {
     if (images.length === 0) {
       return;
     }
-
     setImages([]);
-    setPreviewImage(null);
+    if (imageInputRef.current) {
+      imageInputRef.current.value = "";
+    }
   };
 
   const onCancelClick = () => {
-    setPreviewImage(null);
     setImages([]);
     router.replace("/");
   };
 
   return (
     <div className="upload-page flex items-center justify-center w-screen h-screen">
-      <div className="upload-container flex flex-col items-center justify-between w-[70%] h-[50%]">
+      <div className="upload-container flex flex-col items-center justify-between w-[70%] h-[70%]">
         <div className="perforation">
           {Array.from({ length: 24 }).map((_, index) => (
             <p key={`top-perforation-${index}`} />
@@ -76,15 +81,10 @@ export default function Upload() {
         </div>
 
         <div className="contents-container flex justify-around items-center w-full h-full">
-          <div className="content w-[48%] h-[85%] flex flex-col items-center justify-center">
+          <div className="content w-[48%] h-[95%] flex flex-col items-center justify-start">
             {/* // * Image Preview */}
             <div className="preview-content">
               {images.length > 0 ? (
-                // <img
-                //   src={previewImage}
-                //   alt="Preview Image"
-                //   className="w-[100px] h-[100px] object-contain"
-                // />
                 <Swiper
                   effect={"cards"}
                   grabCursor={true}
@@ -95,23 +95,31 @@ export default function Upload() {
                   {images.map((image, index) => (
                     <SwiperSlide key={`preview-swiper-image-${index}`}>
                       <div className="swiper-zoom-container">
-                        <img src={image} alt="Preview Image" />
+                        <img
+                          src={image.previewUrl}
+                          alt="Preview Image"
+                          className="w-full h-full"
+                        />
                       </div>
                     </SwiperSlide>
                   ))}
                 </Swiper>
               ) : (
-                <span>미리보기 없음.</span>
+                <div className="no-preview w-full h-full flex items-center justify-center">
+                  미리보기 없음.
+                </div>
               )}
             </div>
             {/* // * Image List  */}
             <div className="image-list-content">
               {images.length > 0 ? (
                 images.map((img, index) => (
-                  <p key={`image-list-item-${index}`}>{img}</p>
+                  <p key={`image-list-item-${index}`}>{img.file?.name}</p>
                 ))
               ) : (
-                <span>이미지를 추가하세요.</span>
+                <div className="no-image-list w-full h-full flex items-center justify-center">
+                  이미지를 추가하세요.
+                </div>
               )}
             </div>
 
@@ -140,7 +148,7 @@ export default function Upload() {
             </div>
           </div>
 
-          <div className="content w-[48%] h-[85%]">
+          <div className="content w-[48%] h-[95%]">
             {/* // * Category , Description , Button(Cancel, Save) */}
             <CommonInput type="category" />
             <CommonInput type="description" />
