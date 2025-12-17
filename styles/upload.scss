@@ -28,13 +28,15 @@ div.upload-page {
 
         div.preview-content {
           width: 100%;
-          height: 328px;
-          background-color: bisque;
+          max-height: 328px;
+          overflow: hidden;
           border-bottom: 0.5px solid #000;
-          div {
-            height: 100%;
+          .swiper-slide {
+            padding: 30px;
+            img {
+              object-fit: contain;
+            }
           }
-
           .swiper-slide-shadow {
             background-color: unset;
           }

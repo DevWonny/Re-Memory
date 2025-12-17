@@ -11,13 +11,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectCards, Zoom } from "swiper/modules";
+import { EffectCards } from "swiper/modules";
 // components
 import CommonInput from "@/app/components/commonInput";
 // style
 import "@/styles/upload.scss";
 import "swiper/css";
-import "swiper/css/zoom";
 import "swiper/css/effect-cards";
 
 interface UploadFile {
@@ -88,19 +87,16 @@ export default function Upload() {
                 <Swiper
                   effect={"cards"}
                   grabCursor={true}
-                  zoom={true}
-                  modules={[EffectCards, Zoom]}
+                  modules={[EffectCards]}
                   className="preview-swiper flex items-center justify-center w-full h-full"
                 >
                   {images.map((image, index) => (
                     <SwiperSlide key={`preview-swiper-image-${index}`}>
-                      <div className="swiper-zoom-container">
-                        <img
-                          src={image.previewUrl}
-                          alt="Preview Image"
-                          className="w-full h-full"
-                        />
-                      </div>
+                      <img
+                        src={image.previewUrl}
+                        alt="Preview Image"
+                        className="w-full h-full"
+                      />
                     </SwiperSlide>
                   ))}
                 </Swiper>
