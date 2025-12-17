@@ -158,7 +158,7 @@ export default function Upload() {
             </div>
           </div>
 
-          <div className="content w-[48%] h-[95%]">
+          <div className="content w-[48%] h-[95%] flex flex-col items-center justify-start">
             {/* // * Category , Description , Button(Cancel, Save) */}
             <CommonInput type="category" />
             <CommonInput type="description" />
