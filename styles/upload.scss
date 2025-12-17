@@ -46,6 +46,8 @@ div.upload-page {
           width: 100%;
           height: calc(100% - 388px);
           margin-bottom: 10px;
+          overflow: scroll;
+          padding: 0 10px;
         }
 
         div.button-content {
