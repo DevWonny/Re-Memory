@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // * 이미지 업로드 페이지
 // * 가운데 업로드 관련 내용 보여줄 예정.
 // * 업로드 관련 내용 배경은 필름 프레임을 구현해서 작업.
@@ -44,6 +45,14 @@ export default function Upload() {
 
     setImages((prev) => [...prev, ...newImages]);
     e.target.value = "";
+  };
+
+  const onRemoveImage = (image: any) => {
+    const findFile = image.previewUrl;
+    if (!findFile) return;
+
+    const result = images.filter((image) => image.previewUrl !== findFile);
+    setImages(result);
   };
 
   const onOpenInput = () => {
@@ -110,7 +119,12 @@ export default function Upload() {
             <div className="image-list-content">
               {images.length > 0 ? (
                 images.map((img, index) => (
-                  <p key={`image-list-item-${index}`}>{img.file?.name}</p>
+                  <p
+                    key={`image-list-item-${index}`}
+                    onClick={() => onRemoveImage(img)}
+                  >
+                    {img.file?.name}
+                  </p>
                 ))
               ) : (
                 <div className="no-image-list w-full h-full flex items-center justify-center">
