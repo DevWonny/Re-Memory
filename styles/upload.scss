@@ -55,7 +55,23 @@ div.upload-page {
           display: flex;
           flex-direction: column;
           gap: 5px;
+
+          details {
+            .day-picker {
+              width: calc(100% - 10px);
+              position: absolute;
+              background-color: $text-color;
+              border: 1px solid $border-color;
+              padding: 0 20px;
+              display: flex;
+              justify-content: center;
+            }
+            summary::-webkit-details-marker {
+              display: none;
+            }
+          }
         }
+
         div.button-content {
           gap: 30px;
           button {

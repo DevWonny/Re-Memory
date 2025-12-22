@@ -13,12 +13,14 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
+import { DayPicker } from "react-day-picker";
 // components
 import CommonInput from "@/app/components/commonInput";
 // style
 import "@/styles/upload.scss";
 import "swiper/css";
 import "swiper/css/effect-cards";
+import "react-day-picker/style.css";
 
 interface UploadFile {
   file: File;
@@ -29,6 +31,7 @@ export default function Upload() {
   const router = useRouter();
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<UploadFile[]>([]);
+  const [dateRange, setDateRange] = useState<any>();
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +81,10 @@ export default function Upload() {
     setImages([]);
     router.replace("/");
   };
+
+  useEffect(() => {
+    console.log("🚀 ~ Upload ~ dateRange:", dateRange);
+  }, [dateRange]);
 
   return (
     <div className="upload-page flex items-center justify-center w-screen h-screen">
@@ -163,6 +170,21 @@ export default function Upload() {
             <div className="content w-full">
               <p className="label">🚗 여행지</p>
               <CommonInput type="category" />
+            </div>
+
+            <div className="content w-full relative">
+              <details>
+                <summary className="label cursor-pointer list-none">
+                  📆 추억을 만들 날
+                </summary>
+                <DayPicker
+                  className="day-picker"
+                  mode="range"
+                  selected={dateRange}
+                  onSelect={setDateRange}
+                ></DayPicker>
+              </details>
+              <p className="date-range">{dateRange && `${dateRange.from}`}</p>
             </div>
 
             <div className="content w-full">
