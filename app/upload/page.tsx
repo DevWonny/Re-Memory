@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 import { DayPicker } from "react-day-picker";
+import dayjs from "dayjs";
 // components
 import CommonInput from "@/app/components/commonInput";
 // style
@@ -118,7 +119,7 @@ export default function Upload() {
                 </Swiper>
               ) : (
                 <div className="no-preview w-full h-full flex items-center justify-center">
-                  미리보기 없음.
+                  추억을 기록해주세요 🎞️
                 </div>
               )}
             </div>
@@ -182,9 +183,28 @@ export default function Upload() {
                   mode="range"
                   selected={dateRange}
                   onSelect={setDateRange}
+                  footer={
+                    <button
+                      aria-label="완료"
+                      className="selected-button cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.currentTarget
+                          .closest("details")
+                          ?.removeAttribute("open");
+                      }}
+                    >
+                      {dateRange ? "선택완료" : "닫기"}
+                    </button>
+                  }
                 ></DayPicker>
               </details>
-              <p className="date-range">{dateRange && `${dateRange.from}`}</p>
+              <p className="date-range">
+                {dateRange &&
+                  `${dayjs(dateRange.from).format("YYYY-MM-DD")} ~ ${dayjs(
+                    dateRange.to
+                  ).format("YYYY-MM-DD")}`}
+              </p>
             </div>
 
             <div className="content w-full">

@@ -65,10 +65,23 @@ div.upload-page {
               padding: 0 20px;
               display: flex;
               justify-content: center;
+              button.selected-button {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                &:hover {
+                  color: $point-color;
+                  font-weight: 700;
+                }
+              }
             }
             summary::-webkit-details-marker {
               display: none;
             }
+          }
+
+          p.date-range {
+            padding-left: 10px;
           }
         }
 
