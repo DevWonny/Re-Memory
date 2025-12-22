@@ -21,7 +21,7 @@ div.upload-page {
     }
 
     div.contents-container {
-      div.content {
+      div.contents {
         background-color: $text-color;
         color: $sub-color;
         padding-bottom: 10px;
@@ -50,6 +50,12 @@ div.upload-page {
           padding: 0 10px;
         }
 
+        div.content {
+          padding: 0 5px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
         div.button-content {
           gap: 30px;
           button {

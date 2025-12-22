@@ -2,6 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect } from "react";
+// style
+import "@/styles/components/commonInput.scss";
+
+// type
 interface InputType {
   type: string;
 }
@@ -36,9 +40,13 @@ export default function CommonInput({ type }: InputType) {
 
   return (
     // * 카테고리 (여행지)-> 텍스트 입력(30자 내로) / 폴더 설명(100자 내로)
-    <div className="common-input-container">
+    <div
+      className={`common-input-container ${
+        (type === "category" || type === "description") && "w-full"
+      }`}
+    >
       <input
-        className="w-fit"
+        className="w-full"
         type="text"
         placeholder={inputPlaceHolder}
         value={inputValue}

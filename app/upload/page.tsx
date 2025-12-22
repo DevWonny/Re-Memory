@@ -89,7 +89,7 @@ export default function Upload() {
         </div>
 
         <div className="contents-container flex justify-around items-center w-full h-full">
-          <div className="content w-[48%] h-[95%] flex flex-col items-center justify-start">
+          <div className="contents w-[48%] h-[95%] flex flex-col items-center justify-start">
             {/* // * Image Preview */}
             <div className="preview-content">
               {images.length > 0 ? (
@@ -158,10 +158,18 @@ export default function Upload() {
             </div>
           </div>
 
-          <div className="content w-[48%] h-[95%] flex flex-col items-center justify-start">
+          <div className="contents w-[48%] h-[95%] flex flex-col items-center justify-start gap-[20px]">
             {/* // * Category , Description , Button(Cancel, Save) */}
-            <CommonInput type="category" />
-            <CommonInput type="description" />
+            <div className="content w-full">
+              <p className="label">🚗 여행지</p>
+              <CommonInput type="category" />
+            </div>
+
+            <div className="content w-full">
+              <p className="label">📸 추억</p>
+              <CommonInput type="description" />
+            </div>
+
             <div className="button-content flex w-fit">
               <button className="cancel-button" onClick={onCancelClick}>
                 취소

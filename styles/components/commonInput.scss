@@ -1,0 +1,9 @@
+@import "@/styles/globals.scss";
+
+div.common-input-container {
+  input {
+    padding-left: 10px;
+    outline: none;
+    border-bottom: 0.5px solid $border-color;
+  }
+}
