@@ -20,21 +20,23 @@ interface AuthType {
 
 export default function Auth({ type }: AuthType) {
   return (
-    <div className="auth-modal-container fixed flex flex-col">
-      <div className="input-content">
-        <p className="label">ID</p>
-        <CommonInput type="id"></CommonInput>
-      </div>
-      <div className="input-content">
-        <p className="label">PASSWORD</p>
-        <CommonInput type="password"></CommonInput>
-      </div>
-      {type === "register" && (
+    <div className="auth-modal-container fixed flex flex-col items-center justify-between">
+      <div className="input-container flex flex-col w-full">
         <div className="input-content">
-          <p className="label">PASSWORD CHECK</p>
+          <p className="label">ID</p>
+          <CommonInput type="id"></CommonInput>
+        </div>
+        <div className="input-content">
+          <p className="label">PASSWORD</p>
           <CommonInput type="password"></CommonInput>
         </div>
-      )}
+        {type === "register" && (
+          <div className="input-content">
+            <p className="label">PASSWORD CHECK</p>
+            <CommonInput type="password"></CommonInput>
+          </div>
+        )}
+      </div>
 
       <div className="button-content flex items-center">
         <button className="change-button flex-1">

@@ -3,12 +3,15 @@ div.auth-modal-container {
   background-color: #000;
   width: 30%;
   height: 50%;
-  gap: 30px;
   padding: 20px 10px;
   border-radius: 16px;
-  div.input-content {
-    p {
-      margin-bottom: 5px;
+
+  div.input-container {
+    gap: 30px;
+    div.input-content {
+      p {
+        margin-bottom: 5px;
+      }
     }
   }
 
