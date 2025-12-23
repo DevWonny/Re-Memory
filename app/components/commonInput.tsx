@@ -5,6 +5,11 @@ import { useState, useEffect } from "react";
 // style
 import "@/styles/components/commonInput.scss";
 
+// * type === id -> 영어 대소문자 + 숫자만 입력 가능 + 12자리까지 입력 가능
+// * type === password -> 영어 대소문자 + 숫자 + 특수문자 입력 가능 + 20자리까지 입력 가능
+// * type === category -> 30자까지 입력 가능
+// * type === description -> 100자까지 입력 가능
+
 // type
 interface InputType {
   type: string;
@@ -26,6 +31,10 @@ export default function CommonInput({ type }: InputType) {
       setMaxLength(30);
     } else if (type === "description") {
       setMaxLength(100);
+    } else if (type === "id") {
+      setMaxLength(12);
+    } else if (type === "password") {
+      setMaxLength(20);
     }
 
     if (value.length > maxLength) return;
@@ -36,6 +45,9 @@ export default function CommonInput({ type }: InputType) {
     if (type === "category") setInputPlaceHolder("여행지를 입력해주세요");
     else if (type === "description")
       setInputPlaceHolder("여행지에서의 추억을 입력해주세요.");
+    else if (type === "id") setInputPlaceHolder("아이디를 입력해주세요.");
+    else if (type === "password")
+      setInputPlaceHolder("패스워드를 입력해주세요.");
   }, []);
 
   return (

@@ -1,0 +1,34 @@
+@import "@/styles/globals.scss";
+div.auth-modal-container {
+  background-color: #000;
+  width: 30%;
+  height: 50%;
+  gap: 30px;
+  padding: 20px 10px;
+  border-radius: 16px;
+  div.input-content {
+    p {
+      margin-bottom: 5px;
+    }
+  }
+
+  div.button-content {
+    width: 100%;
+    gap: 20px;
+    button {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 0.5px solid $border-color;
+      border-radius: 8px;
+      &:hover {
+        background-color: $point-color;
+        border: 0.5px solid $point-color;
+        color: $bg-color;
+        font-weight: 700;
+      }
+    }
+  }
+}

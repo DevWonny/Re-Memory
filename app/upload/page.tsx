@@ -83,10 +83,6 @@ export default function Upload() {
     router.replace("/");
   };
 
-  useEffect(() => {
-    console.log("🚀 ~ Upload ~ dateRange:", dateRange);
-  }, [dateRange]);
-
   return (
     <div className="upload-page flex items-center justify-center w-screen h-screen">
       <div className="upload-container flex flex-col items-center justify-between w-[70%] h-[70%]">
