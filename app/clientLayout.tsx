@@ -19,7 +19,9 @@ export default function ClientLayout({
 
   return (
     <div className="client-layout w-screen h-screen">
-      {authType && <Auth type={authType} onCloseClick={onAuthClose}></Auth>}
+      <div className={`modal-container ${authType ? "active" : ""}`}>
+        {authType && <Auth type={authType} onCloseClick={onAuthClose}></Auth>}
+      </div>
 
       <div className={`blur-container ${authType ? "disabled" : ""}`}>
         <Header
