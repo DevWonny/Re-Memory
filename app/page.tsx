@@ -2,8 +2,6 @@
 // component
 import CameraBlender from "./components/cameraBlender";
 import Folder from "./components/folder";
-// * Test
-import Auth from "./components/auth";
 // style
 import "@/styles/main.scss";
 
@@ -22,7 +20,6 @@ export default function Main() {
           <Folder key={`test-${index}`} />
         ))}
       </div>
-      <Auth type="register" />
     </div>
   );
 }
