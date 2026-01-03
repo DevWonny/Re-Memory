@@ -16,9 +16,10 @@ import "@/styles/components/auth.scss";
 // type
 interface AuthType {
   type: string;
+  onCloseClick: () => void;
 }
 
-export default function Auth({ type }: AuthType) {
+export default function Auth({ type, onCloseClick }: AuthType) {
   return (
     <div className="auth-modal-container fixed flex flex-col items-center justify-between">
       <div className="input-container flex flex-col w-full">
@@ -47,7 +48,9 @@ export default function Auth({ type }: AuthType) {
           {`${type === "register" ? "회원가입" : "로그인"}`}
         </button>
 
-        <button className="close-button flex-1">닫기</button>
+        <button className="close-button flex-1" onClick={onCloseClick}>
+          닫기
+        </button>
       </div>
     </div>
   );

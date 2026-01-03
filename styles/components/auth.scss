@@ -3,10 +3,13 @@ div.auth-modal-container {
   background-color: #000;
   width: 430px;
   height: 50%;
-  padding: 20px 10px;
+  padding: 50px 30px;
   border-radius: 16px;
-  // * 임시
-  display: none;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  border: 1px solid $border-color;
 
   div.input-container {
     gap: 30px;
