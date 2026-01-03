@@ -1,0 +1,19 @@
+@import "@/styles/globals.scss";
+
+div.header-container {
+  border-bottom: 1px solid $border-color;
+  background-color: $bg-color;
+  height: 50px;
+  padding: 0 50px;
+
+  div.button-container {
+    gap: 30px;
+    button {
+      cursor: pointer;
+      &:hover {
+        color: $point-color;
+        font-weight: 700;
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ export default function ClientLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="client-layout">
+    <div className="client-layout w-screen h-screen">
       <Auth type="register"></Auth>
 
       <Header />
