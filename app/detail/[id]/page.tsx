@@ -6,13 +6,21 @@
 // * 4. 수정, 삭제 버튼 구현. (수정 클릭 시 수정페이지로 이동. 삭제 버튼 클릭시 팝업 띄우기)
 
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+// style
+import "@/styles/detail.scss";
+import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 export default function Detail() {
   const params = useParams();
+  const router = useRouter();
 
   return (
-    <div className="detail-page">
+    <div className="detail-page relative flex items-center justify-center w-full h-full">
+      <button className="back-button w-[24px] h-[24px] cursor-pointer absolute">
+        <ArrowUturnLeftIcon />
+      </button>
+
       <h1>Image Detail Page {params.id}</h1>
     </div>
   );

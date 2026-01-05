@@ -1,0 +1,13 @@
+@import "@/styles/globals.scss";
+
+div.detail-page {
+  border: 1px solid red;
+  padding-top: 50px;
+  button.back-button {
+    right: 50px;
+    top: 60px;
+    &:hover {
+      color: $point-color;
+    }
+  }
+}

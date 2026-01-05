@@ -23,7 +23,7 @@ export default function ClientLayout({
         {authType && <Auth type={authType} onCloseClick={onAuthClose}></Auth>}
       </div>
 
-      <div className={`blur-container ${authType ? "disabled" : ""}`}>
+      <div className={`blur-container ${authType ? "disabled" : ""} h-screen`}>
         <Header
           onRegisterClick={() => onAuthTypeCheck("register")}
           onLoginClick={() => onAuthTypeCheck("login")}

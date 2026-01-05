@@ -5,6 +5,7 @@ div.header-container {
   background-color: $bg-color;
   height: 50px;
   padding: 0 50px;
+  z-index: 2;
 
   div.button-container {
     gap: 30px;
