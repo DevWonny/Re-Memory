@@ -1,13 +1,37 @@
 @import "@/styles/globals.scss";
 
 div.detail-page {
-  border: 1px solid red;
+  // background-color: #fff;
   padding-top: 50px;
   button.back-button {
     right: 50px;
     top: 60px;
     &:hover {
       color: $point-color;
+    }
+  }
+
+  div.button-container {
+    gap: 30px;
+    button {
+      background-color: $bg-color;
+      color: $text-color;
+      width: 200px;
+      height: 50px;
+      border-radius: 8px;
+      // 임시
+      border: 1px solid $border-color;
+      cursor: pointer;
+      &:hover {
+        background-color: $point-color;
+        color: $sub-color;
+      }
+
+      &.remove-button {
+        &:hover {
+          background-color: $danger-color;
+        }
+      }
     }
   }
 }

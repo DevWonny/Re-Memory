@@ -27,7 +27,7 @@ export default function Detail() {
   };
 
   return (
-    <div className="detail-page relative flex items-center justify-center w-full h-full">
+    <div className="detail-page relative flex flex-col items-center justify-center w-full h-full">
       <button
         className="back-button w-[24px] h-[24px] cursor-pointer absolute"
         onClick={onBackClick}
@@ -36,7 +36,7 @@ export default function Detail() {
       </button>
 
       <Swiper
-        className="main-image-container"
+        className="main-image-container w-full"
         pagination={true}
         navigation={true}
         modules={[Navigation, Pagination]}
@@ -66,11 +66,16 @@ export default function Detail() {
         </SwiperSlide>
       </Swiper>
 
-      <div className="all-images-container"></div>
+      <div className="all-images-container w-full">All Image Container</div>
 
-      <div className="folder-description-container"></div>
+      <div className="folder-description-container">
+        Folder Description Container
+      </div>
 
-      <div className="button-container"></div>
+      <div className="button-container flex  w-fit">
+        <button className="modify-button">수정</button>
+        <button className="remove-button">삭제</button>
+      </div>
     </div>
   );
 }
