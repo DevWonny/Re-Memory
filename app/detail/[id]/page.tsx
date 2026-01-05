@@ -27,54 +27,66 @@ export default function Detail() {
   };
 
   return (
-    <div className="detail-page relative flex flex-col items-center justify-center w-full h-full">
-      <button
-        className="back-button w-[24px] h-[24px] cursor-pointer absolute"
-        onClick={onBackClick}
-      >
-        <ArrowUturnLeftIcon />
-      </button>
+    <div className="detail-page w-full h-full flex items-center justify-center">
+      <div className="detail-container w-[70%] h-full flex flex-col items-center justify-center">
+        <div className="perforation">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <p key={`detail-top-perforation-${index}`}></p>
+          ))}
+        </div>
 
-      <Swiper
-        className="main-image-container w-full"
-        pagination={true}
-        navigation={true}
-        modules={[Navigation, Pagination]}
-      >
-        <SwiperSlide>
-          <img
-            src="/photo_1.jpg"
-            alt="Swiper Image 1"
-            className="w-[100px] h-[300px]"
-          />
-        </SwiperSlide>
+        <div className="detail-contents w-full h-full flex flex-col items-center justify-center">
+          <Swiper
+            className="main-image-container w-full"
+            pagination={true}
+            navigation={true}
+            modules={[Navigation, Pagination]}
+          >
+            <SwiperSlide>
+              <img
+                src="/photo_1.jpg"
+                alt="Swiper Image 1"
+                className="w-[100px] h-[300px]"
+              />
+            </SwiperSlide>
 
-        <SwiperSlide>
-          <img
-            src="/photo_2.jpg"
-            alt="Swiper Image 2"
-            className="w-[100px] h-[300px]"
-          />
-        </SwiperSlide>
+            <SwiperSlide>
+              <img
+                src="/photo_2.jpg"
+                alt="Swiper Image 2"
+                className="w-[100px] h-[300px]"
+              />
+            </SwiperSlide>
 
-        <SwiperSlide>
-          <img
-            src="/photo_3.jpg"
-            alt="Swiper Image 3"
-            className="w-[100px] h-[300px]"
-          />
-        </SwiperSlide>
-      </Swiper>
+            <SwiperSlide>
+              <img
+                src="/photo_3.jpg"
+                alt="Swiper Image 3"
+                className="w-[100px] h-[300px]"
+              />
+            </SwiperSlide>
+          </Swiper>
 
-      <div className="all-images-container w-full">All Image Container</div>
+          <div className="all-images-container w-full">All Image Container</div>
 
-      <div className="folder-description-container">
-        Folder Description Container
-      </div>
+          <div className="folder-description-container">
+            Folder Description Container
+          </div>
 
-      <div className="button-container flex  w-fit">
-        <button className="modify-button">수정</button>
-        <button className="remove-button">삭제</button>
+          <div className="button-container flex  w-fit">
+            <button className="back-button" onClick={onBackClick}>
+              돌아가기
+            </button>
+            <button className="modify-button">수정</button>
+            <button className="remove-button">삭제</button>
+          </div>
+        </div>
+
+        <div className="perforation">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <p key={`detail-bot-perforation-${index}`}></p>
+          ))}
+        </div>
       </div>
     </div>
   );
