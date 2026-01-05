@@ -3,7 +3,8 @@ div.main-container {
     padding-top: 50px;
   }
   div.folder-container {
-    overflow: hidden scroll;
+    // overflow: hidden scroll;
+    overflow-x: hidden;
     padding-top: 50px;
   }
 }
