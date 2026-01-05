@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // * 이미지 업로드 페이지
 // * 가운데 업로드 관련 내용 보여줄 예정.
 // * 업로드 관련 내용 배경은 필름 프레임을 구현해서 작업.
@@ -7,7 +6,9 @@
 // *    -> 좌 : 이미지 미리보기(Swiper로 확인 하게) + 파일 추가 및 제거 + 초기화
 // *    -> 우 : 카테고리 입력 + 설명 + 취소 및 저장 버튼
 // * Mobile -> PC에서 좌우로 되어있던 것들을 상하로 Layout 변경
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
+
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";

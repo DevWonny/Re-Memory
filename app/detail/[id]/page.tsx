@@ -5,23 +5,72 @@
 // * 3. 저장시 작성했던 내용들 표출(설명 등)
 // * 4. 수정, 삭제 버튼 구현. (수정 클릭 시 수정페이지로 이동. 삭제 버튼 클릭시 팝업 띄우기)
 
+/* eslint-disable @next/next/no-img-element */
+
 "use client";
 import { useParams, useRouter } from "next/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 // style
 import "@/styles/detail.scss";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 export default function Detail() {
   const params = useParams();
   const router = useRouter();
 
+  const onBackClick = () => {
+    router.push("/");
+  };
+
   return (
     <div className="detail-page relative flex items-center justify-center w-full h-full">
-      <button className="back-button w-[24px] h-[24px] cursor-pointer absolute">
+      <button
+        className="back-button w-[24px] h-[24px] cursor-pointer absolute"
+        onClick={onBackClick}
+      >
         <ArrowUturnLeftIcon />
       </button>
 
-      <h1>Image Detail Page {params.id}</h1>
+      <Swiper
+        className="main-image-container"
+        pagination={true}
+        navigation={true}
+        modules={[Navigation, Pagination]}
+      >
+        <SwiperSlide>
+          <img
+            src="/photo_1.jpg"
+            alt="Swiper Image 1"
+            className="w-[100px] h-[300px]"
+          />
+        </SwiperSlide>
+
+        <SwiperSlide>
+          <img
+            src="/photo_2.jpg"
+            alt="Swiper Image 2"
+            className="w-[100px] h-[300px]"
+          />
+        </SwiperSlide>
+
+        <SwiperSlide>
+          <img
+            src="/photo_3.jpg"
+            alt="Swiper Image 3"
+            className="w-[100px] h-[300px]"
+          />
+        </SwiperSlide>
+      </Swiper>
+
+      <div className="all-images-container"></div>
+
+      <div className="folder-description-container"></div>
+
+      <div className="button-container"></div>
     </div>
   );
 }
