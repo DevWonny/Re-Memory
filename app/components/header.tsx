@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { useRouter, usePathname } from "next/navigation";
 // style
 import "@/styles/components/header.scss";
 
@@ -14,9 +15,22 @@ interface HeaderType {
 }
 
 export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
+  const router = useRouter();
+  const pathName = usePathname();
+
+  const onLogoClick = () => {
+    console.log(pathName);
+    if (pathName === "/") {
+      return;
+    }
+
+    router.push("/");
+  };
   return (
     <div className="header-container flex items-center justify-between w-full fixed">
-      <div className="logo-container">Re-Memory</div>
+      <div className="logo-container cursor-pointer" onClick={onLogoClick}>
+        Re-Memory
+      </div>
       <div className="button-container flex items-center">
         <button onClick={onRegisterClick}>회원가입</button>
         <button onClick={onLoginClick}>로그인</button>
