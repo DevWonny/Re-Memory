@@ -6,9 +6,17 @@
 import Image from "next/image";
 import folder from "@/public/folder.png";
 
-export default function Folder() {
+// interface
+interface FolderType {
+  onFolderClick: () => void;
+}
+
+export default function Folder({ onFolderClick }: FolderType) {
   return (
-    <div className="folder-item w-full h-full  p-[20px] flex items-center justify-center">
+    <div
+      className="folder-item w-full h-full  p-[20px] flex items-center justify-center"
+      onClick={onFolderClick}
+    >
       <Image
         src={folder}
         alt="Folder Image"

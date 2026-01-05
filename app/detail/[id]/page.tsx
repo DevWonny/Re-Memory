@@ -1,3 +1,16 @@
 // * 이미지 확인(모달 형식으로 -> Main에서 폴더 클릭시 폴더가 모달 형식으로 열림.
 // * 이미지 한개가 전체 화면에 뿌려지고 스와이프 기능으로 구현. 아래 Bullet 나오게 할 예정)
 // * + 해당 영역에서 선택 클릭 시 개별 삭제 및 전체 삭제 되도록 구현(전체 삭제시 해당 카테고리 삭제 + 메인 화면에서도 안보이게.) / 카테고리 이름 수정 구현
+"use client";
+import { useParams } from "next/navigation";
+
+export default function Detail() {
+  const params = useParams();
+  console.log(params);
+
+  return (
+    <div className="detail-page">
+      <h1>Image Detail Page {params.id}</h1>
+    </div>
+  );
+}
