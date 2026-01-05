@@ -27,7 +27,7 @@ export default function Detail() {
   };
 
   return (
-    <div className="detail-page w-full h-full flex items-center justify-center">
+    <div className="detail-page  w-full h-full flex items-center justify-center">
       <div className="detail-container w-[70%] h-full flex flex-col items-center justify-center">
         <div className="perforation">
           {Array.from({ length: 24 }).map((_, index) => (
@@ -35,39 +35,35 @@ export default function Detail() {
           ))}
         </div>
 
-        <div className="detail-contents w-full h-full flex flex-col items-center justify-center">
+        <div className="detail-contents w-full h-full flex flex-col items-center justify-between">
           <Swiper
-            className="main-image-container w-full"
+            className="main-image-container"
             pagination={true}
             navigation={true}
             modules={[Navigation, Pagination]}
           >
             <SwiperSlide>
-              <img
-                src="/photo_1.jpg"
-                alt="Swiper Image 1"
-                className="w-[100px] h-[300px]"
-              />
+              <img src="/photo_1.jpg" alt="Swiper Image 1" />
             </SwiperSlide>
 
             <SwiperSlide>
-              <img
-                src="/photo_2.jpg"
-                alt="Swiper Image 2"
-                className="w-[100px] h-[300px]"
-              />
+              <img src="/photo_2.jpg" alt="Swiper Image 2" />
             </SwiperSlide>
 
             <SwiperSlide>
-              <img
-                src="/photo_3.jpg"
-                alt="Swiper Image 3"
-                className="w-[100px] h-[300px]"
-              />
+              <img src="/photo_3.jpg" alt="Swiper Image 3" />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <img src="/folder.png" alt="Swiper Image 4" />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <img src="/test1.png" alt="Swiper Image 5" />
             </SwiperSlide>
           </Swiper>
 
-          <div className="all-images-container w-full">All Image Container</div>
+          <div className="all-images-container"></div>
 
           <div className="folder-description-container">
             Folder Description Container
