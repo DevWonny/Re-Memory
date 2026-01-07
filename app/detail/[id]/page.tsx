@@ -69,19 +69,34 @@ export default function Detail() {
           </Swiper>
 
           <div className="all-images-container flex items-center justify-center ">
-            <div className="image-item" onClick={() => swiper?.slideTo(0)}>
+            <div
+              className={`image-item ${activeSwiperIndex === 0 && "active"}`}
+              onClick={() => swiper?.slideTo(0)}
+            >
               <img src="/photo_1.jpg" alt="Swiper Image 1" />
             </div>
-            <div className="image-item" onClick={() => swiper?.slideTo(1)}>
+            <div
+              className={`image-item ${activeSwiperIndex === 1 && "active"}`}
+              onClick={() => swiper?.slideTo(1)}
+            >
               <img src="/photo_2.jpg" alt="Swiper Image 2" />
             </div>
-            <div className="image-item" onClick={() => swiper?.slideTo(2)}>
+            <div
+              className={`image-item ${activeSwiperIndex === 2 && "active"}`}
+              onClick={() => swiper?.slideTo(2)}
+            >
               <img src="/photo_3.jpg" alt="Swiper Image 3" />
             </div>
-            <div className="image-item" onClick={() => swiper?.slideTo(3)}>
+            <div
+              className={`image-item ${activeSwiperIndex === 3 && "active"}`}
+              onClick={() => swiper?.slideTo(3)}
+            >
               <img src="/folder.png" alt="Swiper Image 4" />
             </div>
-            <div className="image-item" onClick={() => swiper?.slideTo(4)}>
+            <div
+              className={`image-item ${activeSwiperIndex === 4 && "active"}`}
+              onClick={() => swiper?.slideTo(4)}
+            >
               <img src="/test1.png" alt="Swiper Image 5" />
             </div>
           </div>
