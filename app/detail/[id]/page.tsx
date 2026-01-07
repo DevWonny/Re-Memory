@@ -101,8 +101,21 @@ export default function Detail() {
             </div>
           </div>
 
-          <div className="folder-description-container">
-            Folder Description Container
+          <div className="folder-description-container ">
+            <div className="content">
+              <p className="label">🚗 여행지</p>
+              <p>여행지는 여기!</p>
+            </div>
+
+            <div className="content">
+              <p className="label">📆 추억을 만들 날</p>
+              <p>날짜는 여기!</p>
+            </div>
+
+            <div className="content">
+              <p className="label">📸 추억</p>
+              <p>description은 여기!</p>
+            </div>
           </div>
 
           <div className="button-container flex  w-fit">
