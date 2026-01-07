@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // * 폴더 클릭시 이동되는 페이지
 // * 최상단 우측에 뒤로가기 버튼
 // * 1. 선택한 이미지 보기(스와이프 or 좌우 버튼 클릭 시 이전/이후 이미지 보이게) / 처음에 들어오면 저장된 이미지 중 1번이 나오게
@@ -8,6 +9,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 "use client";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -16,11 +18,12 @@ import "@/styles/detail.scss";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 export default function Detail() {
   const params = useParams();
   const router = useRouter();
+  const [swiper, setSwiper] = useState<any>(null);
+  const [activeSwiperIndex, setActiveSwiperIndex] = useState(0);
 
   const onBackClick = () => {
     router.push("/");
@@ -41,6 +44,8 @@ export default function Detail() {
             pagination={true}
             navigation={true}
             modules={[Navigation, Pagination]}
+            onSwiper={setSwiper}
+            onSlideChange={(slide) => setActiveSwiperIndex(slide.activeIndex)}
           >
             <SwiperSlide>
               <img src="/photo_1.jpg" alt="Swiper Image 1" />
@@ -63,7 +68,23 @@ export default function Detail() {
             </SwiperSlide>
           </Swiper>
 
-          <div className="all-images-container"></div>
+          <div className="all-images-container flex items-center justify-center ">
+            <div className="image-item" onClick={() => swiper?.slideTo(0)}>
+              <img src="/photo_1.jpg" alt="Swiper Image 1" />
+            </div>
+            <div className="image-item" onClick={() => swiper?.slideTo(1)}>
+              <img src="/photo_2.jpg" alt="Swiper Image 2" />
+            </div>
+            <div className="image-item" onClick={() => swiper?.slideTo(2)}>
+              <img src="/photo_3.jpg" alt="Swiper Image 3" />
+            </div>
+            <div className="image-item" onClick={() => swiper?.slideTo(3)}>
+              <img src="/folder.png" alt="Swiper Image 4" />
+            </div>
+            <div className="image-item" onClick={() => swiper?.slideTo(4)}>
+              <img src="/test1.png" alt="Swiper Image 5" />
+            </div>
+          </div>
 
           <div className="folder-description-container">
             Folder Description Container
