@@ -10,6 +10,7 @@ div.auth-modal-container {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   border: 1px solid $border-color;
+  gap: 20px;
 
   div.input-container {
     gap: 30px;
@@ -21,20 +22,33 @@ div.auth-modal-container {
   }
 
   div.button-content {
-    width: 100%;
-    gap: 20px;
-    button {
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border: 0.5px solid $border-color;
-      border-radius: 8px;
+    gap: 10px;
+    div.button-container {
+      gap: 20px;
+      button {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 0.5px solid $border-color;
+        border-radius: 8px;
+        &:hover {
+          background-color: $point-color;
+          border: 0.5px solid $point-color;
+          color: $bg-color;
+          font-weight: 700;
+        }
+      }
+    }
+
+    button.change-button {
+      font-size: 12px;
+      height: fit-content;
+      width: fit-content;
+      color: rgba(#eaeaea, 0.7);
       &:hover {
-        background-color: $point-color;
-        border: 0.5px solid $point-color;
-        color: $bg-color;
+        color: $point-color;
         font-weight: 700;
       }
     }

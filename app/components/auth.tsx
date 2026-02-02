@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 // * 로그인 및 회원가입 모달
 // * 해당 컴포넌트 열린 상태에서는 모든 페이지는 활성화 안되도록.
 // * 해당 모달 외 영역 클릭 시 해당 모달 닫힘.
@@ -17,9 +18,14 @@ import "@/styles/components/auth.scss";
 interface AuthType {
   type: string;
   onCloseClick: () => void;
+  onChangeType: (type: string) => void;
 }
 
-export default function Auth({ type, onCloseClick }: AuthType) {
+export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
+  const onChangeTypeClick = (type: string) => {
+    onChangeType(type);
+  };
+
   return (
     <div className="auth-modal-container fixed flex flex-col items-center justify-between">
       <div className="input-container flex flex-col w-full">
@@ -39,17 +45,26 @@ export default function Auth({ type, onCloseClick }: AuthType) {
         )}
       </div>
 
-      <div className="button-content flex items-center">
-        <button className="change-button flex-1">
-          {`${type === "register" ? "로그인" : "회원가입"}`}
-        </button>
+      <div className="button-content w-full flex  flex-col items-center ">
+        <div className="button-container flex items-center w-full">
+          <button className="confirm-button flex-1">
+            {`${type === "register" ? "회원가입" : "로그인"}`}
+          </button>
 
-        <button className="confirm-button flex-1">
-          {`${type === "register" ? "회원가입" : "로그인"}`}
-        </button>
+          <button className="close-button flex-1" onClick={onCloseClick}>
+            닫기
+          </button>
+        </div>
 
-        <button className="close-button flex-1" onClick={onCloseClick}>
-          닫기
+        <button
+          className="change-button flex-1 cursor-pointer"
+          onClick={() => {
+            type === "register"
+              ? onChangeTypeClick("login")
+              : onChangeTypeClick("register");
+          }}
+        >
+          {`${type === "register" ? "로그인" : "회원가입"}으로 이동`}
         </button>
       </div>
     </div>
