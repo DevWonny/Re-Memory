@@ -9,6 +9,7 @@
 // *        -> 하단에 로그인 버튼 + 닫기 버튼 + 회원가입 버튼
 // * 로그인 -> 아이디 / 비밀번호 + 하단에 회원가입 버튼 + 닫기 버튼 + 로그인 버튼
 "use client";
+import { supabase } from "@/lib/supabase";
 // component
 import CommonInput from "./commonInput";
 // style
@@ -24,6 +25,35 @@ interface AuthType {
 export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
+  };
+
+  // 회원가입 및 로그인 로직
+  const onConfirmClick = async (type: string) => {
+    if (type === "register") {
+      // * 현재는 Test, 추후 input 데이터 가져와야 함! 이때 validation도 동시 작업(정규식 활용)
+      // * 닉네임은 email의 앞부분 활용.
+      const { data, error } = await supabase.auth.signUp({
+        email: "cjfdnjs1994@naver.com",
+        password: "597280!@aa",
+      });
+
+      console.log("🚀 ~ onSignup ~ data:", data);
+      console.log("🚀 ~ onSignup ~ error:", error);
+    } else if (type === "login") {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: "cjfdnjs1994@naver.com",
+        password: "597280!@aa",
+      });
+
+      if (error) {
+        alert("이메일 및 비밀번호를 확인해주세요.");
+        console.log("Login Error(auth.tsx) - error.message");
+        return;
+      } else {
+        alert("로그인 성공!");
+        console.log("🚀 ~ onConfirmClick ~ data:", data);
+      }
+    }
   };
 
   return (
@@ -47,7 +77,10 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
 
       <div className="button-content w-full flex  flex-col items-center ">
         <div className="button-container flex items-center w-full">
-          <button className="confirm-button flex-1">
+          <button
+            className="confirm-button flex-1"
+            onClick={() => onConfirmClick(type)}
+          >
             {`${type === "register" ? "회원가입" : "로그인"}`}
           </button>
 
