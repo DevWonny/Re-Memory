@@ -18,6 +18,11 @@ div.auth-modal-container {
       p {
         margin-bottom: 5px;
       }
+      input {
+        padding-left: 10px;
+        outline: none;
+        border-bottom: 0.5px solid $border-color;
+      }
     }
   }
 

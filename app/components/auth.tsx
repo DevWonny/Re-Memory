@@ -9,9 +9,8 @@
 // *        -> 하단에 로그인 버튼 + 닫기 버튼 + 회원가입 버튼
 // * 로그인 -> 아이디 / 비밀번호 + 하단에 회원가입 버튼 + 닫기 버튼 + 로그인 버튼
 "use client";
+import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-// component
-import CommonInput from "./commonInput";
 // style
 import "@/styles/components/auth.scss";
 
@@ -23,31 +22,44 @@ interface AuthType {
 }
 
 export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
+  const [idValue, setIdValue] = useState("");
+  const [pwValue, setPwValue] = useState("");
+  const [pwCheck, setPwCheck] = useState("");
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
   };
 
   // 회원가입 및 로그인 로직
   const onConfirmClick = async (type: string) => {
+    if (type === "login" && (!idValue || !pwValue)) {
+      alert("아이디 및 비밀번호를 입력해주세요.");
+      return;
+    }
+    if (type === "register" && (!idValue || !pwValue || !pwCheck)) {
+      alert("아이디 및 비밀번호를 입력해주세요.");
+      return;
+    }
+
     if (type === "register") {
       // * 현재는 Test, 추후 input 데이터 가져와야 함! 이때 validation도 동시 작업(정규식 활용)
       // * 닉네임은 email의 앞부분 활용.
       const { data, error } = await supabase.auth.signUp({
-        email: "cjfdnjs1994@naver.com",
-        password: "597280!@aa",
+        email: idValue,
+        password: pwValue,
       });
-
-      console.log("🚀 ~ onSignup ~ data:", data);
-      console.log("🚀 ~ onSignup ~ error:", error);
+      if (error) {
+        console.log("Auth Register Error - ", error);
+        return;
+      }
     } else if (type === "login") {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: "cjfdnjs1994@naver.com",
-        password: "597280!@aa",
+        email: idValue,
+        password: pwValue,
       });
 
       if (error) {
         alert("이메일 및 비밀번호를 확인해주세요.");
-        console.log("Login Error(auth.tsx) - error.message");
+        console.log(`Login Error(auth.tsx) - `, error.message);
         return;
       } else {
         alert("로그인 성공!");
@@ -61,16 +73,35 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
       <div className="input-container flex flex-col w-full">
         <div className="input-content">
           <p className="label">ID</p>
-          <CommonInput type="id"></CommonInput>
+          <input
+            className="w-full auth-input"
+            type="text"
+            placeholder={`아이디를 입력해주세요.`}
+            value={idValue}
+            onChange={(e) => setIdValue(e.target.value)}
+          />
         </div>
+
         <div className="input-content">
           <p className="label">PASSWORD</p>
-          <CommonInput type="password"></CommonInput>
+          <input
+            className="w-full auth-input"
+            type="text"
+            placeholder={`패스워드를 입력해주세요.`}
+            value={pwValue}
+            onChange={(e) => setPwValue(e.target.value)}
+          />
         </div>
         {type === "register" && (
           <div className="input-content">
             <p className="label">PASSWORD CHECK</p>
-            <CommonInput type="password"></CommonInput>
+            <input
+              className="w-full auth-input"
+              type="text"
+              placeholder={`패스워드를 한번 더 입력해주세요.`}
+              value={pwCheck}
+              onChange={(e) => setPwCheck(e.target.value)}
+            />
           </div>
         )}
       </div>

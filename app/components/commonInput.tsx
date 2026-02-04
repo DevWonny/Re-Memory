@@ -13,8 +13,9 @@ import "@/styles/components/commonInput.scss";
 // type
 interface InputType {
   type: string;
+  onTyping?: (value: string, type: string) => void;
 }
-export default function CommonInput({ type }: InputType) {
+export default function CommonInput({ type, onTyping }: InputType) {
   const [inputValue, setInputValue] = useState("");
   const [inputPlaceHolder, setInputPlaceHolder] = useState("");
   const [isComposing, setIsComposing] = useState(false);
@@ -31,15 +32,24 @@ export default function CommonInput({ type }: InputType) {
       setMaxLength(30);
     } else if (type === "description") {
       setMaxLength(100);
-    } else if (type === "id") {
-      setMaxLength(12);
-    } else if (type === "password") {
-      setMaxLength(20);
+    } else {
+      setMaxLength(500);
     }
+    // else if (type === "id") {
+    //   setMaxLength(12);
+    // } else if (type === "password") {
+    //   setMaxLength(20);
+    // }
 
     if (value.length > maxLength) return;
     setInputValue(value);
   };
+
+  useEffect(() => {
+    if (onTyping) {
+      onTyping(inputValue, type);
+    }
+  }, [inputValue]);
 
   useEffect(() => {
     if (type === "category") setInputPlaceHolder("여행지를 입력해주세요");
