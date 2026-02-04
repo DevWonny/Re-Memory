@@ -29,7 +29,7 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
   return (
     <div className="header-container flex items-center justify-between w-full fixed">
       <div className="logo-container cursor-pointer" onClick={onLogoClick}>
-        Re-Memory
+        Re:Memory
       </div>
       <div className="button-container flex items-center">
         <button onClick={onRegisterClick}>회원가입</button>

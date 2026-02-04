@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 // style
 import "@/styles/components/commonInput.scss";
 
-// * type === id -> 영어 대소문자 + 숫자만 입력 가능 + 12자리까지 입력 가능
+// * type === id -> 영어 대소문자 + 숫자만 입력 가능 + 12자리까지 입력 가능 => 이메일로 변경....(26.2.2)
 // * type === password -> 영어 대소문자 + 숫자 + 특수문자 입력 가능 + 20자리까지 입력 가능
 // * type === category -> 30자까지 입력 가능
 // * type === description -> 100자까지 입력 가능
