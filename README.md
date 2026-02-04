@@ -18,7 +18,7 @@
 ### Tech Stack
 
 - Frontend : Next.js, Typescript, Tailwind CSS, SCSS, Zustand, Swiper.js, Three.js
-- Backend : Firebase Auth, Firestore,
+- Backend : Supabase
 - Hosting : Vercel
 
 ### Color Palette
