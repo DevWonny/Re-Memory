@@ -27,22 +27,23 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
   const [pwCheck, setPwCheck] = useState("");
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
+    setIdValue("");
+    setPwValue("");
+    setPwCheck("");
   };
 
   // 회원가입 및 로그인 로직
   const onConfirmClick = async (type: string) => {
-    if (type === "login" && (!idValue || !pwValue)) {
-      alert("아이디 및 비밀번호를 입력해주세요.");
-      return;
-    }
-    if (type === "register" && (!idValue || !pwValue || !pwCheck)) {
-      alert("아이디 및 비밀번호를 입력해주세요.");
-      return;
-    }
-
     if (type === "register") {
-      // * 현재는 Test, 추후 input 데이터 가져와야 함! 이때 validation도 동시 작업(정규식 활용)
       // * 닉네임은 email의 앞부분 활용.
+      if (!idValue || !pwValue || !pwCheck) {
+        alert("아이디 및 비밀번호를 입력해주세요.");
+        return;
+      }
+      if (pwValue && pwCheck && pwValue !== pwCheck) {
+        alert("비밀번호를 확인해주세요.");
+        return;
+      }
       const { data, error } = await supabase.auth.signUp({
         email: idValue,
         password: pwValue,
@@ -52,6 +53,10 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         return;
       }
     } else if (type === "login") {
+      if (!idValue || !pwValue) {
+        alert("아이디 및 비밀번호를 입력해주세요.");
+        return;
+      }
       const { data, error } = await supabase.auth.signInWithPassword({
         email: idValue,
         password: pwValue,
