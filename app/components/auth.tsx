@@ -48,13 +48,17 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         alert("비밀번호를 확인해주세요.");
         return;
       }
-      const { data, error } = await supabase.auth.signUp({
+
+      const { error } = await supabase.auth.signUp({
         email: idValue,
         password: pwValue,
       });
       if (error) {
         console.log("Auth Register Error - ", error);
         return;
+      } else {
+        alert("회원가입 성공!");
+        onCloseClick();
       }
     } else if (type === "login") {
       if (!idValue || !pwValue) {
@@ -73,6 +77,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
       } else {
         alert("로그인 성공!");
         setSession(data);
+        onCloseClick();
       }
     }
   };
