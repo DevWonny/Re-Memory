@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+// store
 import { useAuth } from "@/store/auth";
 // style
 import "@/styles/components/header.scss";
@@ -17,9 +19,10 @@ interface HeaderType {
 }
 
 export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
+  const [name, setName] = useState("");
   const router = useRouter();
   const pathName = usePathname();
-  const { session } = useAuth();
+  const { session, setSession } = useAuth();
 
   const onLogoClick = () => {
     console.log(pathName);
@@ -30,9 +33,16 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
     router.push("/");
   };
 
-  useEffect(() => {
-    console.log("🚀 ~ Header ~ session:", session);
-  }, [session]);
+  const onLogoutClick = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log("Logout Fail! - ", error.message);
+      return;
+    }
+
+    router.replace("/");
+    setSession(null);
+  };
 
   return (
     <div className="header-container flex items-center justify-between w-full fixed">
@@ -40,10 +50,17 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
         Re:Memory
       </div>
       <div className="button-container flex items-center">
-        <button onClick={onRegisterClick}>회원가입</button>
-        <button onClick={onLoginClick}>로그인</button>
-        {/* <p className="user-email cursor-default">cjfdnjs1994@naver.com</p>
-        <button>로그아웃</button> */}
+        {session ? (
+          <>
+            <p className="user-email cursor-default">cjfdnjs1994@naver.com</p>
+            <button onClick={onLogoutClick}>로그아웃</button>
+          </>
+        ) : (
+          <>
+            <button onClick={onRegisterClick}>회원가입</button>
+            <button onClick={onLoginClick}>로그인</button>
+          </>
+        )}
       </div>
     </div>
   );
