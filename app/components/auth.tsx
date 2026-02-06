@@ -11,6 +11,8 @@
 "use client";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+// store
+import { useAuth } from "@/store/auth";
 // style
 import "@/styles/components/auth.scss";
 
@@ -25,6 +27,8 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
   const [idValue, setIdValue] = useState("");
   const [pwValue, setPwValue] = useState("");
   const [pwCheck, setPwCheck] = useState("");
+  const { setSession } = useAuth();
+
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
     setIdValue("");
@@ -68,7 +72,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         return;
       } else {
         alert("로그인 성공!");
-        console.log("🚀 ~ onConfirmClick ~ data:", data);
+        setSession(data);
       }
     }
   };

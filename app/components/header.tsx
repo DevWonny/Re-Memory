@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useAuth } from "@/store/auth";
 // style
 import "@/styles/components/header.scss";
 
@@ -17,6 +19,7 @@ interface HeaderType {
 export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
   const router = useRouter();
   const pathName = usePathname();
+  const { session } = useAuth();
 
   const onLogoClick = () => {
     console.log(pathName);
@@ -26,6 +29,11 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
 
     router.push("/");
   };
+
+  useEffect(() => {
+    console.log("🚀 ~ Header ~ session:", session);
+  }, [session]);
+
   return (
     <div className="header-container flex items-center justify-between w-full fixed">
       <div className="logo-container cursor-pointer" onClick={onLogoClick}>
