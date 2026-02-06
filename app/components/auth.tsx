@@ -48,10 +48,16 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         alert("비밀번호를 확인해주세요.");
         return;
       }
+      const displayName = idValue.split("@")[0];
 
       const { error } = await supabase.auth.signUp({
         email: idValue,
         password: pwValue,
+        options: {
+          data: {
+            displayName,
+          },
+        },
       });
       if (error) {
         console.log("Auth Register Error - ", error);
@@ -65,6 +71,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         alert("아이디 및 비밀번호를 입력해주세요.");
         return;
       }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: idValue,
         password: pwValue,

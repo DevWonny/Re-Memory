@@ -19,7 +19,6 @@ interface HeaderType {
 }
 
 export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
-  const [name, setName] = useState("");
   const router = useRouter();
   const pathName = usePathname();
   const { session, setSession } = useAuth();
@@ -52,7 +51,9 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
       <div className="button-container flex items-center">
         {session ? (
           <>
-            <p className="user-email cursor-default">cjfdnjs1994@naver.com</p>
+            <p className="user-email cursor-default">
+              {session.user.user_metadata.displayName}
+            </p>
             <button onClick={onLogoutClick}>로그아웃</button>
           </>
         ) : (
