@@ -35,11 +35,6 @@ export default function CommonInput({ type, onTyping }: InputType) {
     } else {
       setMaxLength(500);
     }
-    // else if (type === "id") {
-    //   setMaxLength(12);
-    // } else if (type === "password") {
-    //   setMaxLength(20);
-    // }
 
     if (value.length > maxLength) return;
     setInputValue(value);

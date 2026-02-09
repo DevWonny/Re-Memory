@@ -18,6 +18,10 @@ import { DayPicker } from "react-day-picker";
 import dayjs from "dayjs";
 // components
 import CommonInput from "@/app/components/commonInput";
+// store
+import { useAuth } from "@/store/auth";
+// service
+import { uploadImage } from "@/services/upload";
 // style
 import "@/styles/upload.scss";
 import "swiper/css";
@@ -34,6 +38,9 @@ export default function Upload() {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<UploadFile[]>([]);
   const [dateRange, setDateRange] = useState<any>();
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const { session } = useAuth();
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +89,22 @@ export default function Upload() {
   const onCancelClick = () => {
     setImages([]);
     router.replace("/");
+  };
+
+  const onTypingInput = (value: string, type: string) => {
+    if (type === "category") {
+      setCategory(value);
+    } else if (type === "description") {
+      setDescription(value);
+    }
+  };
+
+  const onSaveClick = () => {
+    if (!session) {
+      console.log("Upload Page Error! - onSaveClick");
+      return;
+    }
+    uploadImage(session.user.id, images, dateRange, category, description);
   };
 
   return (
@@ -167,7 +190,10 @@ export default function Upload() {
             {/* // * Category , Description , Button(Cancel, Save) */}
             <div className="content w-full">
               <p className="label">🚗 여행지</p>
-              <CommonInput type="category" />
+              <CommonInput
+                type="category"
+                onTyping={(value, type) => onTypingInput(value, type)}
+              />
             </div>
 
             <div className="content w-full relative">
@@ -199,21 +225,26 @@ export default function Upload() {
               <p className="date-range">
                 {dateRange &&
                   `${dayjs(dateRange.from).format("YYYY-MM-DD")} ~ ${dayjs(
-                    dateRange.to
+                    dateRange.to,
                   ).format("YYYY-MM-DD")}`}
               </p>
             </div>
 
             <div className="content w-full">
               <p className="label">📸 추억</p>
-              <CommonInput type="description" />
+              <CommonInput
+                type="description"
+                onTyping={(value, type) => onTypingInput(value, type)}
+              />
             </div>
 
             <div className="button-content flex w-fit">
               <button className="cancel-button" onClick={onCancelClick}>
                 취소
               </button>
-              <button className="save-button">저장</button>
+              <button className="save-button" onClick={onSaveClick}>
+                저장
+              </button>
             </div>
           </div>
         </div>

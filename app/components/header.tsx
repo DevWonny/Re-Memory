@@ -8,10 +8,6 @@ import { useAuth } from "@/store/auth";
 // style
 import "@/styles/components/header.scss";
 
-// * login / register / logout button
-// * 로그인시 유저 이메일 + logout 버튼 표출
-// * 비로그인시 login + register 버튼 표출
-
 // interface
 interface HeaderType {
   onLoginClick?: (e: any) => void;
