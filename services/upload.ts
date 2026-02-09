@@ -9,24 +9,11 @@ interface UploadFile {
   previewUrl: string
 }
 
-interface ImageDB {
-  path: string,
-  preview_url: string,
-  name: string,
-  size: number,
-  type: string
-}
-
 export const uploadImage = async (userId: string, images: UploadFile[], dateRange: any, category: string, description: string) => {
-  console.log("🚀 ~ addImage ~ userId:", userId)
-  console.log("🚀 ~ addImage ~ description:", description)
-  console.log("🚀 ~ addImage ~ category:", category)
-  console.log("🚀 ~ addImage ~ dateRange:", dateRange)
-  console.log("🚀 ~ addImage ~ images:", images)
 
-  const uploadImageToStorage = await Promise.all(
+  // * Image Upload 및 DB용 변환
+  const imageDBList = await Promise.all(
     images.map(async ({ file }) => {
-      console.log("🚀 ~ uploadImage ~ file:", file)
       const path = `${crypto.randomUUID()}-${file.name}`
 
       const { error } = await supabase.storage.from('images').upload(path, file);
@@ -42,6 +29,19 @@ export const uploadImage = async (userId: string, images: UploadFile[], dateRang
         path, url: data.publicUrl, name: file.name, size: file.size, type: file.type
       }
     })
-  )
+  );
 
+  const { error } = await supabase.from('folder').insert({
+    user_id: userId,
+    description,
+    category,
+    date_from: dateRange.from,
+    date_to: dateRange.to,
+    images: imageDBList,
+  })
+
+  if (error) {
+    console.log('Upload Error')
+    throw error;
+  }
 }

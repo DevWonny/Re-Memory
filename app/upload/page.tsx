@@ -99,12 +99,18 @@ export default function Upload() {
     }
   };
 
-  const onSaveClick = () => {
+  const onSaveClick = async () => {
     if (!session) {
       console.log("Upload Page Error! - onSaveClick");
       return;
     }
-    uploadImage(session.user.id, images, dateRange, category, description);
+    await uploadImage(
+      session.user.id,
+      images,
+      dateRange,
+      category,
+      description,
+    );
   };
 
   return (
