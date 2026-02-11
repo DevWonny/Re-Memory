@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import CameraBlender from "./components/cameraBlender";
 import Folder from "./components/folder";
 // service
-import { detailItem } from "@/services/detail";
+import { fetchFolderList } from "@/services/detail";
 // store
 import { useAuth } from "@/store/auth";
 // style
@@ -17,7 +17,7 @@ import "@/styles/main.scss";
 export default function Main() {
   const router = useRouter();
   const [folderList, setFolderList] = useState<any>([]);
-  const { session } = useAuth();
+  const session = useAuth((state) => state.session);
 
   useEffect(() => {
     if (!session) {
@@ -25,7 +25,7 @@ export default function Main() {
     }
 
     const onFetchFolderList = async () => {
-      const fetchData = await detailItem(session.user.id);
+      const fetchData = await fetchFolderList(session.user.id);
       if (fetchData && fetchData.length > 0) {
         setFolderList(fetchData);
       } else {
@@ -49,10 +49,11 @@ export default function Main() {
       {/* 무한 스크롤 사용 예정 */}
       <div className="folder-container md:w-[50%] h-screen grid  auto-rows-[140px] grid-cols-3 sm:grid-cols-3 max-sm:grid-cols-3 sm:w-full ">
         {folderList.length > 0 ? (
-          folderList.map((folder: any, index: number) => (
+          folderList.map((folder: any) => (
+            // * Folder 데이터로 표출할수 있는 부분 수정 필요
             <Folder
-              key={`folder-icon-${index}`}
-              onFolderClick={() => router.push(`/detail/${index}`)}
+              key={`folder-icon-${folder.id}`}
+              onFolderClick={() => router.push(`/detail/${folder.id}`)}
             />
           ))
         ) : (

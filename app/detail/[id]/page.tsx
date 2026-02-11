@@ -13,6 +13,8 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+// service
+// store
 // style
 import "@/styles/detail.scss";
 import "swiper/css";

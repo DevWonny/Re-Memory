@@ -11,7 +11,7 @@ export default function ClientLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const [authType, setAuthType] = useState("");
-  const { session, setSession } = useAuth();
+  const setSession = useAuth((state) => state.setSession);
 
   const onAuthTypeCheck = (type: string) => {
     setAuthType(type);
