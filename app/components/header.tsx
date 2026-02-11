@@ -17,10 +17,8 @@ interface HeaderType {
 export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
   const router = useRouter();
   const pathName = usePathname();
-  const { setSession, session } = useAuth((state) => ({
-    setSession: state.setSession,
-    session: state.session,
-  }));
+  const session = useAuth((state) => state.session);
+  const setSession = useAuth((state) => state.setSession);
 
   const onLogoClick = () => {
     console.log(pathName);
