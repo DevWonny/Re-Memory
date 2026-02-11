@@ -1,35 +1,75 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 // * 폴더 클릭시 이동되는 페이지
 // * 최상단 우측에 뒤로가기 버튼
 // * 1. 선택한 이미지 보기(스와이프 or 좌우 버튼 클릭 시 이전/이후 이미지 보이게) / 처음에 들어오면 저장된 이미지 중 1번이 나오게
 // * 2. 해당 카테고리에 저장된 이미지 작게 해서 모든 이미지 표출(선택된 이미지는 border 처리)
 // * 3. 저장시 작성했던 내용들 표출(설명 등)
 // * 4. 수정, 삭제 버튼 구현. (수정 클릭 시 수정페이지로 이동. 삭제 버튼 클릭시 팝업 띄우기)
-
-/* eslint-disable @next/next/no-img-element */
+// ! 로그인 안된 상태에서 url로 들어오는것 방지해야함.
 
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 // service
+import { fetchDetail } from "@/services/detail";
 // store
+import { useAuth } from "@/store/auth";
 // style
 import "@/styles/detail.scss";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+// interface
+interface DetailDataType {
+  category: string;
+  date_from: string;
+  date_to: string;
+  description: string;
+  images: DetailImageType[];
+  user_id: string;
+  id: string;
+  create_at: string;
+}
+
+interface DetailImageType {
+  name: string;
+  path: string;
+  size: number;
+  type: string;
+  url: string;
+}
+
 export default function Detail() {
   const params = useParams();
+
   const router = useRouter();
+  const session = useAuth((state) => state.session);
   const [swiper, setSwiper] = useState<any>(null);
   const [activeSwiperIndex, setActiveSwiperIndex] = useState(0);
+  const [detailData, setDetailData] = useState<DetailDataType | null>(null);
+  const [detailImage, setDetailImage] = useState<DetailImageType[]>([]);
 
   const onBackClick = () => {
     router.push("/");
   };
+
+  useEffect(() => {
+    if (session) {
+      const onFetchDetail = async () => {
+        const data = await fetchDetail(session.user.id, params.id as string);
+        console.log("🚀 ~ onFetchDetail ~ data:", data);
+        if (data && data.length > 0) {
+          setDetailData(data[0]);
+          setDetailImage(data[0].images);
+        }
+      };
+      onFetchDetail();
+    }
+  }, [session, params]);
 
   return (
     <div className="detail-page  w-full h-full flex items-center justify-center">
@@ -49,74 +89,39 @@ export default function Detail() {
             onSwiper={setSwiper}
             onSlideChange={(slide) => setActiveSwiperIndex(slide.activeIndex)}
           >
-            <SwiperSlide>
-              <img src="/photo_1.jpg" alt="Swiper Image 1" />
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <img src="/photo_2.jpg" alt="Swiper Image 2" />
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <img src="/photo_3.jpg" alt="Swiper Image 3" />
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <img src="/folder.png" alt="Swiper Image 4" />
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <img src="/test1.png" alt="Swiper Image 5" />
-            </SwiperSlide>
+            {detailImage.map((item, index) => (
+              <SwiperSlide key={`detail-image-swiper-slide-${index}`}>
+                <img src={`${item.url}`} alt="Detail Image" />
+              </SwiperSlide>
+            ))}
           </Swiper>
 
           <div className="all-images-container flex items-center justify-center ">
-            <div
-              className={`image-item ${activeSwiperIndex === 0 && "active"}`}
-              onClick={() => swiper?.slideTo(0)}
-            >
-              <img src="/photo_1.jpg" alt="Swiper Image 1" />
-            </div>
-            <div
-              className={`image-item ${activeSwiperIndex === 1 && "active"}`}
-              onClick={() => swiper?.slideTo(1)}
-            >
-              <img src="/photo_2.jpg" alt="Swiper Image 2" />
-            </div>
-            <div
-              className={`image-item ${activeSwiperIndex === 2 && "active"}`}
-              onClick={() => swiper?.slideTo(2)}
-            >
-              <img src="/photo_3.jpg" alt="Swiper Image 3" />
-            </div>
-            <div
-              className={`image-item ${activeSwiperIndex === 3 && "active"}`}
-              onClick={() => swiper?.slideTo(3)}
-            >
-              <img src="/folder.png" alt="Swiper Image 4" />
-            </div>
-            <div
-              className={`image-item ${activeSwiperIndex === 4 && "active"}`}
-              onClick={() => swiper?.slideTo(4)}
-            >
-              <img src="/test1.png" alt="Swiper Image 5" />
-            </div>
+            {detailImage.map((item, index) => (
+              <div
+                key={`all-images-item-${index}`}
+                className={`image-item ${activeSwiperIndex === 0 && "active"}`}
+                onClick={() => swiper?.slideTo(0)}
+              >
+                <img src={`${item.url}`} alt="All Detail Image" />
+              </div>
+            ))}
           </div>
 
           <div className="folder-description-container ">
             <div className="content">
               <p className="label">🚗 여행지</p>
-              <p>여행지는 여기!</p>
+              <p>{detailData?.category}</p>
             </div>
 
             <div className="content">
               <p className="label">📆 추억을 만들 날</p>
-              <p>날짜는 여기!</p>
+              <p>{`${detailData?.date_from} ~ ${detailData?.date_to}`}</p>
             </div>
 
             <div className="content">
               <p className="label">📸 추억</p>
-              <p>description은 여기!</p>
+              <p>{detailData?.description}</p>
             </div>
           </div>
 

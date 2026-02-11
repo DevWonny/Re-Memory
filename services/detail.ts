@@ -11,8 +11,9 @@ export const fetchFolderList = async (userId: string) => {
 }
 
 // * Detail에서 표출될 데이터 호출
-export const fetchDetail = async (userId: string) => {
-  const { data, error } = await supabase.from('folder').select('*').eq('user_id', userId);
+// * id -> 게시물 ID
+export const fetchDetail = async (userId: string, id: string) => {
+  const { data, error } = await supabase.from('folder').select('*').eq('user_id', userId).eq('id', id);
   if (error) {
     console.log('Fetch Detail Error - ', error);
     return;
