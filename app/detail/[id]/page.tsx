@@ -17,6 +17,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import { fetchDetail } from "@/services/detail";
 // store
 import { useAuth } from "@/store/auth";
+import { useDetail } from "@/store/detail";
 // style
 import "@/styles/detail.scss";
 import "swiper/css";
@@ -45,9 +46,10 @@ interface DetailImageType {
 
 export default function Detail() {
   const params = useParams();
-
   const router = useRouter();
   const session = useAuth((state) => state.session);
+  const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
+  const setStoreDetailImage = useDetail((state) => state.setStoreDetailImage);
   const [swiper, setSwiper] = useState<any>(null);
   const [activeSwiperIndex, setActiveSwiperIndex] = useState(0);
   const [detailData, setDetailData] = useState<DetailDataType | null>(null);
@@ -55,6 +57,16 @@ export default function Detail() {
 
   const onBackClick = () => {
     router.push("/");
+  };
+
+  const onModifyClick = () => {
+    if (detailData && detailImage) {
+      setStoreDetailData(detailData);
+      setStoreDetailImage(detailImage);
+    }
+
+    // * 일단 뒤로가기 방지
+    router.replace(`/modify/${params.id}`);
   };
 
   useEffect(() => {
@@ -70,6 +82,12 @@ export default function Detail() {
       onFetchDetail();
     }
   }, [session, params]);
+
+  useEffect(() => {
+    // * 추후 확인 필요
+    setStoreDetailData(null);
+    setStoreDetailImage([]);
+  }, []);
 
   return (
     <div className="detail-page  w-full h-full flex items-center justify-center">
@@ -129,7 +147,9 @@ export default function Detail() {
             <button className="back-button" onClick={onBackClick}>
               돌아가기
             </button>
-            <button className="modify-button">수정</button>
+            <button className="modify-button" onClick={onModifyClick}>
+              수정
+            </button>
             <button className="remove-button">삭제</button>
           </div>
         </div>
