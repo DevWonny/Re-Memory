@@ -30,11 +30,11 @@ interface UploadFile {
 
 export default function Upload() {
   const router = useRouter();
+  const storeDetailData = useDetail((state) => state.storeDetailData);
+  const storeDetailImage = useDetail((state) => state.storeDetailImage);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<UploadFile[]>([]);
   const { session } = useAuth();
-  const storeDetailData = useDetail((state) => state.storeDetailData);
-  const storeDetailImage = useDetail((state) => state.storeDetailImage);
   const [category, setCategory] = useState(storeDetailData?.category);
   const [description, setDescription] = useState(storeDetailData?.description);
   const [dateRange, setDateRange] = useState<any>(() => {
@@ -87,9 +87,9 @@ export default function Upload() {
     // }
   };
 
-  const onCancelClick = () => {
+  const onBackClick = () => {
     setImages([]);
-    router.replace("/");
+    router.back();
   };
 
   const onSaveClick = async () => {
@@ -240,8 +240,8 @@ export default function Upload() {
             </div>
 
             <div className="button-content flex w-fit">
-              <button className="cancel-button" onClick={onCancelClick}>
-                취소
+              <button className="back-button" onClick={onBackClick}>
+                돌아가기
               </button>
               <button className="save-button" onClick={onSaveClick}>
                 저장

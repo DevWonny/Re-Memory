@@ -67,7 +67,6 @@ export default function Detail() {
     //   setStoreDetailImage(detailImage);
     // }
 
-    // * 일단 뒤로가기 방지
     router.push(`/modify/${params.id}`);
   };
 
