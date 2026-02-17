@@ -1,27 +1,17 @@
 @import "@/styles/globals.scss";
 
 div.modify-page {
-  padding-top: 50px;
-  button.back-button {
-    right: 50px;
-    top: 60px;
-    &:hover {
-      color: $point-color;
-    }
-  }
-
+  background-color: $sub-color;
   div.modify-container {
     background-color: #000;
     padding: 20px 10px;
     border-radius: 8px;
-    gap: 20px;
     div.perforation {
       width: 100%;
       height: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       p {
         width: 12px;
         height: 20px;
@@ -30,70 +20,83 @@ div.modify-page {
       }
     }
 
-    div.modify-contents {
-      background-color: $text-color;
-      border-radius: 8px;
-      overflow: hidden;
-      padding: 10px 0;
-
-      div.main-image-container {
-        width: 1000px;
-        div.swiper-slide {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        img {
-          width: fit-content;
-          height: 400px;
-          max-height: 400px;
-        }
-      }
-
-      div.all-images-container {
-        height: 50px;
-        div.image-item {
-          width: 50px;
-          height: 50px;
-          cursor: pointer;
-          &.active {
-            border: 1px solid $point-color;
-          }
-          img {
-            width: 100%;
-            height: 100%;
-          }
-        }
-      }
-
-      div.folder-description-container {
-        width: 1000px;
-        height: 200px;
+    div.contents-container {
+      div.contents {
+        background-color: $text-color;
         color: $sub-color;
-        border-radius: 8px;
-        box-shadow: 1px 2px 3px 0px rgba(#0f0f0f, 0.7);
-        padding: 5px;
-      }
+        padding-bottom: 10px;
 
-      div.button-container {
-        gap: 30px;
-        button {
-          background-color: $bg-color;
-          color: $text-color;
-          width: 200px;
-          height: 50px;
-          border-radius: 8px;
-          // 임시
-          border: 1px solid $border-color;
-          cursor: pointer;
-          &:hover {
-            background-color: $point-color;
-            color: $sub-color;
+        div.preview-content {
+          width: 100%;
+          height: 328px;
+          overflow: hidden;
+          border-bottom: 0.5px solid #000;
+          .swiper-slide {
+            padding: 30px;
+            img {
+              object-fit: contain;
+            }
+          }
+          .swiper-slide-shadow {
+            background-color: unset;
+          }
+        }
+
+        div.image-list-content {
+          width: 100%;
+          height: calc(100% - 388px);
+          margin-bottom: 10px;
+          overflow: scroll;
+          padding: 0 10px;
+        }
+
+        div.content {
+          padding: 0 5px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+
+          details {
+            .day-picker {
+              width: calc(100% - 10px);
+              position: absolute;
+              background-color: $text-color;
+              border: 1px solid $border-color;
+              padding: 0 20px;
+              display: flex;
+              justify-content: center;
+              button.selected-button {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                &:hover {
+                  color: $point-color;
+                  font-weight: 700;
+                }
+              }
+            }
+            summary::-webkit-details-marker {
+              display: none;
+            }
           }
 
-          &.remove-button {
+          p.date-range {
+            padding-left: 10px;
+          }
+        }
+
+        div.button-content {
+          gap: 30px;
+          button {
+            background-color: $bg-color;
+            color: $text-color;
+            width: 200px;
+            height: 50px;
+            border-radius: 8px;
+            cursor: pointer;
             &:hover {
-              background-color: $danger-color;
+              background-color: $point-color;
+              color: $sub-color;
             }
           }
         }

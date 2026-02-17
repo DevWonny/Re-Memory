@@ -66,14 +66,13 @@ export default function Detail() {
     }
 
     // * 일단 뒤로가기 방지
-    router.replace(`/modify/${params.id}`);
+    router.push(`/modify/${params.id}`);
   };
 
   useEffect(() => {
     if (session) {
       const onFetchDetail = async () => {
         const data = await fetchDetail(session.user.id, params.id as string);
-        console.log("🚀 ~ onFetchDetail ~ data:", data);
         if (data && data.length > 0) {
           setDetailData(data[0]);
           setDetailImage(data[0].images);

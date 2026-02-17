@@ -1,112 +1,257 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // * 수정 페이지
-// * 전체적인 레이아웃은 Upload 페이지와 동일하게
-// * 버튼 명칭과 라우팅 위치, 해당 카테고리 이미지들을 그대로 표출해야 함
+// * 업로드 페이지와 동일한 레이아웃으로 가져 갈 예정
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
+
 "use client";
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { EffectCards } from "swiper/modules";
+import { DayPicker } from "react-day-picker";
+import dayjs from "dayjs";
+// components
+import CommonInput from "@/app/components/commonInput";
 // store
 import { useAuth } from "@/store/auth";
 import { useDetail } from "@/store/detail";
-
+// service
+import { uploadImage } from "@/services/upload";
 // style
 import "@/styles/modify.scss";
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import "swiper/css/effect-cards";
+import "react-day-picker/style.css";
 
-export default function Modify() {
-  const params = useParams();
+interface UploadFile {
+  file: File;
+  previewUrl: string;
+}
+
+export default function Upload() {
+  const router = useRouter();
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [images, setImages] = useState<UploadFile[]>([]);
+  const [dateRange, setDateRange] = useState<any>();
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const { session } = useAuth();
   const storeDetailData = useDetail((state) => state.storeDetailData);
   const storeDetailImage = useDetail((state) => state.storeDetailImage);
-  const [swiper, setSwiper] = useState<any>(null);
-  const [activeSwiperIndex, setActiveSwiperIndex] = useState(0);
+  const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
+  const setStoreDetailImage = useDetail((state) => state.setStoreDetailImage);
 
-  const onBackClick = () => {
-    console.log("Modify Back Click");
+  // function
+  const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const files = e.target.files;
+    // if (!files) {
+    //   return;
+    // }
+    // const newImages = Array.from(files).map((file) => ({
+    //   file,
+    //   previewUrl: URL.createObjectURL(file),
+    // }));
+    // setImages((prev) => [...prev, ...newImages]);
+    // e.target.value = "";
   };
 
-  const onModifyClick = () => {
-    console.log("Modify Click!");
+  const onRemoveImage = (image: any) => {
+    // const findFile = image.previewUrl;
+    // if (!findFile) return;
+    // const result = images.filter((image) => image.previewUrl !== findFile);
+    // setImages(result);
   };
 
-  useEffect(() => {
-    console.log("🚀 ~ Modify ~ params:", params);
-    console.log("🚀 ~ Modify ~  storeDetailData:", storeDetailData);
-    console.log("🚀 ~ Modify ~ storeDetailImage:", storeDetailImage);
-  }, []);
+  const onOpenInput = () => {
+    // if (!imageInputRef.current) {
+    //   console.log("Upload Page On Open Input Error!");
+    //   return;
+    // }
+    // imageInputRef.current.click();
+  };
+
+  const onReset = () => {
+    // if (images.length === 0) {
+    //   return;
+    // }
+    // setImages([]);
+    // if (imageInputRef.current) {
+    //   imageInputRef.current.value = "";
+    // }
+  };
+
+  const onCancelClick = () => {
+    setImages([]);
+    router.replace("/");
+  };
+
+  const onTypingInput = (value: string, type: string) => {
+    if (type === "category") {
+      setCategory(value);
+    } else if (type === "description") {
+      setDescription(value);
+    }
+  };
+
+  const onSaveClick = async () => {
+    // if (!session) {
+    //   console.log("Upload Page Error! - onSaveClick");
+    //   return;
+    // }
+    // await uploadImage(
+    //   session.user.id,
+    //   images,
+    //   dateRange,
+    //   category,
+    //   description,
+    // );
+  };
 
   return (
-    <div className="modify-page  w-full h-full flex items-center justify-center">
-      <div className="modify-container w-[70%] h-full flex flex-col items-center justify-center">
+    <div className="modify-page flex items-center justify-center w-screen h-screen">
+      <div className="modify-container flex flex-col items-center justify-between w-[70%] h-[70%]">
         <div className="perforation">
           {Array.from({ length: 24 }).map((_, index) => (
-            <p key={`modify-top-perforation-${index}`}></p>
+            <p key={`top-perforation-${index}`} />
           ))}
         </div>
 
-        <div className="modify-contents w-full h-full flex flex-col items-center justify-between">
-          <Swiper
-            className="main-image-container"
-            pagination={true}
-            navigation={true}
-            modules={[Navigation, Pagination]}
-            onSwiper={setSwiper}
-            onSlideChange={(slide) => setActiveSwiperIndex(slide.activeIndex)}
-          >
-            {storeDetailImage.map((item, index) => (
-              <SwiperSlide key={`detail-image-swiper-slide-${index}`}>
-                <img src={`${item.url}`} alt="Detail Image" />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        <div className="contents-container flex justify-around items-center w-full h-full">
+          <div className="contents w-[48%] h-[95%] flex flex-col items-center justify-start">
+            {/* // * Image Preview */}
+            <div className="preview-content">
+              {images.length > 0 ? (
+                <Swiper
+                  effect={"cards"}
+                  grabCursor={true}
+                  modules={[EffectCards]}
+                  className="preview-swiper flex items-center justify-center w-full h-full"
+                >
+                  {images.map((image, index) => (
+                    <SwiperSlide key={`preview-swiper-image-${index}`}>
+                      <img
+                        src={image.previewUrl}
+                        alt="Preview Image"
+                        className="w-full h-full"
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              ) : (
+                <div className="no-preview w-full h-full flex items-center justify-center">
+                  추억을 기록해주세요 🎞️
+                </div>
+              )}
+            </div>
+            {/* // * Image List  */}
+            <div className="image-list-content">
+              {images.length > 0 ? (
+                images.map((img, index) => (
+                  <p
+                    key={`image-list-item-${index}`}
+                    onClick={() => onRemoveImage(img)}
+                  >
+                    {img.file?.name}
+                  </p>
+                ))
+              ) : (
+                <div className="no-image-list w-full h-full flex items-center justify-center">
+                  이미지를 추가하세요.
+                </div>
+              )}
+            </div>
 
-          <div className="all-images-container flex items-center justify-center ">
-            {storeDetailImage.map((item, index) => (
-              <div
-                key={`all-images-item-${index}`}
-                className={`image-item ${activeSwiperIndex === 0 && "active"}`}
-                onClick={() => swiper?.slideTo(0)}
+            {/* // * Input */}
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              accept="image/*"
+              ref={imageInputRef}
+              onChange={onAddImages}
+            />
+
+            {/* // * Buttons */}
+            <div className="button-content flex w-fit">
+              <button
+                className="add-button cursor-pointer"
+                onClick={onOpenInput}
               >
-                <img src={`${item.url}`} alt="All Detail Image" />
-              </div>
-            ))}
+                사진 추가
+              </button>
+
+              <button className="reset-button cursor-pointer" onClick={onReset}>
+                초기화
+              </button>
+            </div>
           </div>
 
-          <div className="folder-description-container ">
-            <div className="content">
+          <div className="contents w-[48%] h-[95%] flex flex-col items-center justify-start gap-[20px]">
+            {/* // * Category , Description , Button(Cancel, Save) */}
+            <div className="content w-full">
               <p className="label">🚗 여행지</p>
-              <p>{storeDetailData?.category}</p>
+              <CommonInput
+                type="category"
+                onTyping={(value, type) => onTypingInput(value, type)}
+              />
             </div>
 
-            <div className="content">
-              <p className="label">📆 추억을 만들 날</p>
-              <p>{`${storeDetailData?.date_from} ~ ${storeDetailData?.date_to}`}</p>
+            <div className="content w-full relative">
+              <details>
+                <summary className="label cursor-pointer list-none">
+                  📆 추억을 만들 날
+                </summary>
+                <DayPicker
+                  className="day-picker"
+                  mode="range"
+                  selected={dateRange}
+                  onSelect={setDateRange}
+                  footer={
+                    <button
+                      aria-label="완료"
+                      className="selected-button cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.currentTarget
+                          .closest("details")
+                          ?.removeAttribute("open");
+                      }}
+                    >
+                      {dateRange ? "선택완료" : "닫기"}
+                    </button>
+                  }
+                ></DayPicker>
+              </details>
+              <p className="date-range">
+                {dateRange &&
+                  `${dayjs(dateRange.from).format("YYYY-MM-DD")} ~ ${dayjs(
+                    dateRange.to,
+                  ).format("YYYY-MM-DD")}`}
+              </p>
             </div>
 
-            <div className="content">
+            <div className="content w-full">
               <p className="label">📸 추억</p>
-              <p>{storeDetailData?.description}</p>
+              <CommonInput
+                type="description"
+                onTyping={(value, type) => onTypingInput(value, type)}
+              />
             </div>
-          </div>
 
-          <div className="button-container flex  w-fit">
-            <button className="back-button" onClick={onBackClick}>
-              돌아가기
-            </button>
-            <button className="modify-button" onClick={onModifyClick}>
-              저장
-            </button>
-            {/* <button className="remove-button">삭제</button> */}
+            <div className="button-content flex w-fit">
+              <button className="cancel-button" onClick={onCancelClick}>
+                취소
+              </button>
+              <button className="save-button" onClick={onSaveClick}>
+                저장
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="perforation">
           {Array.from({ length: 24 }).map((_, index) => (
-            <p key={`modify-bot-perforation-${index}`}></p>
+            <p key={`bot-perforation-${index}`} />
           ))}
         </div>
       </div>
