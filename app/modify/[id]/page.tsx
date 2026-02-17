@@ -107,6 +107,11 @@ export default function Upload() {
     // );
   };
 
+  useEffect(() => {
+    console.log("🚀 ~ Upload ~ storeDetailData:", storeDetailData);
+    console.log("🚀 ~ Upload ~ storeDetailImage:", storeDetailImage);
+  }, []);
+
   return (
     <div className="modify-page flex items-center justify-center w-screen h-screen">
       <div className="modify-container flex flex-col items-center justify-between w-[70%] h-[70%]">
@@ -120,17 +125,17 @@ export default function Upload() {
           <div className="contents w-[48%] h-[95%] flex flex-col items-center justify-start">
             {/* // * Image Preview */}
             <div className="preview-content">
-              {images.length > 0 ? (
+              {storeDetailImage.length > 0 ? (
                 <Swiper
                   effect={"cards"}
                   grabCursor={true}
                   modules={[EffectCards]}
                   className="preview-swiper flex items-center justify-center w-full h-full"
                 >
-                  {images.map((image, index) => (
+                  {storeDetailImage.map((image, index) => (
                     <SwiperSlide key={`preview-swiper-image-${index}`}>
                       <img
-                        src={image.previewUrl}
+                        src={image.url}
                         alt="Preview Image"
                         className="w-full h-full"
                       />
@@ -145,13 +150,13 @@ export default function Upload() {
             </div>
             {/* // * Image List  */}
             <div className="image-list-content">
-              {images.length > 0 ? (
-                images.map((img, index) => (
+              {storeDetailImage.length > 0 ? (
+                storeDetailImage.map((img, index) => (
                   <p
                     key={`image-list-item-${index}`}
                     onClick={() => onRemoveImage(img)}
                   >
-                    {img.file?.name}
+                    {img.name}
                   </p>
                 ))
               ) : (

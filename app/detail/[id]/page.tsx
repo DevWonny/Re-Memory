@@ -50,6 +50,8 @@ export default function Detail() {
   const session = useAuth((state) => state.session);
   const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
   const setStoreDetailImage = useDetail((state) => state.setStoreDetailImage);
+  const storeDetailData = useDetail((state) => state.storeDetailData);
+  const storeDetailImage = useDetail((state) => state.storeDetailImage);
   const [swiper, setSwiper] = useState<any>(null);
   const [activeSwiperIndex, setActiveSwiperIndex] = useState(0);
   const [detailData, setDetailData] = useState<DetailDataType | null>(null);
@@ -60,10 +62,10 @@ export default function Detail() {
   };
 
   const onModifyClick = () => {
-    if (detailData && detailImage) {
-      setStoreDetailData(detailData);
-      setStoreDetailImage(detailImage);
-    }
+    // if (detailData && detailImage) {
+    //   setStoreDetailData(detailData);
+    //   setStoreDetailImage(detailImage);
+    // }
 
     // * 일단 뒤로가기 방지
     router.push(`/modify/${params.id}`);
@@ -74,8 +76,10 @@ export default function Detail() {
       const onFetchDetail = async () => {
         const data = await fetchDetail(session.user.id, params.id as string);
         if (data && data.length > 0) {
-          setDetailData(data[0]);
-          setDetailImage(data[0].images);
+          setStoreDetailData(data[0]);
+          setStoreDetailImage(data[0].images);
+          // setDetailData(data[0]);
+          // setDetailImage(data[0].images);
         }
       };
       onFetchDetail();
@@ -84,8 +88,8 @@ export default function Detail() {
 
   useEffect(() => {
     // * 추후 확인 필요
-    setStoreDetailData(null);
-    setStoreDetailImage([]);
+    // setStoreDetailData(null);
+    // setStoreDetailImage([]);
   }, []);
 
   return (
@@ -106,7 +110,7 @@ export default function Detail() {
             onSwiper={setSwiper}
             onSlideChange={(slide) => setActiveSwiperIndex(slide.activeIndex)}
           >
-            {detailImage.map((item, index) => (
+            {storeDetailImage.map((item, index) => (
               <SwiperSlide key={`detail-image-swiper-slide-${index}`}>
                 <img src={`${item.url}`} alt="Detail Image" />
               </SwiperSlide>
@@ -114,7 +118,7 @@ export default function Detail() {
           </Swiper>
 
           <div className="all-images-container flex items-center justify-center ">
-            {detailImage.map((item, index) => (
+            {storeDetailImage.map((item, index) => (
               <div
                 key={`all-images-item-${index}`}
                 className={`image-item ${activeSwiperIndex === 0 && "active"}`}
@@ -128,17 +132,17 @@ export default function Detail() {
           <div className="folder-description-container ">
             <div className="content">
               <p className="label">🚗 여행지</p>
-              <p>{detailData?.category}</p>
+              <p>{storeDetailData?.category}</p>
             </div>
 
             <div className="content">
               <p className="label">📆 추억을 만들 날</p>
-              <p>{`${detailData?.date_from} ~ ${detailData?.date_to}`}</p>
+              <p>{`${storeDetailData?.date_from} ~ ${storeDetailData?.date_to}`}</p>
             </div>
 
             <div className="content">
               <p className="label">📸 추억</p>
-              <p>{detailData?.description}</p>
+              <p>{storeDetailData?.description}</p>
             </div>
           </div>
 
