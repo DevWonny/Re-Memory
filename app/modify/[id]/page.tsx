@@ -86,6 +86,7 @@ export default function Upload() {
   };
 
   const onTypingInput = (value: string, type: string) => {
+    console.log("🚀 ~ onTypingInput ~ value:", value);
     if (type === "category") {
       setCategory(value);
     } else if (type === "description") {
@@ -195,10 +196,10 @@ export default function Upload() {
             {/* // * Category , Description , Button(Cancel, Save) */}
             <div className="content w-full">
               <p className="label">🚗 여행지</p>
-              <CommonInput
+              {/* <CommonInput
                 type="category"
                 onTyping={(value, type) => onTypingInput(value, type)}
-              />
+              /> */}
             </div>
 
             <div className="content w-full relative">
@@ -237,10 +238,10 @@ export default function Upload() {
 
             <div className="content w-full">
               <p className="label">📸 추억</p>
-              <CommonInput
+              {/* <CommonInput
                 type="description"
                 onTyping={(value, type) => onTypingInput(value, type)}
-              />
+              /> */}
             </div>
 
             <div className="button-content flex w-fit">

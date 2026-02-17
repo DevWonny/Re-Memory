@@ -41,6 +41,7 @@ export default function Upload() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const { session } = useAuth();
+  // input
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,13 +92,13 @@ export default function Upload() {
     router.replace("/");
   };
 
-  const onTypingInput = (value: string, type: string) => {
-    if (type === "category") {
-      setCategory(value);
-    } else if (type === "description") {
-      setDescription(value);
-    }
-  };
+  // const onTypingInput = (value: string, type: string) => {
+  //   if (type === "category") {
+  //     setCategory(value);
+  //   } else if (type === "description") {
+  //     setDescription(value);
+  //   }
+  // };
 
   const onSaveClick = async () => {
     if (!session) {
@@ -198,7 +199,8 @@ export default function Upload() {
               <p className="label">🚗 여행지</p>
               <CommonInput
                 type="category"
-                onTyping={(value, type) => onTypingInput(value, type)}
+                inputVal={category}
+                onChangeVal={setCategory}
               />
             </div>
 
@@ -240,7 +242,8 @@ export default function Upload() {
               <p className="label">📸 추억</p>
               <CommonInput
                 type="description"
-                onTyping={(value, type) => onTypingInput(value, type)}
+                inputVal={description}
+                onChangeVal={setDescription}
               />
             </div>
 
