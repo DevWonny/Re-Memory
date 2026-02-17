@@ -32,14 +32,21 @@ export default function Upload() {
   const router = useRouter();
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<UploadFile[]>([]);
-  const [dateRange, setDateRange] = useState<any>();
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
   const { session } = useAuth();
   const storeDetailData = useDetail((state) => state.storeDetailData);
   const storeDetailImage = useDetail((state) => state.storeDetailImage);
-  const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
-  const setStoreDetailImage = useDetail((state) => state.setStoreDetailImage);
+  const [category, setCategory] = useState(storeDetailData?.category);
+  const [description, setDescription] = useState(storeDetailData?.description);
+  const [dateRange, setDateRange] = useState<any>(() => {
+    if (storeDetailData) {
+      const from = new Date(storeDetailData.date_from);
+      const to = new Date(storeDetailData.date_to);
+      return {
+        from,
+        to,
+      };
+    }
+  });
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,15 +92,6 @@ export default function Upload() {
     router.replace("/");
   };
 
-  const onTypingInput = (value: string, type: string) => {
-    console.log("🚀 ~ onTypingInput ~ value:", value);
-    if (type === "category") {
-      setCategory(value);
-    } else if (type === "description") {
-      setDescription(value);
-    }
-  };
-
   const onSaveClick = async () => {
     // if (!session) {
     //   console.log("Upload Page Error! - onSaveClick");
@@ -107,11 +105,6 @@ export default function Upload() {
     //   description,
     // );
   };
-
-  useEffect(() => {
-    console.log("🚀 ~ Upload ~ storeDetailData:", storeDetailData);
-    console.log("🚀 ~ Upload ~ storeDetailImage:", storeDetailImage);
-  }, []);
 
   return (
     <div className="modify-page flex items-center justify-center w-screen h-screen">
@@ -196,10 +189,11 @@ export default function Upload() {
             {/* // * Category , Description , Button(Cancel, Save) */}
             <div className="content w-full">
               <p className="label">🚗 여행지</p>
-              {/* <CommonInput
+              <CommonInput
                 type="category"
-                onTyping={(value, type) => onTypingInput(value, type)}
-              /> */}
+                inputVal={category ? category : ""}
+                onChangeVal={setCategory}
+              />
             </div>
 
             <div className="content w-full relative">
@@ -238,10 +232,11 @@ export default function Upload() {
 
             <div className="content w-full">
               <p className="label">📸 추억</p>
-              {/* <CommonInput
+              <CommonInput
                 type="description"
-                onTyping={(value, type) => onTypingInput(value, type)}
-              /> */}
+                inputVal={description ? description : ""}
+                onChangeVal={setDescription}
+              />
             </div>
 
             <div className="button-content flex w-fit">
