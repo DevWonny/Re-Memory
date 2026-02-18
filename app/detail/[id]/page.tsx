@@ -86,9 +86,10 @@ export default function Detail() {
   }, [session, params]);
 
   useEffect(() => {
-    // * 추후 확인 필요
-    // setStoreDetailData(null);
-    // setStoreDetailImage([]);
+    return () => {
+      setStoreDetailData(null);
+      setStoreDetailImage([]);
+    };
   }, []);
 
   return (

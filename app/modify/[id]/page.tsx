@@ -16,24 +16,32 @@ import CommonInput from "@/app/components/commonInput";
 import { useAuth } from "@/store/auth";
 import { useDetail } from "@/store/detail";
 // service
-import { uploadImage } from "@/services/upload";
+// import { uploadImage } from "@/services/upload";
 // style
 import "@/styles/modify.scss";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "react-day-picker/style.css";
 
-interface UploadFile {
-  file: File;
-  previewUrl: string;
-}
+// interface UploadFile {
+//   file: File;
+//   previewUrl: string;
+// }
 
 export default function Upload() {
   const router = useRouter();
   const storeDetailData = useDetail((state) => state.storeDetailData);
   const storeDetailImage = useDetail((state) => state.storeDetailImage);
+  const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
+  const setStoreDetailImage = useDetail((state) => state.setStoreDetailImage);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const [images, setImages] = useState<UploadFile[]>([]);
+  const [images, setImages] = useState<any>(() => {
+    if (storeDetailImage) {
+      return storeDetailImage;
+    } else {
+      return [];
+    }
+  });
   const { session } = useAuth();
   const [category, setCategory] = useState(storeDetailData?.category);
   const [description, setDescription] = useState(storeDetailData?.description);
@@ -93,10 +101,17 @@ export default function Upload() {
   };
 
   const onSaveClick = async () => {
-    // if (!session) {
-    //   console.log("Upload Page Error! - onSaveClick");
-    //   return;
-    // }
+    if (
+      !session ||
+      images.length <= 0 ||
+      !dateRange ||
+      !category ||
+      !description
+    ) {
+      console.log("Modify Page Error! - onSaveClick");
+      return;
+    }
+
     // await uploadImage(
     //   session.user.id,
     //   images,
@@ -105,6 +120,13 @@ export default function Upload() {
     //   description,
     // );
   };
+
+  useEffect(() => {
+    return () => {
+      setStoreDetailData(null);
+      setStoreDetailImage([]);
+    };
+  }, []);
 
   return (
     <div className="modify-page flex items-center justify-center w-screen h-screen">
@@ -119,14 +141,14 @@ export default function Upload() {
           <div className="contents w-[48%] h-[95%] flex flex-col items-center justify-start">
             {/* // * Image Preview */}
             <div className="preview-content">
-              {storeDetailImage.length > 0 ? (
+              {images.length > 0 ? (
                 <Swiper
                   effect={"cards"}
                   grabCursor={true}
                   modules={[EffectCards]}
                   className="preview-swiper flex items-center justify-center w-full h-full"
                 >
-                  {storeDetailImage.map((image, index) => (
+                  {images.map((image: any, index: number) => (
                     <SwiperSlide key={`preview-swiper-image-${index}`}>
                       <img
                         src={image.url}
@@ -144,8 +166,8 @@ export default function Upload() {
             </div>
             {/* // * Image List  */}
             <div className="image-list-content">
-              {storeDetailImage.length > 0 ? (
-                storeDetailImage.map((img, index) => (
+              {images.length > 0 ? (
+                images.map((img: any, index: number) => (
                   <p
                     key={`image-list-item-${index}`}
                     onClick={() => onRemoveImage(img)}

@@ -53,6 +53,7 @@ export default function Main() {
             // * Folder 데이터로 표출할수 있는 부분 수정 필요
             <Folder
               key={`folder-icon-${folder.id}`}
+              data={folder}
               onFolderClick={() => router.push(`/detail/${folder.id}`)}
             />
           ))
