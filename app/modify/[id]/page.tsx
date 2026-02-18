@@ -71,10 +71,10 @@ export default function Upload() {
   };
 
   const onRemoveImage = (image: any) => {
-    // const findFile = image.previewUrl;
-    // if (!findFile) return;
-    // const result = images.filter((image) => image.previewUrl !== findFile);
-    // setImages(result);
+    const findFile = image.url;
+    if (!findFile) return;
+    const result = images.filter((image: any) => image.url !== findFile);
+    setImages(result);
   };
 
   const onOpenInput = () => {
