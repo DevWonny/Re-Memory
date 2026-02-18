@@ -58,6 +58,8 @@ export default function Detail() {
   const [detailImage, setDetailImage] = useState<DetailImageType[]>([]);
 
   const onBackClick = () => {
+    setStoreDetailData(null);
+    setStoreDetailImage([]);
     router.push("/");
   };
 
@@ -85,12 +87,12 @@ export default function Detail() {
     }
   }, [session, params]);
 
-  useEffect(() => {
-    return () => {
-      setStoreDetailData(null);
-      setStoreDetailImage([]);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     setStoreDetailData(null);
+  //     setStoreDetailImage([]);
+  //   };
+  // }, []);
 
   return (
     <div className="detail-page  w-full h-full flex items-center justify-center">

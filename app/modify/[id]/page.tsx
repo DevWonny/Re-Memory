@@ -86,17 +86,27 @@ export default function Upload() {
   };
 
   const onReset = () => {
-    // if (images.length === 0) {
-    //   return;
-    // }
-    // setImages([]);
-    // if (imageInputRef.current) {
-    //   imageInputRef.current.value = "";
-    // }
+    if (images.length === 0) {
+      return;
+    }
+    console.log("🚀 ~ onReset ~ storeDetailData:", storeDetailData);
+    console.log(storeDetailData);
+
+    setImages(storeDetailImage);
+    setCategory(storeDetailData?.category);
+    setDescription(storeDetailData?.description);
+    setDateRange(() => {
+      return {
+        from: storeDetailData?.date_from,
+        to: storeDetailData?.date_to,
+      };
+    });
   };
 
   const onBackClick = () => {
     setImages([]);
+    setStoreDetailData(null);
+    setStoreDetailImage([]);
     router.back();
   };
 
@@ -121,12 +131,12 @@ export default function Upload() {
     // );
   };
 
-  useEffect(() => {
-    return () => {
-      setStoreDetailData(null);
-      setStoreDetailImage([]);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     setStoreDetailData(null);
+  //     setStoreDetailImage([]);
+  //   };
+  // }, []);
 
   return (
     <div className="modify-page flex items-center justify-center w-screen h-screen">
