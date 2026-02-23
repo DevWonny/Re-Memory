@@ -45,6 +45,8 @@ export default function Upload() {
   });
   // * 삭제할 이미지 저장. supabase storage에서 완전히 삭제시 활용.
   const [removeImage, setRemoveImage] = useState<any>([]);
+  // * 추가할 이미지 저장. 수정 시 supabase로 넘겨줄 내용
+  const [newImage, setNewImage] = useState<any>([]);
   const { session } = useAuth();
   const [category, setCategory] = useState(storeDetailData?.category);
   const [description, setDescription] = useState(storeDetailData?.description);
@@ -65,15 +67,22 @@ export default function Upload() {
     if (!files) {
       return;
     }
-    const newImages = Array.from(files).map((file) => ({
-      name: file.name,
-      path: URL.createObjectURL(file),
 
+    // * 미리보기 용
+    const newImage = Array.from(files).map((file) => ({
+      name: file.name,
       size: file.size,
-      type: null,
+      type: file.type,
       url: URL.createObjectURL(file),
     }));
-    setImages((prev: any) => [...prev, ...newImages]);
+
+    // * DB용
+    const newDBImage = Array.from(files).map((file) => ({
+      file,
+      previewURL: URL.createObjectURL(file),
+    }));
+    setImages((prev: any) => [...prev, ...newImage]);
+    setNewImage((prev: any) => [...prev, ...newDBImage]);
     e.target.value = "";
   };
 
@@ -137,7 +146,7 @@ export default function Upload() {
     await modifyFolder(
       params.id,
       session.user.id,
-      images,
+      newImage,
       removeImage,
       dateRange,
       category,
