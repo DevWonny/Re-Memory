@@ -5,7 +5,7 @@
 
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 import { DayPicker } from "react-day-picker";
@@ -16,7 +16,7 @@ import CommonInput from "@/app/components/commonInput";
 import { useAuth } from "@/store/auth";
 import { useDetail } from "@/store/detail";
 // service
-// import { uploadImage } from "@/services/upload";
+import { modifyFolder } from "@/services/modify";
 // style
 import "@/styles/modify.scss";
 import "swiper/css";
@@ -30,6 +30,7 @@ import "react-day-picker/style.css";
 
 export default function Upload() {
   const router = useRouter();
+  const params = useParams();
   const storeDetailData = useDetail((state) => state.storeDetailData);
   const storeDetailImage = useDetail((state) => state.storeDetailImage);
   const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
@@ -42,6 +43,8 @@ export default function Upload() {
       return [];
     }
   });
+  // * 삭제할 이미지 저장. supabase storage에서 완전히 삭제시 활용.
+  const [removeImage, setRemoveImage] = useState<any>([]);
   const { session } = useAuth();
   const [category, setCategory] = useState(storeDetailData?.category);
   const [description, setDescription] = useState(storeDetailData?.description);
@@ -58,31 +61,39 @@ export default function Upload() {
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const files = e.target.files;
-    // if (!files) {
-    //   return;
-    // }
-    // const newImages = Array.from(files).map((file) => ({
-    //   file,
-    //   previewUrl: URL.createObjectURL(file),
-    // }));
-    // setImages((prev) => [...prev, ...newImages]);
-    // e.target.value = "";
+    const files = e.target.files;
+    if (!files) {
+      return;
+    }
+    const newImages = Array.from(files).map((file) => ({
+      name: file.name,
+      path: URL.createObjectURL(file),
+
+      size: file.size,
+      type: null,
+      url: URL.createObjectURL(file),
+    }));
+    setImages((prev: any) => [...prev, ...newImages]);
+    e.target.value = "";
   };
 
   const onRemoveImage = (image: any) => {
     const findFile = image.url;
     if (!findFile) return;
+    const removeImageList = images.filter(
+      (image: any) => image.url === findFile,
+    );
     const result = images.filter((image: any) => image.url !== findFile);
+    setRemoveImage(removeImageList);
     setImages(result);
   };
 
   const onOpenInput = () => {
-    // if (!imageInputRef.current) {
-    //   console.log("Upload Page On Open Input Error!");
-    //   return;
-    // }
-    // imageInputRef.current.click();
+    if (!imageInputRef.current) {
+      console.log("Upload Page On Open Input Error!");
+      return;
+    }
+    imageInputRef.current.click();
   };
 
   const onReset = () => {
@@ -110,7 +121,7 @@ export default function Upload() {
     router.back();
   };
 
-  const onSaveClick = async () => {
+  const onModifyClick = async () => {
     if (
       !session ||
       images.length <= 0 ||
@@ -119,24 +130,20 @@ export default function Upload() {
       !description
     ) {
       console.log("Modify Page Error! - onSaveClick");
+      alert("추억을 모두 채워주세요!");
       return;
     }
 
-    // await uploadImage(
-    //   session.user.id,
-    //   images,
-    //   dateRange,
-    //   category,
-    //   description,
-    // );
+    await modifyFolder(
+      params.id,
+      session.user.id,
+      images,
+      removeImage,
+      dateRange,
+      category,
+      description,
+    );
   };
-
-  // useEffect(() => {
-  //   return () => {
-  //     setStoreDetailData(null);
-  //     setStoreDetailImage([]);
-  //   };
-  // }, []);
 
   return (
     <div className="modify-page flex items-center justify-center w-screen h-screen">
@@ -275,8 +282,8 @@ export default function Upload() {
               <button className="back-button" onClick={onBackClick}>
                 돌아가기
               </button>
-              <button className="save-button" onClick={onSaveClick}>
-                저장
+              <button className="modify-button" onClick={onModifyClick}>
+                수정
               </button>
             </div>
           </div>
