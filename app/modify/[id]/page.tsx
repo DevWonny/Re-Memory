@@ -109,8 +109,6 @@ export default function Upload() {
     if (images.length === 0) {
       return;
     }
-    console.log("🚀 ~ onReset ~ storeDetailData:", storeDetailData);
-    console.log(storeDetailData);
 
     setImages(storeDetailImage);
     setCategory(storeDetailData?.category);

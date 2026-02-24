@@ -17,21 +17,17 @@ interface NewDBImage {
 
 
 export const modifyFolder = async (id: any, userId: string, newImages: NewDBImage[], removeImages: any, dateRange: any, category: string, description: string) => {
-  console.log("🚀 ~ modifyFolder ~ id:", id)
-  console.log("🚀 ~ modifyFolder ~ description:", description)
-  console.log("🚀 ~ modifyFolder ~ category:", category)
-  console.log("🚀 ~ modifyFolder ~ dateRange:", dateRange)
-  console.log("🚀 ~ modifyFolder ~ removeImages:", removeImages)
-  console.log("🚀 ~ modifyFolder ~ newImages:", newImages)
-  console.log("🚀 ~ modifyFolder ~ userId:", userId)
-
   // * DB 조회
   const { data: currentDB } = await supabase.from('folder').select('*').eq('id', id).single();
   const currentImage = currentDB.images ?? [];
 
   // * Storage에서 이미지 제거
   if (removeImages?.length > 0) {
-    await supabase.storage.from('images').remove(removeImages.map((img: any) => img.path));
+    const { error } = await supabase.storage.from('images').remove(removeImages.map((img: any) => img.path));
+    if (error) {
+      console.log('Service Modify Error! - Storage Remove Error')
+      throw error;
+    }
   }
   // * DB에서 이미지 제거
   const currentDBImages = currentImage.filter((img: any) => !removeImages.some((remove: any) => remove.path === img.path))
