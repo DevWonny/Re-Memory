@@ -150,6 +150,9 @@ export default function Upload() {
       category,
       description,
     );
+
+    alert("수정이 완료되었습니다.");
+    router.replace(`/detail/${params.id}`);
   };
 
   return (
