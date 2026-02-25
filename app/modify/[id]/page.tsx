@@ -23,11 +23,6 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import "react-day-picker/style.css";
 
-// interface UploadFile {
-//   file: File;
-//   previewUrl: string;
-// }
-
 export default function Upload() {
   const router = useRouter();
   const params = useParams();

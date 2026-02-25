@@ -17,7 +17,6 @@ import { Navigation, Pagination } from "swiper/modules";
 import { fetchDetail } from "@/services/detail";
 // store
 import { useAuth } from "@/store/auth";
-import { useDetail } from "@/store/detail";
 // style
 import "@/styles/detail.scss";
 import "swiper/css";
@@ -48,27 +47,20 @@ export default function Detail() {
   const params = useParams();
   const router = useRouter();
   const session = useAuth((state) => state.session);
-  const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
-  const setStoreDetailImage = useDetail((state) => state.setStoreDetailImage);
-  const storeDetailData = useDetail((state) => state.storeDetailData);
-  const storeDetailImage = useDetail((state) => state.storeDetailImage);
   const [swiper, setSwiper] = useState<any>(null);
   const [activeSwiperIndex, setActiveSwiperIndex] = useState(0);
   const [detailData, setDetailData] = useState<DetailDataType | null>(null);
   const [detailImage, setDetailImage] = useState<DetailImageType[]>([]);
 
   const onBackClick = () => {
-    setStoreDetailData(null);
-    setStoreDetailImage([]);
+    // setStoreDetailData(null);
+    // setStoreDetailImage([]);
+    setDetailData(null);
+    setDetailImage([]);
     router.push("/");
   };
 
   const onModifyClick = () => {
-    // if (detailData && detailImage) {
-    //   setStoreDetailData(detailData);
-    //   setStoreDetailImage(detailImage);
-    // }
-
     router.push(`/modify/${params.id}`);
   };
 
@@ -77,10 +69,10 @@ export default function Detail() {
       const onFetchDetail = async () => {
         const data = await fetchDetail(session.user.id, params.id as string);
         if (data && data.length > 0) {
-          setStoreDetailData(data[0]);
-          setStoreDetailImage(data[0].images);
-          // setDetailData(data[0]);
-          // setDetailImage(data[0].images);
+          // setStoreDetailData(data[0]);
+          // setStoreDetailImage(data[0].images);
+          setDetailData(data[0]);
+          setDetailImage(data[0].images);
         }
       };
       onFetchDetail();
@@ -112,7 +104,7 @@ export default function Detail() {
             onSwiper={setSwiper}
             onSlideChange={(slide) => setActiveSwiperIndex(slide.activeIndex)}
           >
-            {storeDetailImage.map((item, index) => (
+            {detailImage.map((item, index) => (
               <SwiperSlide key={`detail-image-swiper-slide-${index}`}>
                 <img src={`${item.url}`} alt="Detail Image" />
               </SwiperSlide>
@@ -120,7 +112,7 @@ export default function Detail() {
           </Swiper>
 
           <div className="all-images-container flex items-center justify-center ">
-            {storeDetailImage.map((item, index) => (
+            {detailImage.map((item, index) => (
               <div
                 key={`all-images-item-${index}`}
                 className={`image-item ${activeSwiperIndex === 0 && "active"}`}
@@ -134,17 +126,17 @@ export default function Detail() {
           <div className="folder-description-container ">
             <div className="content">
               <p className="label">🚗 여행지</p>
-              <p>{storeDetailData?.category}</p>
+              <p>{detailData?.category}</p>
             </div>
 
             <div className="content">
               <p className="label">📆 추억을 만들 날</p>
-              <p>{`${storeDetailData?.date_from} ~ ${storeDetailData?.date_to}`}</p>
+              <p>{`${detailData?.date_from} ~ ${detailData?.date_to}`}</p>
             </div>
 
             <div className="content">
               <p className="label">📸 추억</p>
-              <p>{storeDetailData?.description}</p>
+              <p>{detailData?.description}</p>
             </div>
           </div>
 
