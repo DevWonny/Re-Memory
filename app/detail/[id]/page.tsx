@@ -14,7 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 // service
-import { fetchDetail } from "@/services/detail";
+import { fetchDetail, removeDetail } from "@/services/detail";
 // store
 import { useAuth } from "@/store/auth";
 // style
@@ -53,8 +53,6 @@ export default function Detail() {
   const [detailImage, setDetailImage] = useState<DetailImageType[]>([]);
 
   const onBackClick = () => {
-    // setStoreDetailData(null);
-    // setStoreDetailImage([]);
     setDetailData(null);
     setDetailImage([]);
     router.push("/");
@@ -64,13 +62,15 @@ export default function Detail() {
     router.push(`/modify/${params.id}`);
   };
 
+  const onRemoveClick = async () => {
+    await removeDetail(params.id as string);
+  };
+
   useEffect(() => {
     if (session) {
       const onFetchDetail = async () => {
         const data = await fetchDetail(session.user.id, params.id as string);
         if (data && data.length > 0) {
-          // setStoreDetailData(data[0]);
-          // setStoreDetailImage(data[0].images);
           setDetailData(data[0]);
           setDetailImage(data[0].images);
         }
@@ -78,13 +78,6 @@ export default function Detail() {
       onFetchDetail();
     }
   }, [session, params]);
-
-  // useEffect(() => {
-  //   return () => {
-  //     setStoreDetailData(null);
-  //     setStoreDetailImage([]);
-  //   };
-  // }, []);
 
   return (
     <div className="detail-page  w-full h-full flex items-center justify-center">
@@ -147,7 +140,9 @@ export default function Detail() {
             <button className="modify-button" onClick={onModifyClick}>
               수정
             </button>
-            <button className="remove-button">삭제</button>
+            <button className="remove-button" onClick={onRemoveClick}>
+              삭제
+            </button>
           </div>
         </div>
 
