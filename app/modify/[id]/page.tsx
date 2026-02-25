@@ -14,9 +14,9 @@ import dayjs from "dayjs";
 import CommonInput from "@/app/components/commonInput";
 // store
 import { useAuth } from "@/store/auth";
-import { useDetail } from "@/store/detail";
 // service
 import { modifyFolder } from "@/services/modify";
+import { fetchDetail } from "@/services/detail";
 // style
 import "@/styles/modify.scss";
 import "swiper/css";
@@ -31,35 +31,19 @@ import "react-day-picker/style.css";
 export default function Upload() {
   const router = useRouter();
   const params = useParams();
-  const storeDetailData = useDetail((state) => state.storeDetailData);
-  const storeDetailImage = useDetail((state) => state.storeDetailImage);
-  const setStoreDetailData = useDetail((state) => state.setStoreDetailData);
-  const setStoreDetailImage = useDetail((state) => state.setStoreDetailImage);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const [images, setImages] = useState<any>(() => {
-    if (storeDetailImage) {
-      return storeDetailImage;
-    } else {
-      return [];
-    }
-  });
+  // * 해당 페이지에서 미리보기로 보여줄 이미지.
+  const [images, setImages] = useState<any>([]);
   // * 삭제할 이미지 저장. supabase storage에서 완전히 삭제시 활용.
   const [removeImage, setRemoveImage] = useState<any>([]);
   // * 추가할 이미지 저장. 수정 시 supabase로 넘겨줄 내용
   const [newImage, setNewImage] = useState<any>([]);
   const { session } = useAuth();
-  const [category, setCategory] = useState(storeDetailData?.category);
-  const [description, setDescription] = useState(storeDetailData?.description);
-  const [dateRange, setDateRange] = useState<any>(() => {
-    if (storeDetailData) {
-      const from = new Date(storeDetailData.date_from);
-      const to = new Date(storeDetailData.date_to);
-      return {
-        from,
-        to,
-      };
-    }
-  });
+  const [category, setCategory] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<any>(null);
+  // * Reset 기능에서 사용
+  const [originalData, setOriginalData] = useState<any>(null);
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,21 +94,26 @@ export default function Upload() {
       return;
     }
 
-    setImages(storeDetailImage);
-    setCategory(storeDetailData?.category);
-    setDescription(storeDetailData?.description);
+    setImages(originalData.images);
+    setCategory(originalData.category);
+    setDescription(originalData.description);
     setDateRange(() => {
+      const from = new Date(originalData.date_from);
+      const to = new Date(originalData.date_to);
       return {
-        from: storeDetailData?.date_from,
-        to: storeDetailData?.date_to,
+        from,
+        to,
       };
     });
   };
 
   const onBackClick = () => {
     setImages([]);
-    setStoreDetailData(null);
-    setStoreDetailImage([]);
+    setCategory(null);
+    setDescription(null);
+    setDateRange(null);
+    setRemoveImage([]);
+    setNewImage([]);
     router.back();
   };
 
@@ -154,6 +143,26 @@ export default function Upload() {
     alert("수정이 완료되었습니다.");
     router.replace(`/detail/${params.id}`);
   };
+
+  useEffect(() => {
+    if (params.id && session) {
+      const onFetchData = async () => {
+        const data = await fetchDetail(session.user.id, params.id as string);
+        if (data && data.length > 0) {
+          setOriginalData(data[0]);
+          setImages(data[0].images);
+          setCategory(data[0].category);
+          setDescription(data[0].description);
+          setDateRange(() => {
+            const from = new Date(data[0].date_from);
+            const to = new Date(data[0].date_to);
+            return { from, to };
+          });
+        }
+      };
+      onFetchData();
+    }
+  }, [params.id, session]);
 
   return (
     <div className="modify-page flex items-center justify-center w-screen h-screen">
