@@ -20,11 +20,17 @@ export default function Main() {
   const session = useAuth((state) => state.session);
 
   useEffect(() => {
-    if (!session) {
-      return;
-    }
+    // if (!session) {
+    //   console.log(1111);
+    //   setFolderList([]);
+    //   return;
+    // }
 
     const onFetchFolderList = async () => {
+      if (!session) {
+        setFolderList([]);
+        return;
+      }
       const fetchData = await fetchFolderList(session.user.id);
       if (fetchData && fetchData.length > 0) {
         setFolderList(fetchData);
