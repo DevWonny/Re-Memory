@@ -114,6 +114,13 @@ export default function Upload() {
     );
   };
 
+  useEffect(() => {
+    if (!session) {
+      // ! 임시방편. 방법 찾아보기
+      router.replace("/");
+    }
+  }, []);
+
   return (
     <div className="upload-page flex items-center justify-center w-screen h-screen">
       <div className="upload-container flex flex-col items-center justify-between w-[70%] h-[70%]">

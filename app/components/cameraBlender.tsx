@@ -3,14 +3,17 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
+// store
+import { useAuth } from "@/store/auth";
 
 export default function CameraBlender() {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Cleanup 혹은 외부 접근 시 사용하기 위해 Renderer를 따로 저장.
   const router = useRouter();
+  const session = useAuth((state) => state.session);
 
   const onClickBlender = () => {
-    if (!mountRef.current) return;
+    if (!mountRef.current || !session) return;
 
     router.push("/upload");
   };
@@ -29,7 +32,7 @@ export default function CameraBlender() {
       75,
       mountRef.current?.clientWidth / mountRef.current?.clientHeight,
       0.1,
-      1000
+      1000,
     );
     // Camera Position 설정
     camera.position.set(0, 0, 5);
@@ -39,7 +42,7 @@ export default function CameraBlender() {
     // renderer 출력 캔버스 크기 설정
     renderer.setSize(
       mountRef.current?.clientWidth,
-      mountRef.current?.clientHeight
+      mountRef.current?.clientHeight,
     );
     if (mountRef.current) {
       // 실제 DOM 노드에 존재 할때 renderer를 해당 DOM에 붙임.
@@ -93,7 +96,7 @@ export default function CameraBlender() {
           rendererRef.current.domElement.parentNode
         ) {
           rendererRef.current.domElement.parentNode.removeChild(
-            rendererRef.current.domElement
+            rendererRef.current.domElement,
           );
         }
       }

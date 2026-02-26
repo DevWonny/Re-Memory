@@ -20,12 +20,6 @@ export default function Main() {
   const session = useAuth((state) => state.session);
 
   useEffect(() => {
-    // if (!session) {
-    //   console.log(1111);
-    //   setFolderList([]);
-    //   return;
-    // }
-
     const onFetchFolderList = async () => {
       if (!session) {
         setFolderList([]);
@@ -38,13 +32,8 @@ export default function Main() {
         setFolderList([]);
       }
     };
-
     onFetchFolderList();
   }, [session]);
-
-  useEffect(() => {
-    console.log("🚀 ~ Main ~ folderList:", folderList);
-  }, [folderList]);
 
   return (
     <div className="main-container w-full h-screen flex md:flex-row sm:flex-col sm:h-full max-sm:flex-col max-sm:h-full">
@@ -53,7 +42,9 @@ export default function Main() {
       </div>
       {/* 폴더로 표출될 영역. 이미지가 저장 될때 카테고리(여행지) 별로 저장을 할 예정. 폴더는 해당 카테고리를 의미함. */}
       {/* 무한 스크롤 사용 예정 */}
-      <div className="folder-container md:w-[50%] h-screen grid  auto-rows-[140px] grid-cols-3 sm:grid-cols-3 max-sm:grid-cols-3 sm:w-full ">
+      <div
+        className={`folder-container md:w-[50%] h-screen ${folderList.length > 0 ? `grid  auto-rows-[140px] grid-cols-3 sm:grid-cols-3 max-sm:grid-cols-3 sm:w-full` : "flex items-center justify-center"} `}
+      >
         {folderList.length > 0 ? (
           folderList.map((folder: any) => (
             // * Folder 데이터로 표출할수 있는 부분 수정 필요
@@ -64,7 +55,10 @@ export default function Main() {
             />
           ))
         ) : (
-          <div>{`아직 구현 안됨(빈 공간 텍스트 및 이미지 추가 필요)`}</div>
+          <div className="empty-folder-item flex flex-col items-center justify-center gap-[20px]">
+            <p>아이콘</p>
+            <p className="whitespace-pre text-center leading-[2]">{`인화될 사진을 기다리고 있어요.\n여행지를 추가해보세요.`}</p>
+          </div>
         )}
       </div>
     </div>
