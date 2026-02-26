@@ -11,6 +11,7 @@ import { fetchFolderList } from "@/services/detail";
 import { useAuth } from "@/store/auth";
 // style
 import "@/styles/main.scss";
+import CameraRollIcon from "@mui/icons-material/CameraRoll";
 
 // * Main(카테고리 선택 삭제 + 전체 카테고리 삭제 버튼구현)
 // * Break Point -> sm(640px, 40rem, 모바일) 사이즈 부터 좌우가 아닌 상하 형태로 변경. 아래 폴더는 3개씩.
@@ -56,8 +57,8 @@ export default function Main() {
           ))
         ) : (
           <div className="empty-folder-item flex flex-col items-center justify-center gap-[20px]">
-            <p>아이콘</p>
-            <p className="whitespace-pre text-center leading-[2]">{`인화될 사진을 기다리고 있어요.\n여행지를 추가해보세요.`}</p>
+            <CameraRollIcon className="empty-icon" />
+            <p className="whitespace-pre text-center leading-[2] cursor-default">{`인화될 사진을 기다리고 있어요.\n여행지를 추가해보세요.`}</p>
           </div>
         )}
       </div>

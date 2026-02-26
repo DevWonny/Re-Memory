@@ -6,5 +6,9 @@ div.main-container {
     // overflow: hidden scroll;
     overflow-x: hidden;
     padding-top: 50px;
+
+    .empty-icon {
+      font-size: 64px;
+    }
   }
 }
