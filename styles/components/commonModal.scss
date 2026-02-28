@@ -1,0 +1,36 @@
+@import "@/styles/globals.scss";
+div.common-modal-container {
+  width: 430px;
+  height: fit-content;
+  padding: 50px 30px;
+  background-color: #000;
+  border-radius: 16px;
+
+  div.modal-contents {
+    h3 {
+      font-size: 18px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+
+  div.modal-button-contents {
+    button {
+      // * size는 추후 변경 예정
+      padding: 10px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 0.5px solid $border-color;
+      border-radius: 8px;
+      &:hover {
+        background-color: $point-color;
+        border: 0.5px solid $point-color;
+        color: $bg-color;
+        font-weight: 700;
+      }
+    }
+  }
+}

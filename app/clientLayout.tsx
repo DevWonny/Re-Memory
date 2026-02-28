@@ -6,6 +6,7 @@ import { useAuth } from "@/store/auth";
 // Component
 import Header from "./components/header";
 import Auth from "./components/auth";
+import CommonModal from "./components/commonModal";
 
 export default function ClientLayout({
   children,
@@ -51,6 +52,7 @@ export default function ClientLayout({
           onLoginClick={() => onAuthTypeCheck("login")}
         />
         {children}
+        <CommonModal />
       </div>
     </div>
   );
