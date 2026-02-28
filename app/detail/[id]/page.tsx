@@ -64,6 +64,7 @@ export default function Detail() {
 
   const onRemoveClick = async () => {
     await removeDetail(params.id as string);
+    router.replace("/");
   };
 
   useEffect(() => {
