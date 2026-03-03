@@ -65,7 +65,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         console.log("Auth Register Error - ", error);
         return;
       } else {
-        alert("회원가입 성공!");
+        openModal("SIGNUP_COMPLETE");
         onCloseClick();
       }
     } else if (type === "login") {
@@ -89,11 +89,6 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         onCloseClick();
       }
     }
-  };
-
-  const onTest = () => {
-    openModal("SIGNUP_COMPLETE");
-    onCloseClick();
   };
 
   return (
@@ -158,8 +153,6 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         >
           {`${type === "register" ? "로그인" : "회원가입"}으로 이동`}
         </button>
-
-        <button onClick={onTest}>Test</button>
       </div>
     </div>
   );

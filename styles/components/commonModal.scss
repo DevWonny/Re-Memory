@@ -5,6 +5,10 @@ div.common-modal-container {
   padding: 50px 30px;
   background-color: #000;
   border-radius: 16px;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 
   div.modal-contents {
     h3 {

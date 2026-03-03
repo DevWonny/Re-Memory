@@ -53,7 +53,7 @@ export default function CommonModal({
   const config = modalConfig[type];
 
   return (
-    <div className="common-modal-container absolute flex flex-col items-center justify-center gap-[20px]">
+    <div className="common-modal-container fixed flex flex-col items-center justify-center gap-[20px]">
       <div className="modal-contents flex flex-col items-center justify-center gap-[5px]">
         <h3>{config.title}</h3>
         <p>{config.description}</p>
