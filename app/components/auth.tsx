@@ -83,7 +83,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         return;
       } else {
         alert("로그인 성공!");
-        setSession(data);
+        setSession(data.session);
         onCloseClick();
       }
     }

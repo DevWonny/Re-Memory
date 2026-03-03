@@ -3,13 +3,15 @@
 // * id : number, user_id, uuid, image array , text, date, text
 // * user_id와 UUID를 통해서 수정 및 상세 페이지 호출
 import { supabase } from '@/lib/supabase';
+// type
+import type { DateRange } from 'react-day-picker';
 
 interface UploadFile {
   file: File,
   previewUrl: string
 }
 
-export const uploadImage = async (userId: string, images: UploadFile[], dateRange: any, category: string, description: string) => {
+export const uploadImage = async (userId: string, images: UploadFile[], dateRange: DateRange, category: string, description: string) => {
 
   // * Image Upload 및 DB용 변환
   const imageDBList = await Promise.all(

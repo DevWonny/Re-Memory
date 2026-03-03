@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+// type
+import type { Session } from '@supabase/supabase-js';
 
 interface AuthData {
-  session: any,
-  setSession: (session: any) => void
+  session: Session | null,
+  setSession: (session: Session | null) => void
 }
 
 export const useAuth = create<AuthData>()(

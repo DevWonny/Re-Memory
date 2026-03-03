@@ -6,7 +6,6 @@
 // *    -> 좌 : 이미지 미리보기(Swiper로 확인 하게) + 파일 추가 및 제거 + 초기화
 // *    -> 우 : 카테고리 입력 + 설명 + 취소 및 저장 버튼
 // * Mobile -> PC에서 좌우로 되어있던 것들을 상하로 Layout 변경
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 
 "use client";
@@ -16,6 +15,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 import { DayPicker } from "react-day-picker";
 import dayjs from "dayjs";
+// type
+import type { DateRange } from "react-day-picker";
 // components
 import CommonInput from "@/app/components/commonInput";
 // store
@@ -37,7 +38,7 @@ export default function Upload() {
   const router = useRouter();
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<UploadFile[]>([]);
-  const [dateRange, setDateRange] = useState<any>();
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const { session } = useAuth();
@@ -60,7 +61,7 @@ export default function Upload() {
     e.target.value = "";
   };
 
-  const onRemoveImage = (image: any) => {
+  const onRemoveImage = (image: UploadFile) => {
     const findFile = image.previewUrl;
     if (!findFile) return;
 

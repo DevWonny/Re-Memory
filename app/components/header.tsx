@@ -10,8 +10,8 @@ import "@/styles/components/header.scss";
 
 // interface
 interface HeaderType {
-  onLoginClick?: (e: any) => void;
-  onRegisterClick?: (e: any) => void;
+  onLoginClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onRegisterClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
