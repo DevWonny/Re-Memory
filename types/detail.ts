@@ -6,11 +6,12 @@ export interface FolderListItem {
 }
 
 // * 상세 페이지에서 보여지는 Data Type
-interface PreviewImage {
+export interface PreviewImage {
   name: string;
   size: number;
   type: string;
   url: string;
+  path?: string;
 }
 export interface DetailItem {
   id: string;

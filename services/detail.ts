@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 // type
-import { FolderListItem } from "@/types/detail";
+import { FolderListItem, DetailItem } from "@/types/detail";
 interface ImageData {
   name: string,
   path: string,
@@ -21,12 +21,11 @@ export const fetchFolderList = async (userId: string): Promise<FolderListItem[]>
 
 // * Detail에서 표출될 데이터 호출
 // * id -> 게시물 ID
-export const fetchDetail = async (userId: string, id: string) => {
+export const fetchDetail = async (userId: string, id: string): Promise<DetailItem[]> => {
   const { data, error } = await supabase.from('folder').select('*').eq('user_id', userId).eq('id', id);
-  console.log("🚀 ~ fetchDetail ~ data:", data)
   if (error) {
     console.log('Fetch Detail Error - ', error);
-    return;
+    return [];
   }
 
   return data;

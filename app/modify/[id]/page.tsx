@@ -31,6 +31,7 @@ interface PreviewImage {
   size: number;
   type: string;
   url: string;
+  path?: string;
 }
 
 interface DBImage {
