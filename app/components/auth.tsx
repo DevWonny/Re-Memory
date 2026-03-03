@@ -13,6 +13,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 // store
 import { useAuth } from "@/store/auth";
+import { useModalStore } from "@/store/modal";
 // style
 import "@/styles/components/auth.scss";
 
@@ -28,6 +29,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
   const [pwValue, setPwValue] = useState("");
   const [pwCheck, setPwCheck] = useState("");
   const { setSession } = useAuth();
+  const { openModal } = useModalStore();
 
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
@@ -87,6 +89,11 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         onCloseClick();
       }
     }
+  };
+
+  const onTest = () => {
+    openModal("SIGNUP_COMPLETE");
+    onCloseClick();
   };
 
   return (
@@ -151,6 +158,8 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         >
           {`${type === "register" ? "로그인" : "회원가입"}으로 이동`}
         </button>
+
+        <button onClick={onTest}>Test</button>
       </div>
     </div>
   );
