@@ -8,12 +8,13 @@ import dayjs from "dayjs";
 // component
 import Image from "next/image";
 import folder from "@/public/folder.png";
-import label from "@/public/label.png";
 import "@/styles/components/folder.scss";
+// style
+import { FolderListItem } from "@/types/detail";
 
 // interface
 interface FolderType {
-  data: any;
+  data: FolderListItem;
   onFolderClick: () => void;
 }
 

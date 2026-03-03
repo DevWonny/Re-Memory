@@ -1,4 +1,6 @@
 import { supabase } from "@/lib/supabase";
+// type
+import { FolderListItem } from "@/types/detail";
 interface ImageData {
   name: string,
   path: string,
@@ -8,7 +10,7 @@ interface ImageData {
 }
 
 // * Main에서 표출될 폴더 리스트 호출
-export const fetchFolderList = async (userId: string) => {
+export const fetchFolderList = async (userId: string): Promise<FolderListItem[]> => {
   const { data, error } = await supabase.from('folder').select('id, category, created_at').eq('user_id', userId);
   if (error) {
     console.log('Fetch Folder List Error - ', error);

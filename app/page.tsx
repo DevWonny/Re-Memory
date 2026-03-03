@@ -9,6 +9,9 @@ import Folder from "./components/folder";
 import { fetchFolderList } from "@/services/detail";
 // store
 import { useAuth } from "@/store/auth";
+// type
+import { FolderListItem } from "@/types/detail";
+
 // style
 import "@/styles/main.scss";
 import CameraRollIcon from "@mui/icons-material/CameraRoll";
@@ -17,7 +20,7 @@ import CameraRollIcon from "@mui/icons-material/CameraRoll";
 // * Break Point -> sm(640px, 40rem, 모바일) 사이즈 부터 좌우가 아닌 상하 형태로 변경. 아래 폴더는 3개씩.
 export default function Main() {
   const router = useRouter();
-  const [folderList, setFolderList] = useState<any>([]);
+  const [folderList, setFolderList] = useState<FolderListItem[]>([]);
   const session = useAuth((state) => state.session);
 
   useEffect(() => {
@@ -27,6 +30,7 @@ export default function Main() {
         return;
       }
       const fetchData = await fetchFolderList(session.user.id);
+
       if (fetchData && fetchData.length > 0) {
         setFolderList(fetchData);
       } else {
@@ -47,7 +51,7 @@ export default function Main() {
         className={`folder-container md:w-[50%] h-screen ${folderList.length > 0 ? `grid  auto-rows-[140px] grid-cols-3 sm:grid-cols-3 max-sm:grid-cols-3 sm:w-full` : "flex items-center justify-center"} `}
       >
         {folderList.length > 0 ? (
-          folderList.map((folder: any) => (
+          folderList.map((folder: FolderListItem) => (
             // * Folder 데이터로 표출할수 있는 부분 수정 필요
             <Folder
               key={`folder-icon-${folder.id}`}
