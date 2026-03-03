@@ -11,7 +11,7 @@ interface UploadFile {
   previewUrl: string
 }
 
-export const uploadImage = async (userId: string, images: UploadFile[], dateRange: DateRange, category: string, description: string) => {
+export const uploadImage = async (userId: string, images: UploadFile[], dateRange: DateRange | undefined, category: string, description: string) => {
 
   // * Image Upload 및 DB용 변환
   const imageDBList = await Promise.all(
@@ -37,8 +37,8 @@ export const uploadImage = async (userId: string, images: UploadFile[], dateRang
     user_id: userId,
     description,
     category,
-    date_from: dateRange.from,
-    date_to: dateRange.to,
+    date_from: dateRange?.from,
+    date_to: dateRange?.to,
     images: imageDBList,
   })
 

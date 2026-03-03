@@ -23,6 +23,7 @@ export const fetchFolderList = async (userId: string): Promise<FolderListItem[]>
 // * id -> 게시물 ID
 export const fetchDetail = async (userId: string, id: string) => {
   const { data, error } = await supabase.from('folder').select('*').eq('user_id', userId).eq('id', id);
+  console.log("🚀 ~ fetchDetail ~ data:", data)
   if (error) {
     console.log('Fetch Detail Error - ', error);
     return;

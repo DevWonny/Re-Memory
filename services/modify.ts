@@ -2,11 +2,10 @@
 import { supabase } from '@/lib/supabase';
 
 // interface
-interface ModifyImageType {
-  name: string,
-  path: string,
-  size: number,
-  type: string | null,
+interface PreviewImage {
+  name: string;
+  size: number;
+  type: string;
   url: string;
 }
 
@@ -16,7 +15,7 @@ interface NewDBImage {
 }
 
 
-export const modifyFolder = async (id: any, userId: string, newImages: NewDBImage[], removeImages: any, dateRange: any, category: string, description: string) => {
+export const modifyFolder = async (id: string, userId: string, newImages: NewDBImage[], removeImages: PreviewImage[], dateRange: any, category: string, description: string) => {
   // * DB 조회
   const { data: currentDB } = await supabase.from('folder').select('*').eq('id', id).single();
   const currentImage = currentDB.images ?? [];

@@ -9,6 +9,7 @@ import { useRouter, useParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 import { DayPicker } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import dayjs from "dayjs";
 // components
 import CommonInput from "@/app/components/commonInput";
@@ -23,22 +24,36 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import "react-day-picker/style.css";
 
+// type
+import { DetailItem } from "@/types/detail";
+interface PreviewImage {
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+}
+
+interface DBImage {
+  file: File;
+  previewUrl: string;
+}
+
 export default function Upload() {
   const router = useRouter();
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  // * 해당 페이지에서 미리보기로 보여줄 이미지.
-  const [images, setImages] = useState<any>([]);
+  // * 해당 페이지에서 미리보기로 보여줄 이미지. 해당 페이지에서만 활용됨.
+  const [images, setImages] = useState<PreviewImage[]>([]);
   // * 삭제할 이미지 저장. supabase storage에서 완전히 삭제시 활용.
-  const [removeImage, setRemoveImage] = useState<any>([]);
+  const [removeImage, setRemoveImage] = useState<PreviewImage[]>([]);
   // * 추가할 이미지 저장. 수정 시 supabase로 넘겨줄 내용
-  const [newImage, setNewImage] = useState<any>([]);
+  const [newImage, setNewImage] = useState<DBImage[]>([]);
   const { session } = useAuth();
   const [category, setCategory] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null>(null);
-  const [dateRange, setDateRange] = useState<any>(null);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
   // * Reset 기능에서 사용
-  const [originalData, setOriginalData] = useState<any>(null);
+  const [originalData, setOriginalData] = useState<DetailItem | null>(null);
 
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,20 +73,18 @@ export default function Upload() {
     // * DB용
     const newDBImage = Array.from(files).map((file) => ({
       file,
-      previewURL: URL.createObjectURL(file),
+      previewUrl: URL.createObjectURL(file),
     }));
-    setImages((prev: any) => [...prev, ...newImage]);
-    setNewImage((prev: any) => [...prev, ...newDBImage]);
+    setImages((prev) => [...prev, ...newImage]);
+    setNewImage((prev) => [...prev, ...newDBImage]);
     e.target.value = "";
   };
 
-  const onRemoveImage = (image: any) => {
+  const onRemoveImage = (image: PreviewImage) => {
     const findFile = image.url;
     if (!findFile) return;
-    const removeImageList = images.filter(
-      (image: any) => image.url === findFile,
-    );
-    const result = images.filter((image: any) => image.url !== findFile);
+    const removeImageList = images.filter((image) => image.url === findFile);
+    const result = images.filter((image) => image.url !== findFile);
     setRemoveImage(removeImageList);
     setImages(result);
   };
@@ -85,7 +98,7 @@ export default function Upload() {
   };
 
   const onReset = () => {
-    if (images.length === 0) {
+    if (!originalData) {
       return;
     }
 
@@ -106,7 +119,7 @@ export default function Upload() {
     setImages([]);
     setCategory(null);
     setDescription(null);
-    setDateRange(null);
+    setDateRange(undefined);
     setRemoveImage([]);
     setNewImage([]);
     router.back();
@@ -179,7 +192,7 @@ export default function Upload() {
                   modules={[EffectCards]}
                   className="preview-swiper flex items-center justify-center w-full h-full"
                 >
-                  {images.map((image: any, index: number) => (
+                  {images.map((image, index) => (
                     <SwiperSlide key={`preview-swiper-image-${index}`}>
                       <img
                         src={image.url}
@@ -198,7 +211,7 @@ export default function Upload() {
             {/* // * Image List  */}
             <div className="image-list-content">
               {images.length > 0 ? (
-                images.map((img: any, index: number) => (
+                images.map((img, index) => (
                   <p
                     key={`image-list-item-${index}`}
                     onClick={() => onRemoveImage(img)}
