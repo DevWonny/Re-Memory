@@ -113,6 +113,9 @@ export default function Upload() {
       category,
       description,
     );
+    alert("등록 완료!");
+    // 추후 모달로 변경하기!
+    router.replace("/");
   };
 
   useEffect(() => {
