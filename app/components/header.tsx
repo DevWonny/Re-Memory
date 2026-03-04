@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 // store
 import { useAuth } from "@/store/auth";
+import { useModalStore } from "@/store/modal";
 // style
 import "@/styles/components/header.scss";
 
@@ -19,6 +20,7 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
   const pathName = usePathname();
   const session = useAuth((state) => state.session);
   const setSession = useAuth((state) => state.setSession);
+  const { openModal } = useModalStore();
 
   const onLogoClick = () => {
     console.log(pathName);
@@ -40,6 +42,11 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
     setSession(null);
   };
 
+  const onWithdrawClick = () => {
+    openModal("WITHDRAW_WARNING");
+    console.log("회원탈퇴!");
+  };
+
   return (
     <div className="header-container flex items-center justify-between w-full fixed">
       <div className="logo-container cursor-pointer" onClick={onLogoClick}>
@@ -52,6 +59,9 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderType) {
               {session.user.user_metadata.displayName}
             </p>
             <button onClick={onLogoutClick}>로그아웃</button>
+            <button onClick={onWithdrawClick} className="withdraw-button">
+              회원탈퇴
+            </button>
           </>
         ) : (
           <>

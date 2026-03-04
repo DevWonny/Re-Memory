@@ -14,7 +14,12 @@ export default function ClientLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const [authType, setAuthType] = useState("");
   const setSession = useAuth((state) => state.setSession);
-  const { isOpen: isModalOpen, closeModal } = useModalStore();
+  const {
+    isOpen: isModalOpen,
+    closeModal,
+    type: modalType,
+    openModal,
+  } = useModalStore();
 
   const onAuthTypeCheck = (type: string) => {
     setAuthType(type);
@@ -34,7 +39,16 @@ export default function ClientLayout({
 
   // Common Modal Close
   const onModalConfirm = () => {
-    console.log("test");
+    if (modalType === "SIGNUP_COMPLETE" || modalType === "WITHDRAW_COMPLETE") {
+      closeModal();
+      return;
+    }
+    if (modalType === "WITHDRAW_WARNING") {
+      openModal("WITHDRAW_COMPLETE");
+    }
+  };
+
+  const onModalCancel = () => {
     closeModal();
   };
 
@@ -54,7 +68,12 @@ export default function ClientLayout({
             onChangeType={(type: string) => onAuthTypeCheck(type)}
           ></Auth>
         )}
-        {isModalOpen && <CommonModal onConfirmClick={onModalConfirm} />}
+        {isModalOpen && (
+          <CommonModal
+            onConfirmClick={onModalConfirm}
+            onCancelClick={onModalCancel}
+          />
+        )}
       </div>
 
       <div

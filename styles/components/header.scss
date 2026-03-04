@@ -15,6 +15,12 @@ div.header-container {
         color: $point-color;
         font-weight: 700;
       }
+
+      &.withdraw-button {
+        &:hover {
+          color: $danger-color;
+        }
+      }
     }
   }
 }
