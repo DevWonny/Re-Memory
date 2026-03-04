@@ -37,7 +37,7 @@ interface DetailDataType {
 
 interface DetailImageType {
   name: string;
-  path: string;
+  path?: string;
   size: number;
   type: string;
   url: string;

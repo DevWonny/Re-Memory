@@ -14,10 +14,12 @@ export interface PreviewImage {
   path?: string;
 }
 export interface DetailItem {
+  user_id: string;
   id: string;
   images: PreviewImage[];
   category: string;
   description: string;
   date_to: string;
   date_from: string;
+  create_at: string;
 }

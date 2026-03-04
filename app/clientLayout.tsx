@@ -60,12 +60,6 @@ export default function ClientLayout({
     }
 
     if (modalType === "WITHDRAW_COMPLETE") {
-      // const { error } = await supabase.auth.signOut();
-      // if (error) {
-      //   console.log("Withdraw Logout Error!", error);
-      //   return;
-      // }
-
       closeModal();
       router.replace("/");
       setSession(null);
