@@ -4,6 +4,8 @@ import { supabase } from "@/lib/supabase";
 // store
 import { useAuth } from "@/store/auth";
 import { useModalStore } from "@/store/modal";
+// service
+import { withdrawUser } from "@/services/withdraw";
 // Component
 import Header from "./components/header";
 import Auth from "./components/auth";
@@ -14,6 +16,7 @@ export default function ClientLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const [authType, setAuthType] = useState("");
   const setSession = useAuth((state) => state.setSession);
+  const session = useAuth((state) => state.session);
   const {
     isOpen: isModalOpen,
     closeModal,
@@ -44,6 +47,7 @@ export default function ClientLayout({
       return;
     }
     if (modalType === "WITHDRAW_WARNING") {
+      withdrawUser(session?.user.id);
       openModal("WITHDRAW_COMPLETE");
     }
   };
