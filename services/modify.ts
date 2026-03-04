@@ -30,7 +30,7 @@ export const modifyFolder = async (id: string, userId: string, newImages: NewDBI
 
   const newImageDBList = await Promise.all(
     (newImages ?? []).map(async ({ file }) => {
-      const path = `${crypto.randomUUID()}`;
+      const path = `${userId}/${crypto.randomUUID()}`;
       const { error } = await supabase.storage.from('images').upload(path, file);
 
       if (error) {

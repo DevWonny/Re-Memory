@@ -16,7 +16,7 @@ export const uploadImage = async (userId: string, images: UploadFile[], dateRang
   // * Image Upload 및 DB용 변환
   const imageDBList = await Promise.all(
     images.map(async ({ file }) => {
-      const path = `${crypto.randomUUID()}`
+      const path = `${userId}/${crypto.randomUUID()}`
 
       const { error } = await supabase.storage.from('images').upload(path, file);
 
