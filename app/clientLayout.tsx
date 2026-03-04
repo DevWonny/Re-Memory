@@ -1,11 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 // store
 import { useAuth } from "@/store/auth";
 import { useModalStore } from "@/store/modal";
 // service
-import { withdrawUser } from "@/services/withdraw";
 // Component
 import Header from "./components/header";
 import Auth from "./components/auth";
@@ -15,8 +15,8 @@ export default function ClientLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const [authType, setAuthType] = useState("");
+  const router = useRouter();
   const setSession = useAuth((state) => state.setSession);
-  const session = useAuth((state) => state.session);
   const {
     isOpen: isModalOpen,
     closeModal,
@@ -34,21 +34,42 @@ export default function ClientLayout({
 
   const onGetSession = async () => {
     const { data } = await supabase.auth.getSession();
-
     if (data) {
       setSession(data.session);
     }
   };
 
   // Common Modal Close
-  const onModalConfirm = () => {
-    if (modalType === "SIGNUP_COMPLETE" || modalType === "WITHDRAW_COMPLETE") {
+  const onModalConfirm = async () => {
+    if (modalType === "SIGNUP_COMPLETE") {
       closeModal();
       return;
     }
+
     if (modalType === "WITHDRAW_WARNING") {
-      withdrawUser(session?.user.id);
-      openModal("WITHDRAW_COMPLETE");
+      const res = await fetch("/api/withdraw", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        openModal("WITHDRAW_COMPLETE");
+      } else {
+        alert("탈퇴 중 오류 발생!");
+      }
+    }
+
+    if (modalType === "WITHDRAW_COMPLETE") {
+      // const { error } = await supabase.auth.signOut();
+      // if (error) {
+      //   console.log("Withdraw Logout Error!", error);
+      //   return;
+      // }
+
+      closeModal();
+      router.replace("/");
+      setSession(null);
+      return;
     }
   };
 
