@@ -10,6 +10,7 @@ import { useModalStore } from "@/store/modal";
 import Header from "./components/header";
 import Auth from "./components/auth";
 import CommonModal from "./components/commonModal";
+import Loading from "./components/loading";
 
 export default function ClientLayout({
   children,
@@ -104,6 +105,7 @@ export default function ClientLayout({
         />
         {children}
       </div>
+      <Loading />
     </div>
   );
 }

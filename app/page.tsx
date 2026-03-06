@@ -11,7 +11,6 @@ import { fetchFolderList } from "@/services/detail";
 import { useAuth } from "@/store/auth";
 // type
 import { FolderListItem } from "@/types/detail";
-
 // style
 import "@/styles/main.scss";
 import CameraRollIcon from "@mui/icons-material/CameraRoll";
