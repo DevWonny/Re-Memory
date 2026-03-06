@@ -24,6 +24,7 @@ import CommonInput from "@/app/components/commonInput";
 import { useAuth } from "@/store/auth";
 // service
 import { uploadImage } from "@/services/upload";
+import { useModalStore } from "@/store/modal";
 // style
 import "@/styles/upload.scss";
 import "swiper/css";

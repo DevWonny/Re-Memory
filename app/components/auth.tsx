@@ -84,7 +84,6 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         console.log(`Login Error(auth.tsx) - `, error.message);
         return;
       } else {
-        alert("로그인 성공!");
         setSession(data.session);
         onCloseClick();
       }
