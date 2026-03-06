@@ -105,7 +105,6 @@ export default function ClientLayout({
         />
         {children}
       </div>
-      <Loading />
     </div>
   );
 }
