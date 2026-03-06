@@ -11,6 +11,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 import { DayPicker } from "react-day-picker";
@@ -93,14 +94,6 @@ export default function Upload() {
     router.replace("/");
   };
 
-  // const onTypingInput = (value: string, type: string) => {
-  //   if (type === "category") {
-  //     setCategory(value);
-  //   } else if (type === "description") {
-  //     setDescription(value);
-  //   }
-  // };
-
   const onSaveClick = async () => {
     if (!session) {
       console.log("Upload Page Error! - onSaveClick");
@@ -147,9 +140,11 @@ export default function Upload() {
                 >
                   {images.map((image, index) => (
                     <SwiperSlide key={`preview-swiper-image-${index}`}>
-                      <img
+                      <Image
                         src={image.previewUrl}
                         alt="Preview Image"
+                        width={1000}
+                        height={1000}
                         className="w-full h-full"
                       />
                     </SwiperSlide>

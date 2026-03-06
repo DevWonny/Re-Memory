@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import Image from "next/image";
 // service
 import { fetchDetail, removeDetail } from "@/services/detail";
 // store
@@ -100,7 +101,12 @@ export default function Detail() {
           >
             {detailImage.map((item, index) => (
               <SwiperSlide key={`detail-image-swiper-slide-${index}`}>
-                <img src={`${item.url}`} alt="Detail Image" />
+                <Image
+                  src={`${item.url}`}
+                  height={400}
+                  width={1000}
+                  alt="Detail Image"
+                />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -112,7 +118,12 @@ export default function Detail() {
                 className={`image-item ${activeSwiperIndex === 0 && "active"}`}
                 onClick={() => swiper?.slideTo(0)}
               >
-                <img src={`${item.url}`} alt="All Detail Image" />
+                <Image
+                  src={`${item.url}`}
+                  alt="All Detail Image"
+                  width={50}
+                  height={50}
+                />
               </div>
             ))}
           </div>

@@ -7,6 +7,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Image from "next/image";
 import { EffectCards } from "swiper/modules";
 import { DayPicker } from "react-day-picker";
 import type { DateRange } from "react-day-picker";
@@ -195,9 +196,11 @@ export default function Upload() {
                 >
                   {images.map((image, index) => (
                     <SwiperSlide key={`preview-swiper-image-${index}`}>
-                      <img
+                      <Image
                         src={image.url}
                         alt="Preview Image"
+                        width={1000}
+                        height={1000}
                         className="w-full h-full"
                       />
                     </SwiperSlide>
