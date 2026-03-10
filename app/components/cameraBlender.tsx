@@ -74,6 +74,23 @@ export default function CameraBlender() {
       scene.add(model);
     });
 
+    // Resize
+    const handleResize = () => {
+      if (!mountRef.current || !rendererRef.current) return;
+
+      const width = mountRef.current.clientWidth;
+      const height = mountRef.current.clientHeight;
+
+      // 카메라 종회비 수정
+      camera.aspect = width / height;
+      // 변경사항 적용
+      camera.updateProjectionMatrix();
+      // 렌더러 크기 수정
+      rendererRef.current.setSize(width, height);
+    };
+
+    // Event Listener
+    window.addEventListener("resize", handleResize);
     // Animate
     // 애니메이션 루프 생성. 여기에 모델 회전, 물리 업데이트, 컨트롤 업데이트 등을 넣을 수 있음.
     const animate = () => {
@@ -85,8 +102,8 @@ export default function CameraBlender() {
     animate();
 
     // CleanUp -> Component 언마운트 시 실행, 리소스를 안전하게 정리.
-
     return () => {
+      window.removeEventListener("resize", handleResize);
       if (rendererRef.current) {
         rendererRef.current.dispose(); // WebGL 관련 내부 자원(버퍼 / 텍스쳐 등)을 해제함.
         rendererRef.current.forceContextLoss?.(); // 렌더러의 GL Context를 강제로 잃게 하여 메모리 누수 방지.
