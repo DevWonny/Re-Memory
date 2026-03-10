@@ -46,6 +46,7 @@ export default function Upload() {
   const [description, setDescription] = useState("");
   const { session } = useAuth();
   const setIsLoading = useLoading((state) => state.setIsLoading);
+  const openModal = useModalStore((state) => state.openModal);
   // input
 
   // function
@@ -114,9 +115,7 @@ export default function Upload() {
     );
 
     setIsLoading(false);
-    alert("등록 완료!");
-    // 추후 모달로 변경하기!
-    router.replace("/");
+    openModal("POST_COMPLETE");
   };
 
   useEffect(() => {

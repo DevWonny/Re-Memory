@@ -47,11 +47,13 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
       // * 닉네임은 email의 앞부분 활용.
       if (!idValue || !pwValue || !pwCheck) {
         setIsLoading(false);
+        // ! validation -> 해당 input 아래 text로 표기
         alert("아이디 및 비밀번호를 입력해주세요.");
         return;
       }
       if (pwValue && pwCheck && pwValue !== pwCheck) {
         setIsLoading(false);
+        // ! validation -> 해당 input 아래 text로 표기
         alert("비밀번호를 확인해주세요.");
         return;
       }
@@ -78,6 +80,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
     } else if (type === "login") {
       if (!idValue || !pwValue) {
         setIsLoading(false);
+        // ! validation -> 해당 input 아래 text로 표기
         alert("아이디 및 비밀번호를 입력해주세요.");
         return;
       }
@@ -89,6 +92,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
 
       if (error) {
         setIsLoading(false);
+        // ! validation -> 해당 input 아래 text로 표기
         alert("이메일 및 비밀번호를 확인해주세요.");
         console.log(`Login Error(auth.tsx) - `, error.message);
         return;

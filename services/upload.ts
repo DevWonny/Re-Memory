@@ -46,6 +46,7 @@ export const uploadImage = async (userId: string, images: UploadFile[], dateRang
     console.log('Upload Error')
     throw error;
   }
+
 }
 
 

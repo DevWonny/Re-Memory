@@ -1,5 +1,6 @@
 // * 모달 컴포넌트.
 // * Type -> 회원가입 완료(sign confirm) / 탈퇴 경고(withdrawal warning) / 탈퇴 완료(withdrawal confirm) / 게시물 삭제 경고(folder delete warning)
+// *      -> 게시물 등록 완료(post complete) / 탈퇴 오류 발생(withdrawal error) / 게시물 validation 경고(post validation)
 // store
 import { useModalStore } from "@/store/modal";
 // style
@@ -46,6 +47,21 @@ export default function CommonModal({
       description: "당신의 추억을 지우시겠습니까?",
       confirm: "삭제",
       cancel: "취소",
+    },
+    POST_COMPLETE: {
+      title: "업로드 완료",
+      description: "당신의 추억이 저장되었습니다.",
+      confirm: "확인",
+    },
+    WITHDRAWAL_ERROR: {
+      title: "회원탈퇴 실패",
+      description: "",
+      confirm: "확인",
+    },
+    POST_VALIDATION: {
+      title: "",
+      description: "",
+      confirm: "확인",
     },
   };
 

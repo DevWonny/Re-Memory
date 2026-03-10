@@ -68,6 +68,11 @@ export default function ClientLayout({
       setSession(null);
       return;
     }
+
+    if (modalType === "POST_COMPLETE") {
+      closeModal();
+      router.replace("/");
+    }
   };
 
   const onModalCancel = () => {
