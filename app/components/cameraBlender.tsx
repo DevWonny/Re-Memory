@@ -72,7 +72,7 @@ export default function CameraBlender() {
     // GLTF Loader 인스턴스 생성
     const loader = new GLTFLoader();
 
-    loader.load("/render_image.glb", (gltf) => {
+    loader.load("/Kodac_rendering_image.glb", (gltf) => {
       // 모델링된 파일을 비동기 로드. 로드 성공 시 모델의 루트 씬을 가져와 model로 저장하고, 스케일 설정 후 씬에 추가함.
       const model = gltf.scene;
       model.scale.set(1, 1, 1);
