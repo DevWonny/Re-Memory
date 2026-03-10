@@ -47,7 +47,8 @@ export default function Main() {
 
   return (
     <div className="main-container w-full h-screen flex md:flex-row sm:flex-col sm:h-full max-sm:flex-col max-sm:h-full">
-      <div className="camera-blending-container md:w-[50%] md:h-screen sm:w-full sm:h-[300px] max-sm:w-full max-sm:h-[300px]">
+      <div className="camera-blending-container relative md:w-[50%] md:h-screen sm:w-full sm:h-[300px] max-sm:w-full max-sm:h-[300px]">
+        <div className="shutter-guide">{`추억을 간직하려면 눌러보세요`}</div>
         <CameraBlender />
       </div>
       {/* 폴더로 표출될 영역. 이미지가 저장 될때 카테고리(여행지) 별로 저장을 할 예정. 폴더는 해당 카테고리를 의미함. */}

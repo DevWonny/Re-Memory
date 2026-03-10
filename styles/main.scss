@@ -1,7 +1,23 @@
 div.main-container {
   div.camera-blending-container {
     padding-top: 50px;
+
+    div.shutter-guide {
+      position: absolute;
+      top: 40%;
+      left: 20%;
+      padding: 8px 16px;
+      background: rgba(#fff, 0.05);
+      backdrop-filter: blur(8px);
+      border-left: 2px solid #ff0000;
+      color: #eee;
+      font-size: 14px;
+      letter-spacing: 0.1rem;
+      pointer-events: none;
+      animation: float 3s ease-in-out infinite;
+    }
   }
+
   div.folder-container {
     // overflow: hidden scroll;
     overflow-x: hidden;
@@ -10,5 +26,15 @@ div.main-container {
     .empty-icon {
       font-size: 64px;
     }
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }

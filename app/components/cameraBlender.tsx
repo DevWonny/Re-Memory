@@ -102,6 +102,11 @@ export default function CameraBlender() {
     // GLTF Loader 인스턴스 생성
     const loader = new GLTFLoader();
 
+    // mouse over
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let shutterButton: THREE.Object3D | null;
+
     loader.load("/Kodac_rendering_image.glb", (gltf) => {
       // 모델링된 파일을 비동기 로드. 로드 성공 시 모델의 루트 씬을 가져와 model로 저장하고, 스케일 설정 후 씬에 추가함.
       const model = gltf.scene;
@@ -109,8 +114,39 @@ export default function CameraBlender() {
       // 초기 뷰 설정
       model.rotation.y = THREE.MathUtils.degToRad(45);
       model.rotation.x = THREE.MathUtils.degToRad(45);
+
+      // 셔터 참조 저장
+      shutterButton = model.getObjectByName("Cylinder001") || null;
       scene.add(model);
     });
+
+    // 마우스 움직임 감지
+    const onMouseMove = (e: MouseEvent) => {
+      if (!mountRef.current || !camera) return;
+
+      const rect = mountRef.current.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(scene.children, true);
+
+      // 셔터 위에 마우스 있는지 확인
+      const isHovering =
+        intersects.length > 0 &&
+        (intersects[0].object === shutterButton ||
+          intersects[0].object.name.includes("Cylinder001"));
+
+      document.body.style.cursor = isHovering ? "pointer" : "default";
+      // 셔터 색상 변경
+      if (shutterButton && (shutterButton as THREE.Mesh).material) {
+        const material = (shutterButton as THREE.Mesh)
+          .material as THREE.MeshStandardMaterial;
+        material.emissive.setHex(isHovering ? 0x333333 : 0x000000);
+      }
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
 
     // Resize
     const handleResize = () => {
@@ -129,11 +165,13 @@ export default function CameraBlender() {
 
     // Event Listener
     window.addEventListener("resize", handleResize);
+
     // Animate
     // 애니메이션 루프 생성. 여기에 모델 회전, 물리 업데이트, 컨트롤 업데이트 등을 넣을 수 있음.
     const animate = () => {
       // requestAnimationFrame를 반복으로 호출.
       requestAnimationFrame(animate);
+
       // 아래 코드로 씬을 렌더링
       renderer.render(scene, camera);
     };
