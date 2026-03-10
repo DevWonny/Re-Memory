@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 // store
 import { useAuth } from "@/store/auth";
 import { useModalStore } from "@/store/modal";
@@ -10,23 +11,48 @@ import { useModalStore } from "@/store/modal";
 export default function CameraBlender() {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Cleanup 혹은 외부 접근 시 사용하기 위해 Renderer를 따로 저장.
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const router = useRouter();
   const session = useAuth((state) => state.session);
   const openModal = useModalStore((state) => state.openModal);
 
-  const onClickBlender = () => {
-    if (!mountRef.current || !session) {
-      openModal("LOGIN_CHECK");
-      return;
-    }
+  const onClickBlender = (e: React.MouseEvent) => {
+    if (!mountRef.current || !cameraRef.current || !sceneRef.current) return;
+    // 마우스 클릭 위치를 -1 ~ 1 사이의 NDC 좌표로 변환
+    const rect = mountRef.current.getBoundingClientRect();
+    const mouse = new THREE.Vector2();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
-    router.push("/upload");
+    // Raycaster 설정
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, cameraRef.current);
+
+    // 교차하는 물체 확인(scene.children 전체 검사)
+    const intersects = raycaster.intersectObjects(
+      sceneRef.current.children,
+      true,
+    );
+
+    if (intersects.length > 0) {
+      const clickedObject = intersects[0].object;
+
+      // 특정 이름을 가진 부위를 클릭했을 때만 동작
+      if (clickedObject.name === "Cylinder001") {
+        if (!session) {
+          openModal("LOGIN_CHECK");
+          return;
+        }
+        router.push("/upload");
+      }
+    }
   };
 
   useEffect(() => {
     const scene = new THREE.Scene(); // Scene 생성
+    sceneRef.current = scene;
     scene.background = new THREE.Color(0x0f0f0f);
-    console.log(mountRef.current?.clientWidth);
     if (!mountRef.current) {
       console.log("Camera Blender Not Mount!");
       return;
@@ -39,6 +65,7 @@ export default function CameraBlender() {
       0.1,
       1000,
     );
+    cameraRef.current = camera;
     // Camera Position 설정
     camera.position.set(0, 0, 5);
 
@@ -55,6 +82,9 @@ export default function CameraBlender() {
       // 이후 rendererRef에 저장.
       rendererRef.current = renderer;
     }
+
+    // Orbit Controls
+    const orbit = new OrbitControls(camera, renderer.domElement);
 
     // Light
     // 주변광을 생성해서 씬 전체에 균일한 광 제공.
@@ -76,6 +106,9 @@ export default function CameraBlender() {
       // 모델링된 파일을 비동기 로드. 로드 성공 시 모델의 루트 씬을 가져와 model로 저장하고, 스케일 설정 후 씬에 추가함.
       const model = gltf.scene;
       model.scale.set(1, 1, 1);
+      // 초기 뷰 설정
+      model.rotation.y = THREE.MathUtils.degToRad(45);
+      model.rotation.x = THREE.MathUtils.degToRad(45);
       scene.add(model);
     });
 
@@ -126,6 +159,10 @@ export default function CameraBlender() {
   }, [mountRef]);
 
   return (
-    <div ref={mountRef} className="w-full h-full" onClick={onClickBlender} />
+    <div
+      ref={mountRef}
+      className="w-full h-full"
+      onClick={(e) => onClickBlender(e)}
+    />
   );
 }
