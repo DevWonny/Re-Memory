@@ -18,6 +18,7 @@ import Image from "next/image";
 import { fetchDetail, removeDetail } from "@/services/detail";
 // store
 import { useAuth } from "@/store/auth";
+import { useLoading } from "@/store/loading";
 // style
 import "@/styles/detail.scss";
 import "swiper/css";
@@ -48,6 +49,7 @@ export default function Detail() {
   const params = useParams();
   const router = useRouter();
   const session = useAuth((state) => state.session);
+  const setIsLoading = useLoading((state) => state.setIsLoading);
   const [swiper, setSwiper] = useState<any>(null);
   const [activeSwiperIndex, setActiveSwiperIndex] = useState(0);
   const [detailData, setDetailData] = useState<DetailDataType | null>(null);
@@ -71,11 +73,14 @@ export default function Detail() {
   useEffect(() => {
     if (session) {
       const onFetchDetail = async () => {
+        setIsLoading(true);
         const data = await fetchDetail(session.user.id, params.id as string);
         if (data && data.length > 0) {
           setDetailData(data[0]);
           setDetailImage(data[0].images);
         }
+
+        setIsLoading(false);
       };
       onFetchDetail();
     }

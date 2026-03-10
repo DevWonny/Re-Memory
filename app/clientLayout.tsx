@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 // store
 import { useAuth } from "@/store/auth";
 import { useModalStore } from "@/store/modal";
+import { useLoading } from "@/store/loading";
 // service
 // Component
 import Header from "./components/header";
@@ -18,6 +19,7 @@ export default function ClientLayout({
   const [authType, setAuthType] = useState("");
   const router = useRouter();
   const setSession = useAuth((state) => state.setSession);
+  const { isLoading } = useLoading();
   const {
     isOpen: isModalOpen,
     closeModal,
@@ -79,7 +81,7 @@ export default function ClientLayout({
   return (
     <div className="client-layout w-screen h-screen">
       <div
-        className={`modal-container ${authType || isModalOpen ? "active" : ""}`}
+        className={`modal-container ${authType || isModalOpen || isLoading ? "active" : ""}`}
       >
         {authType && (
           <Auth
@@ -94,10 +96,11 @@ export default function ClientLayout({
             onCancelClick={onModalCancel}
           />
         )}
+        {isLoading && <Loading />}
       </div>
 
       <div
-        className={`blur-container ${authType || isModalOpen ? "disabled" : ""} h-screen`}
+        className={`blur-container ${authType || isModalOpen || isLoading ? "disabled" : ""} h-screen`}
       >
         <Header
           onRegisterClick={() => onAuthTypeCheck("register")}
