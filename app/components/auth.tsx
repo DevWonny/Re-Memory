@@ -107,30 +107,31 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
         <div className="input-content">
           <p className="label">ID</p>
           <input
-            className="w-full auth-input"
+            className={`w-full auth-input ${errors.id && "error"}`}
             type="text"
             placeholder={`아이디를 입력해주세요.`}
             value={values.id}
             onChange={(e) => setValues({ ...values, id: e.target.value })}
           />
-          <p>{errors.id}</p>
+          {errors.id && <p className="error-text">{errors.id}</p>}
         </div>
 
         <div className="input-content">
           <p className="label">PASSWORD</p>
           <input
-            className="w-full auth-input"
+            className={`w-full auth-input ${errors.pw && "error"}`}
             type="text"
             placeholder={`패스워드를 입력해주세요.`}
             value={values.pw}
             onChange={(e) => setValues({ ...values, pw: e.target.value })}
           />
+          {errors.pw && <p className="error-text">{errors.pw}</p>}
         </div>
         {type === "register" && (
           <div className="input-content">
             <p className="label">PASSWORD CHECK</p>
             <input
-              className="w-full auth-input"
+              className={`w-full auth-input ${errors.pwCheck && "error"}`}
               type="text"
               placeholder={`패스워드를 한번 더 입력해주세요.`}
               value={values.pwCheck}
@@ -138,6 +139,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
                 setValues({ ...values, pwCheck: e.target.value })
               }
             />
+            {errors.pwCheck && <p className="error-text">{errors.pwCheck}</p>}
           </div>
         )}
       </div>

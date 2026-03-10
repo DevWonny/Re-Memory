@@ -16,10 +16,11 @@ export const useAuthForm = (type: string, onClose: () => void) => {
     console.log(1)
     const newErrors = { id: '', pw: '', pwCheck: '' };
     let isValid = true;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
 
-    if (!values.id.includes('@')) {
+    if (!emailRegex.test(values.id)) {
       newErrors.id = '올바른 이메일 형식이 아닙니다.';
       isValid = false;
     }
