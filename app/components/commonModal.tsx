@@ -68,6 +68,11 @@ export default function CommonModal({
       description: "추억을 변경하였습니다.",
       confirm: "확인",
     },
+    LOGIN_CHECK: {
+      title: "로그인 확인",
+      description: "추억을 저장하기 전에 로그인 해주세요.",
+      confirm: "로그인 하기",
+    },
   };
 
   if (!type) return null;

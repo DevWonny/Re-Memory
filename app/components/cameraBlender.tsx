@@ -5,15 +5,20 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 // store
 import { useAuth } from "@/store/auth";
+import { useModalStore } from "@/store/modal";
 
 export default function CameraBlender() {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Cleanup 혹은 외부 접근 시 사용하기 위해 Renderer를 따로 저장.
   const router = useRouter();
   const session = useAuth((state) => state.session);
+  const openModal = useModalStore((state) => state.openModal);
 
   const onClickBlender = () => {
-    if (!mountRef.current || !session) return;
+    if (!mountRef.current || !session) {
+      openModal("LOGIN_CHECK");
+      return;
+    }
 
     router.push("/upload");
   };

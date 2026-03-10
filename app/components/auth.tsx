@@ -9,13 +9,7 @@
 // *        -> 하단에 로그인 버튼 + 닫기 버튼 + 회원가입 버튼
 // * 로그인 -> 아이디 / 비밀번호 + 하단에 회원가입 버튼 + 닫기 버튼 + 로그인 버튼
 "use client";
-import { useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { useAuthForm } from "../hooks/useAuthForm";
-// store
-import { useAuth } from "@/store/auth";
-import { useModalStore } from "@/store/modal";
-import { useLoading } from "@/store/loading";
 // style
 import "@/styles/components/auth.scss";
 
@@ -36,70 +30,6 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
     onChangeType(type);
     setValues({ id: "", pw: "", pwCheck: "" });
   };
-
-  // 회원가입 및 로그인 로직
-  // const onConfirmClick = async (type: string) => {
-  //   setIsLoading(true);
-  //   if (type === "register") {
-  //     // * 닉네임은 email의 앞부분 활용.
-  //     if (!idValue || !pwValue || !pwCheck) {
-  //       setIsLoading(false);
-  //       // ! validation -> 해당 input 아래 text로 표기
-  //       alert("아이디 및 비밀번호를 입력해주세요.");
-  //       return;
-  //     }
-  //     if (pwValue && pwCheck && pwValue !== pwCheck) {
-  //       setIsLoading(false);
-  //       // ! validation -> 해당 input 아래 text로 표기
-  //       alert("비밀번호를 확인해주세요.");
-  //       return;
-  //     }
-  //     const displayName = idValue.split("@")[0];
-
-  //     const { error } = await supabase.auth.signUp({
-  //       email: idValue,
-  //       password: pwValue,
-  //       options: {
-  //         data: {
-  //           displayName,
-  //         },
-  //       },
-  //     });
-  //     if (error) {
-  //       console.log("Auth Register Error - ", error);
-  //       setIsLoading(false);
-  //       return;
-  //     } else {
-  //       setIsLoading(false);
-  //       openModal("SIGNUP_COMPLETE");
-  //       onCloseClick();
-  //     }
-  //   } else if (type === "login") {
-  //     if (!idValue || !pwValue) {
-  //       setIsLoading(false);
-  //       // ! validation -> 해당 input 아래 text로 표기
-  //       alert("아이디 및 비밀번호를 입력해주세요.");
-  //       return;
-  //     }
-
-  //     const { data, error } = await supabase.auth.signInWithPassword({
-  //       email: idValue,
-  //       password: pwValue,
-  //     });
-
-  //     if (error) {
-  //       setIsLoading(false);
-  //       // ! validation -> 해당 input 아래 text로 표기
-  //       alert("이메일 및 비밀번호를 확인해주세요.");
-  //       console.log(`Login Error(auth.tsx) - `, error.message);
-  //       return;
-  //     } else {
-  //       setIsLoading(false);
-  //       setSession(data.session);
-  //       onCloseClick();
-  //     }
-  //   }
-  // };
 
   return (
     <div className="auth-modal-container fixed flex flex-col items-center justify-between">

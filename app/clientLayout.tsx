@@ -83,6 +83,11 @@ export default function ClientLayout({
       closeModal();
       router.replace(`/detail/${params.id}`);
     }
+
+    if (modalType === "LOGIN_CHECK") {
+      closeModal();
+      setAuthType("login");
+    }
   };
 
   const onModalCancel = () => {
