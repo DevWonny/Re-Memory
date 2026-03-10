@@ -21,14 +21,22 @@ interface AuthType {
 }
 
 export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
-  const { values, setValues, errors, handleAuth } = useAuthForm(
-    type,
-    onCloseClick,
-  );
+  const {
+    idValue,
+    setIdValue,
+    pwValue,
+    setPwValue,
+    pwCheck,
+    setPwCheck,
+    errors,
+    handleAuth,
+  } = useAuthForm(type, onCloseClick);
 
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
-    setValues({ id: "", pw: "", pwCheck: "" });
+    setIdValue("");
+    setPwValue("");
+    setPwCheck("");
   };
 
   return (
@@ -40,8 +48,8 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
             className={`w-full auth-input ${errors.id && "error"}`}
             type="text"
             placeholder={`아이디를 입력해주세요.`}
-            value={values.id}
-            onChange={(e) => setValues({ ...values, id: e.target.value })}
+            value={idValue}
+            onChange={(e) => setIdValue(e.target.value)}
           />
           {errors.id && <p className="error-text">{errors.id}</p>}
         </div>
@@ -50,10 +58,10 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
           <p className="label">PASSWORD</p>
           <input
             className={`w-full auth-input ${errors.pw && "error"}`}
-            type="text"
+            type="password"
             placeholder={`패스워드를 입력해주세요.`}
-            value={values.pw}
-            onChange={(e) => setValues({ ...values, pw: e.target.value })}
+            value={pwValue}
+            onChange={(e) => setPwValue(e.target.value)}
           />
           {errors.pw && <p className="error-text">{errors.pw}</p>}
         </div>
@@ -62,17 +70,18 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
             <p className="label">PASSWORD CHECK</p>
             <input
               className={`w-full auth-input ${errors.pwCheck && "error"}`}
-              type="text"
+              type="password"
               placeholder={`패스워드를 한번 더 입력해주세요.`}
-              value={values.pwCheck}
-              onChange={(e) =>
-                setValues({ ...values, pwCheck: e.target.value })
-              }
+              value={pwCheck}
+              onChange={(e) => setPwCheck(e.target.value)}
             />
             {errors.pwCheck && <p className="error-text">{errors.pwCheck}</p>}
           </div>
         )}
       </div>
+
+      {/* server Error */}
+      {errors.server && <p>{errors.server}</p>}
 
       <div className="button-content w-full flex  flex-col items-center ">
         <div className="button-container flex items-center w-full">
