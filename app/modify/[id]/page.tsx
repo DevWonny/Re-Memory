@@ -17,6 +17,7 @@ import CommonInput from "@/app/components/commonInput";
 // store
 import { useAuth } from "@/store/auth";
 import { useLoading } from "@/store/loading";
+import { useModalStore } from "@/store/modal";
 // service
 import { modifyFolder } from "@/services/modify";
 import { fetchDetail } from "@/services/detail";
@@ -58,6 +59,8 @@ export default function Upload() {
   // * Reset 기능에서 사용
   const [originalData, setOriginalData] = useState<DetailItem | null>(null);
   const setIsLoading = useLoading((state) => state.setIsLoading);
+  const openModal = useModalStore((state) => state.openModal);
+
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -137,9 +140,10 @@ export default function Upload() {
       !description
     ) {
       console.log("Modify Page Error! - onSaveClick");
-      alert("추억을 모두 채워주세요!");
+      openModal("MODIFY_VALIDATION");
       return;
     }
+
     setIsLoading(true);
 
     await modifyFolder(
@@ -151,9 +155,10 @@ export default function Upload() {
       category,
       description,
     );
+
     setIsLoading(false);
-    alert("수정이 완료되었습니다.");
-    router.replace(`/detail/${params.id}`);
+    openModal("MODIFY_COMPLETE");
+    // router.replace(`/detail/${params.id}`);
   };
 
   useEffect(() => {

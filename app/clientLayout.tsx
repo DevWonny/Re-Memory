@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 // store
 import { useAuth } from "@/store/auth";
@@ -18,6 +18,7 @@ export default function ClientLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const [authType, setAuthType] = useState("");
   const router = useRouter();
+  const params = useParams<{ id: string }>();
   const setSession = useAuth((state) => state.setSession);
   const { isLoading } = useLoading();
   const {
@@ -58,7 +59,7 @@ export default function ClientLayout({
       if (res.ok) {
         openModal("WITHDRAW_COMPLETE");
       } else {
-        alert("탈퇴 중 오류 발생!");
+        openModal("WITHDRAWAL_ERROR");
       }
     }
 
@@ -72,6 +73,15 @@ export default function ClientLayout({
     if (modalType === "POST_COMPLETE") {
       closeModal();
       router.replace("/");
+    }
+
+    if (modalType === "MODIFY_VALIDATION") {
+      closeModal();
+    }
+
+    if (modalType === "MODIFY_COMPLETE") {
+      closeModal();
+      router.replace(`/detail/${params.id}`);
     }
   };
 

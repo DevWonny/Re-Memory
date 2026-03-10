@@ -55,12 +55,17 @@ export default function CommonModal({
     },
     WITHDRAWAL_ERROR: {
       title: "회원탈퇴 실패",
-      description: "",
+      description: "운영자에게 문의해주세요.",
       confirm: "확인",
     },
-    POST_VALIDATION: {
-      title: "",
-      description: "",
+    MODIFY_VALIDATION: {
+      title: "수정 실패",
+      description: "추억을 모두 채워주세요!",
+      confirm: "확인",
+    },
+    MODIFY_COMPLETE: {
+      title: "수정 완료",
+      description: "추억을 변경하였습니다.",
       confirm: "확인",
     },
   };
