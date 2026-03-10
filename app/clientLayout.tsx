@@ -17,6 +17,7 @@ export default function ClientLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const [authType, setAuthType] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const setSession = useAuth((state) => state.setSession);
@@ -96,7 +97,40 @@ export default function ClientLayout({
 
   useEffect(() => {
     onGetSession();
+    // 화면 너비 or UserAgent로 모바일 판단 -> 반응형 작업 되면 지울 예정
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const mobileKeywords = [
+        "android",
+        "webos",
+        "iphone",
+        "ipad",
+        "ipod",
+        "blackberry",
+        "iemobile",
+        "opera mini",
+      ];
+      const isMobileSize = window.innerWidth < 1024;
+
+      const isMobileDevice =
+        mobileKeywords.some((keyword) => userAgent.includes(keyword)) ||
+        isMobileSize;
+      setIsMobile(isMobileDevice);
+    };
+    checkMobile();
+
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  if (isMobile) {
+    return (
+      <div className="mobile-container w-full h-screen flex flex-col items-center justify-center">
+        <p className="text-main">{`추억을 보여주기에는 화면이 너무 좁아요.\n더 넒은 시야에서 당신의 기억을 기록해 보아요.`}</p>
+        <p className="text-sub">{`(추후 업데이트 예정)`}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="client-layout w-screen h-screen">

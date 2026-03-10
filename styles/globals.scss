@@ -28,6 +28,20 @@ body {
   color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
 
+  div.mobile-container {
+    gap: 10px;
+    p.text {
+      &-main {
+        font-size: 18px;
+        white-space: pre-wrap;
+        text-align: center;
+      }
+      &-sub {
+        font-size: 14px;
+      }
+    }
+  }
+
   div.client-layout {
     div.modal-container {
       display: none;
