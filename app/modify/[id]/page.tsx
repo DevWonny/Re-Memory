@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import CommonInput from "@/app/components/commonInput";
 // store
 import { useAuth } from "@/store/auth";
+import { useLoading } from "@/store/loading";
 // service
 import { modifyFolder } from "@/services/modify";
 import { fetchDetail } from "@/services/detail";
@@ -56,7 +57,7 @@ export default function Upload() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   // * Reset 기능에서 사용
   const [originalData, setOriginalData] = useState<DetailItem | null>(null);
-
+  const setIsLoading = useLoading((state) => state.setIsLoading);
   // function
   const onAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -139,6 +140,7 @@ export default function Upload() {
       alert("추억을 모두 채워주세요!");
       return;
     }
+    setIsLoading(true);
 
     await modifyFolder(
       params.id,
@@ -149,7 +151,7 @@ export default function Upload() {
       category,
       description,
     );
-
+    setIsLoading(false);
     alert("수정이 완료되었습니다.");
     router.replace(`/detail/${params.id}`);
   };
@@ -157,6 +159,7 @@ export default function Upload() {
   useEffect(() => {
     if (params.id && session) {
       const onFetchData = async () => {
+        setIsLoading(true);
         const data = await fetchDetail(session.user.id, params.id as string);
         if (data && data.length > 0) {
           setOriginalData(data[0]);
@@ -169,6 +172,8 @@ export default function Upload() {
             return { from, to };
           });
         }
+
+        setIsLoading(false);
       };
       onFetchData();
     }

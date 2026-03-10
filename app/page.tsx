@@ -9,6 +9,7 @@ import Folder from "./components/folder";
 import { fetchFolderList } from "@/services/detail";
 // store
 import { useAuth } from "@/store/auth";
+import { useLoading } from "@/store/loading";
 // type
 import { FolderListItem } from "@/types/detail";
 // style
@@ -21,11 +22,14 @@ export default function Main() {
   const router = useRouter();
   const [folderList, setFolderList] = useState<FolderListItem[]>([]);
   const session = useAuth((state) => state.session);
+  const setIsLoading = useLoading((state) => state.setIsLoading);
 
   useEffect(() => {
     const onFetchFolderList = async () => {
+      setIsLoading(true);
       if (!session) {
         setFolderList([]);
+        setIsLoading(false);
         return;
       }
       const fetchData = await fetchFolderList(session.user.id);
@@ -35,6 +39,8 @@ export default function Main() {
       } else {
         setFolderList([]);
       }
+
+      setIsLoading(false);
     };
     onFetchFolderList();
   }, [session]);

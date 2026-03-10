@@ -14,6 +14,7 @@ import { supabase } from "@/lib/supabase";
 // store
 import { useAuth } from "@/store/auth";
 import { useModalStore } from "@/store/modal";
+import { useLoading } from "@/store/loading";
 // style
 import "@/styles/components/auth.scss";
 
@@ -30,6 +31,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
   const [pwCheck, setPwCheck] = useState("");
   const { setSession } = useAuth();
   const { openModal } = useModalStore();
+  const setIsLoading = useLoading((state) => state.setIsLoading);
 
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
@@ -40,13 +42,16 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
 
   // 회원가입 및 로그인 로직
   const onConfirmClick = async (type: string) => {
+    setIsLoading(true);
     if (type === "register") {
       // * 닉네임은 email의 앞부분 활용.
       if (!idValue || !pwValue || !pwCheck) {
+        setIsLoading(false);
         alert("아이디 및 비밀번호를 입력해주세요.");
         return;
       }
       if (pwValue && pwCheck && pwValue !== pwCheck) {
+        setIsLoading(false);
         alert("비밀번호를 확인해주세요.");
         return;
       }
@@ -63,13 +68,16 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
       });
       if (error) {
         console.log("Auth Register Error - ", error);
+        setIsLoading(false);
         return;
       } else {
+        setIsLoading(false);
         openModal("SIGNUP_COMPLETE");
         onCloseClick();
       }
     } else if (type === "login") {
       if (!idValue || !pwValue) {
+        setIsLoading(false);
         alert("아이디 및 비밀번호를 입력해주세요.");
         return;
       }
@@ -80,10 +88,12 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
       });
 
       if (error) {
+        setIsLoading(false);
         alert("이메일 및 비밀번호를 확인해주세요.");
         console.log(`Login Error(auth.tsx) - `, error.message);
         return;
       } else {
+        setIsLoading(false);
         setSession(data.session);
         onCloseClick();
       }

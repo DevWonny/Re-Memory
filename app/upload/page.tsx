@@ -22,6 +22,7 @@ import type { DateRange } from "react-day-picker";
 import CommonInput from "@/app/components/commonInput";
 // store
 import { useAuth } from "@/store/auth";
+import { useLoading } from "@/store/loading";
 // service
 import { uploadImage } from "@/services/upload";
 import { useModalStore } from "@/store/modal";
@@ -44,6 +45,7 @@ export default function Upload() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const { session } = useAuth();
+  const setIsLoading = useLoading((state) => state.setIsLoading);
   // input
 
   // function
@@ -96,10 +98,13 @@ export default function Upload() {
   };
 
   const onSaveClick = async () => {
+    setIsLoading(true);
     if (!session) {
       console.log("Upload Page Error! - onSaveClick");
+      setIsLoading(false);
       return;
     }
+
     await uploadImage(
       session.user.id,
       images,
@@ -107,6 +112,8 @@ export default function Upload() {
       category,
       description,
     );
+
+    setIsLoading(false);
     alert("등록 완료!");
     // 추후 모달로 변경하기!
     router.replace("/");
