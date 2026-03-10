@@ -11,6 +11,7 @@
 "use client";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuthForm } from "../hooks/useAuthForm";
 // store
 import { useAuth } from "@/store/auth";
 import { useModalStore } from "@/store/modal";
@@ -26,83 +27,79 @@ interface AuthType {
 }
 
 export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
-  const [idValue, setIdValue] = useState("");
-  const [pwValue, setPwValue] = useState("");
-  const [pwCheck, setPwCheck] = useState("");
-  const { setSession } = useAuth();
-  const { openModal } = useModalStore();
-  const setIsLoading = useLoading((state) => state.setIsLoading);
+  const { values, setValues, errors, handleAuth } = useAuthForm(
+    type,
+    onCloseClick,
+  );
 
   const onChangeTypeClick = (type: string) => {
     onChangeType(type);
-    setIdValue("");
-    setPwValue("");
-    setPwCheck("");
+    setValues({ id: "", pw: "", pwCheck: "" });
   };
 
   // 회원가입 및 로그인 로직
-  const onConfirmClick = async (type: string) => {
-    setIsLoading(true);
-    if (type === "register") {
-      // * 닉네임은 email의 앞부분 활용.
-      if (!idValue || !pwValue || !pwCheck) {
-        setIsLoading(false);
-        // ! validation -> 해당 input 아래 text로 표기
-        alert("아이디 및 비밀번호를 입력해주세요.");
-        return;
-      }
-      if (pwValue && pwCheck && pwValue !== pwCheck) {
-        setIsLoading(false);
-        // ! validation -> 해당 input 아래 text로 표기
-        alert("비밀번호를 확인해주세요.");
-        return;
-      }
-      const displayName = idValue.split("@")[0];
+  // const onConfirmClick = async (type: string) => {
+  //   setIsLoading(true);
+  //   if (type === "register") {
+  //     // * 닉네임은 email의 앞부분 활용.
+  //     if (!idValue || !pwValue || !pwCheck) {
+  //       setIsLoading(false);
+  //       // ! validation -> 해당 input 아래 text로 표기
+  //       alert("아이디 및 비밀번호를 입력해주세요.");
+  //       return;
+  //     }
+  //     if (pwValue && pwCheck && pwValue !== pwCheck) {
+  //       setIsLoading(false);
+  //       // ! validation -> 해당 input 아래 text로 표기
+  //       alert("비밀번호를 확인해주세요.");
+  //       return;
+  //     }
+  //     const displayName = idValue.split("@")[0];
 
-      const { error } = await supabase.auth.signUp({
-        email: idValue,
-        password: pwValue,
-        options: {
-          data: {
-            displayName,
-          },
-        },
-      });
-      if (error) {
-        console.log("Auth Register Error - ", error);
-        setIsLoading(false);
-        return;
-      } else {
-        setIsLoading(false);
-        openModal("SIGNUP_COMPLETE");
-        onCloseClick();
-      }
-    } else if (type === "login") {
-      if (!idValue || !pwValue) {
-        setIsLoading(false);
-        // ! validation -> 해당 input 아래 text로 표기
-        alert("아이디 및 비밀번호를 입력해주세요.");
-        return;
-      }
+  //     const { error } = await supabase.auth.signUp({
+  //       email: idValue,
+  //       password: pwValue,
+  //       options: {
+  //         data: {
+  //           displayName,
+  //         },
+  //       },
+  //     });
+  //     if (error) {
+  //       console.log("Auth Register Error - ", error);
+  //       setIsLoading(false);
+  //       return;
+  //     } else {
+  //       setIsLoading(false);
+  //       openModal("SIGNUP_COMPLETE");
+  //       onCloseClick();
+  //     }
+  //   } else if (type === "login") {
+  //     if (!idValue || !pwValue) {
+  //       setIsLoading(false);
+  //       // ! validation -> 해당 input 아래 text로 표기
+  //       alert("아이디 및 비밀번호를 입력해주세요.");
+  //       return;
+  //     }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: idValue,
-        password: pwValue,
-      });
+  //     const { data, error } = await supabase.auth.signInWithPassword({
+  //       email: idValue,
+  //       password: pwValue,
+  //     });
 
-      if (error) {
-        setIsLoading(false);
-        // ! validation -> 해당 input 아래 text로 표기
-        alert("이메일 및 비밀번호를 확인해주세요.");
-        console.log(`Login Error(auth.tsx) - `, error.message);
-        return;
-      } else {
-        setIsLoading(false);
-        setSession(data.session);
-        onCloseClick();
-      }
-    }
-  };
+  //     if (error) {
+  //       setIsLoading(false);
+  //       // ! validation -> 해당 input 아래 text로 표기
+  //       alert("이메일 및 비밀번호를 확인해주세요.");
+  //       console.log(`Login Error(auth.tsx) - `, error.message);
+  //       return;
+  //     } else {
+  //       setIsLoading(false);
+  //       setSession(data.session);
+  //       onCloseClick();
+  //     }
+  //   }
+  // };
 
   return (
     <div className="auth-modal-container fixed flex flex-col items-center justify-between">
@@ -113,9 +110,10 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
             className="w-full auth-input"
             type="text"
             placeholder={`아이디를 입력해주세요.`}
-            value={idValue}
-            onChange={(e) => setIdValue(e.target.value)}
+            value={values.id}
+            onChange={(e) => setValues({ ...values, id: e.target.value })}
           />
+          <p>{errors.id}</p>
         </div>
 
         <div className="input-content">
@@ -124,8 +122,8 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
             className="w-full auth-input"
             type="text"
             placeholder={`패스워드를 입력해주세요.`}
-            value={pwValue}
-            onChange={(e) => setPwValue(e.target.value)}
+            value={values.pw}
+            onChange={(e) => setValues({ ...values, pw: e.target.value })}
           />
         </div>
         {type === "register" && (
@@ -135,8 +133,10 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
               className="w-full auth-input"
               type="text"
               placeholder={`패스워드를 한번 더 입력해주세요.`}
-              value={pwCheck}
-              onChange={(e) => setPwCheck(e.target.value)}
+              value={values.pwCheck}
+              onChange={(e) =>
+                setValues({ ...values, pwCheck: e.target.value })
+              }
             />
           </div>
         )}
@@ -144,10 +144,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
 
       <div className="button-content w-full flex  flex-col items-center ">
         <div className="button-container flex items-center w-full">
-          <button
-            className="confirm-button flex-1"
-            onClick={() => onConfirmClick(type)}
-          >
+          <button className="confirm-button flex-1" onClick={handleAuth}>
             {`${type === "register" ? "회원가입" : "로그인"}`}
           </button>
 
