@@ -7,7 +7,6 @@
 import dayjs from "dayjs";
 // component
 import Image from "next/image";
-import folder from "@/public/folder.png";
 import "@/styles/components/folder.scss";
 // style
 import { FolderListItem } from "@/types/detail";
@@ -25,8 +24,10 @@ export default function Folder({ data, onFolderClick }: FolderType) {
       onClick={onFolderClick}
     >
       <Image
-        src={folder}
+        src="/folder.png"
         alt="Folder Image"
+        width={1000}
+        height={1000}
         className="w-fit h-full object-contain cursor-pointer"
       ></Image>
 
