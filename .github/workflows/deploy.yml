@@ -26,11 +26,21 @@ jobs:
           npm run lint
           npx tsc --noEmit
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{secrets.VERCEL_TOKEN}}
-          vercel-org-id: ${{secrets.ORG_ID}}
-          vercel-project-id: ${{secrets.PROJECT_ID}}
-          vercel-args: "--prod"
-          vercel-is-production: true
+      # Vercel CLI Install
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      # Vercel 환경 설정 가져오기 (해당 과정에서 .vercel 폴더 생성)
+      - name: Pull Verce lEnvironment Information
+        run: vercel pull --yes --environment=production --token=${{secrets.VERCEL_TOKEN}}
+        env:
+          VERCEL_ORG_ID: ${{secrets.ORG_ID}}
+          VERCEL_PROJECT_ID: ${{secrets.PROJECT_ID}}
+
+      # Project Build (Production용 빌드 아티팩트 생성)
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{secrets.VERCEL_TOKEN}}
+
+      # 빌드된 결과물을 Vercel로 배포 및 Production 승격
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{secrets.VERCEL_TOKEN}}
