@@ -103,5 +103,5 @@ export const useAuthForm = (type: string, onClose: () => void) => {
       setIsLoading(false);
     }
   }
-  return { idValue, setIdValue, pwValue, setPwValue, pwCheck, setPwCheck, errors, handleAuth };
+  return { idValue, setIdValue, pwValue, setPwValue, pwCheck, setPwCheck, errors, setErrors, handleAuth };
 }

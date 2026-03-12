@@ -29,6 +29,7 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
     pwCheck,
     setPwCheck,
     errors,
+    setErrors,
     handleAuth,
   } = useAuthForm(type, onCloseClick);
 
@@ -37,10 +38,19 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
     setIdValue("");
     setPwValue("");
     setPwCheck("");
+    setErrors({ id: "", pw: "", pwCheck: "", server: "" });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleAuth();
   };
 
   return (
-    <div className="auth-modal-container fixed flex flex-col items-center justify-between">
+    <form
+      className="auth-modal-container fixed flex flex-col items-center justify-between"
+      onSubmit={handleSubmit}
+    >
       <div className="input-container flex flex-col w-full">
         <div className="input-content">
           <p className="label">ID</p>
@@ -85,17 +95,22 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
 
       <div className="button-content w-full flex  flex-col items-center ">
         <div className="button-container flex items-center w-full">
-          <button className="confirm-button flex-1" onClick={handleAuth}>
+          <button className="confirm-button flex-1" type="submit">
             {`${type === "register" ? "회원가입" : "로그인"}`}
           </button>
 
-          <button className="close-button flex-1" onClick={onCloseClick}>
+          <button
+            type="button"
+            className="close-button flex-1"
+            onClick={onCloseClick}
+          >
             닫기
           </button>
         </div>
 
         <button
           className="change-button flex-1 cursor-pointer"
+          type="button"
           onClick={() => {
             type === "register"
               ? onChangeTypeClick("login")
@@ -105,6 +120,6 @@ export default function Auth({ type, onCloseClick, onChangeType }: AuthType) {
           {`${type === "register" ? "로그인" : "회원가입"}으로 이동`}
         </button>
       </div>
-    </div>
+    </form>
   );
 }
